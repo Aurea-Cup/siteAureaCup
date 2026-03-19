@@ -1,0 +1,84 @@
+-- 1. Tabelas independentes
+CREATE TABLE usuario (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    nome_usuario VARCHAR(100) NOT NULL,
+    tipo_usuario ENUM('admin', 'comum', 'lider') NOT NULL, 
+    senha VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL
+);
+
+CREATE TABLE edicao (
+    id_edicao INT AUTO_INCREMENT PRIMARY KEY
+);
+
+-- 2. Tabela time
+CREATE TABLE time (
+    id_time INT AUTO_INCREMENT PRIMARY KEY,
+    id_lider INT,
+    nome_time VARCHAR(100) NOT NULL,
+    logo VARCHAR(255),
+    CONSTRAINT fk_time_usuario FOREIGN KEY (id_lider) REFERENCES usuario(id_usuario)
+);
+
+-- 3. Tabela jogador
+CREATE TABLE jogador (
+    id_jogador INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    id_time INT,
+    CONSTRAINT fk_jogador_time FOREIGN KEY (id_time) REFERENCES time(id_time)
+);
+
+-- 4. Tabelas de Estatísticas
+CREATE TABLE estatisticas_time (
+    id_time INT PRIMARY KEY,
+    gols INT DEFAULT 0,
+    gols_sofridos INT DEFAULT 0,
+    partidas INT DEFAULT 0,
+    vitorias INT DEFAULT 0,
+    derrotas INT DEFAULT 0,
+    CONSTRAINT fk_estatisticas_time FOREIGN KEY (id_time) REFERENCES time(id_time)
+);
+
+CREATE TABLE estatisticas_jogadores (
+    id_jogador INT PRIMARY KEY,
+    gols INT DEFAULT 0,
+    partidas INT DEFAULT 0,
+    vitorias INT DEFAULT 0,
+    derrotas INT DEFAULT 0,
+    CONSTRAINT fk_estatisticas_jogador FOREIGN KEY (id_jogador) REFERENCES jogador(id_jogador)
+);
+
+-- 5. Tabela jogos
+CREATE TABLE jogos (
+    id_jogo INT AUTO_INCREMENT PRIMARY KEY,
+    id_time_casa INT,
+    id_time_fora INT,
+    id_edicao INT,
+    placar_casa INT DEFAULT 0,
+    placar_fora INT DEFAULT 0,
+    horario DATETIME,
+    status_partida ENUM('em_breve', 'em_andamento', 'finalizada') NOT NULL,
+    
+    CONSTRAINT fk_jogo_time_casa FOREIGN KEY (id_time_casa) REFERENCES time(id_time),
+    CONSTRAINT fk_jogo_time_fora FOREIGN KEY (id_time_fora) REFERENCES time(id_time),
+    CONSTRAINT fk_jogo_edicao FOREIGN KEY (id_edicao) REFERENCES edicao(id_edicao),
+    
+    CHECK (id_time_casa <> id_time_fora)
+);
+
+-- 6. Tabelas de relacionamento N:N
+CREATE TABLE titulos (
+    id_edicao INT,
+    id_time INT,
+    PRIMARY KEY (id_edicao, id_time),
+    CONSTRAINT fk_titulos_edicao FOREIGN KEY (id_edicao) REFERENCES edicao(id_edicao),
+    CONSTRAINT fk_titulos_time FOREIGN KEY (id_time) REFERENCES time(id_time)
+);
+
+CREATE TABLE gol_jogos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_jogador INT,
+    id_jogo INT,
+    CONSTRAINT fk_gol_jogador FOREIGN KEY (id_jogador) REFERENCES jogador(id_jogador),
+    CONSTRAINT fk_gol_jogo FOREIGN KEY (id_jogo) REFERENCES jogos(id_jogo)
+);
