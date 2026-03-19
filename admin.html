@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'aurea-black': '#141515',
+                        'aurea-dark': '#1e1f1f',
+                        'aurea-white': '#ffffff',
+                        'aurea-gold': '#d8bc00',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-aurea-black text-aurea-white p-6 md:p-10 font-sans antialiased">
+
+    <div class="max-w-7xl mx-auto">
+        <div class="flex items-center justify-between mb-10 border-b border-aurea-gold/20 pb-6">
+            <div>
+                <h1 class="text-3xl font-extrabold text-aurea-white">Áurea Cup <span
+                        class="text-aurea-gold">Admin</span></h1>
+                <p class="text-sm text-aurea-white/60 mt-1">Painel de inserção de dados e histórico</p>
+            </div>
+            <a href="index.html" class="text-sm font-bold text-aurea-gold hover:underline">← Voltar pro Site</a>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+            <div class="flex flex-col gap-8">
+
+                <div class="bg-aurea-dark border border-aurea-white/10 rounded-xl p-6">
+                    <h2 class="text-xl font-bold mb-4 text-aurea-gold border-b border-aurea-white/10 pb-2">1. Nova
+                        Edição</h2>
+                    <form id="form-edicao" class="flex items-end gap-4">
+                        <div class="flex-grow">
+                            <label class="block text-xs font-bold text-aurea-white/60 mb-1">Apenas clique para gerar um
+                                novo ID de Edição</label>
+                            <input type="text" disabled placeholder="ID gerado automaticamente"
+                                class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 text-aurea-white/50 cursor-not-allowed">
+                        </div>
+                        <button type="submit"
+                            class="bg-aurea-gold text-aurea-black font-bold px-6 py-2 rounded-lg hover:bg-yellow-500 transition">Criar</button>
+                    </form>
+                </div>
+
+                <div class="bg-aurea-dark border border-aurea-white/10 rounded-xl p-6">
+                    <h2 class="text-xl font-bold mb-4 text-aurea-gold border-b border-aurea-white/10 pb-2">2. Cadastrar
+                        Time</h2>
+                    <form id="form-time" class="flex flex-col gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-aurea-white/60 mb-1">Nome da Equipe</label>
+                            <input id="input-nome-time" type="text" required
+                                class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 text-aurea-white focus:outline-none focus:border-aurea-gold">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-aurea-white/60 mb-1">URL da Logo
+                                (Opcional)</label>
+                            <input id="input-logo-time" type="url" placeholder="https://link-da-imagem.com/logo.png"
+                                class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 text-aurea-white focus:outline-none focus:border-aurea-gold">
+                        </div>
+                        <button type="submit"
+                            class="bg-aurea-gold text-aurea-black font-bold px-6 py-2 rounded-lg hover:bg-yellow-500 transition mt-2 w-full">Salvar
+                            Time</button>
+                    </form>
+                </div>
+
+                <div class="bg-aurea-dark border border-aurea-white/10 rounded-xl p-6">
+                    <h2 class="text-xl font-bold mb-4 text-aurea-gold border-b border-aurea-white/10 pb-2">3. Cadastrar
+                        Jogador</h2>
+                    <form class="flex flex-col gap-4" onsubmit="event.preventDefault();">
+                        <div>
+                            <label class="block text-xs font-bold text-aurea-white/60 mb-1">Nome do Jogador</label>
+                            <input type="text" required
+                                class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 text-aurea-white focus:outline-none focus:border-aurea-gold">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-aurea-white/60 mb-1">Vincular a qual
+                                Time?</label>
+                            <select required
+                                class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 text-aurea-white focus:outline-none focus:border-aurea-gold">
+                                <option value="">Selecione um time...</option>
+                                <option value="1">Corinthians</option>
+                                <option value="2">Flamengo</option>
+                            </select>
+                        </div>
+                        <button type="submit"
+                            class="bg-aurea-gold text-aurea-black font-bold px-6 py-2 rounded-lg hover:bg-yellow-500 transition mt-2 w-full">Salvar
+                            Jogador</button>
+                    </form>
+                </div>
+
+            </div>
+
+            <div class="flex flex-col gap-8">
+
+                <div class="bg-aurea-dark border border-aurea-white/10 rounded-xl p-6">
+                    <h2 class="text-xl font-bold mb-4 text-aurea-gold border-b border-aurea-white/10 pb-2">4. Lançar
+                        Jogo / Resultado</h2>
+                    <form class="flex flex-col gap-4" onsubmit="event.preventDefault();">
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-aurea-white/60 mb-1">Edição</label>
+                                <select
+                                    class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 text-aurea-white focus:outline-none focus:border-aurea-gold">
+                                    <option value="1">Edição #294</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-aurea-white/60 mb-1">Data e Hora</label>
+                                <input type="datetime-local"
+                                    class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 text-aurea-white focus:outline-none focus:border-aurea-gold">
+                            </div>
+                        </div>
+
+                        <div
+                            class="grid grid-cols-5 gap-2 items-center mt-2 bg-aurea-black p-4 rounded-lg border border-aurea-white/5">
+
+                            <div class="col-span-2">
+                                <label
+                                    class="block text-[10px] uppercase tracking-widest text-aurea-white/50 mb-1 text-center">Time
+                                    Casa</label>
+                                <select
+                                    class="w-full bg-aurea-dark border border-aurea-white/20 rounded-md px-2 py-2 text-sm text-aurea-white focus:outline-none focus:border-aurea-gold">
+                                    <option value="1">Corinthians</option>
+                                </select>
+                                <input type="number" min="0" placeholder="Gols"
+                                    class="w-full mt-2 bg-aurea-dark border border-aurea-white/20 rounded-md px-2 py-2 text-center text-xl font-bold text-aurea-white focus:outline-none focus:border-aurea-gold">
+                            </div>
+
+                            <div class="col-span-1 text-center font-bold text-aurea-white/30 text-xl">
+                                X
+                            </div>
+
+                            <div class="col-span-2">
+                                <label
+                                    class="block text-[10px] uppercase tracking-widest text-aurea-white/50 mb-1 text-center">Time
+                                    Fora</label>
+                                <select
+                                    class="w-full bg-aurea-dark border border-aurea-white/20 rounded-md px-2 py-2 text-sm text-aurea-white focus:outline-none focus:border-aurea-gold">
+                                    <option value="2">Flamengo</option>
+                                </select>
+                                <input type="number" min="0" placeholder="Gols"
+                                    class="w-full mt-2 bg-aurea-dark border border-aurea-white/20 rounded-md px-2 py-2 text-center text-xl font-bold text-aurea-white focus:outline-none focus:border-aurea-gold">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-aurea-white/60 mb-1 mt-2">Status da
+                                Partida</label>
+                            <select required
+                                class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 text-aurea-white focus:outline-none focus:border-aurea-gold">
+                                <option value="em_breve">Em Breve (Agendado)</option>
+                                <option value="em_andamento">Em Andamento</option>
+                                <option value="finalizada" selected>Finalizada (Histórico)</option>
+                            </select>
+                        </div>
+
+                        <button type="submit"
+                            class="bg-aurea-gold text-aurea-black font-bold px-6 py-3 rounded-lg hover:bg-yellow-500 transition mt-4 w-full text-lg">Gravar
+                            Partida</button>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // URL da sua API Node.js
+        const API_URL = 'http://localhost:3000';
+
+        // === 1. CADASTRAR EDIÇÃO ===
+        document.getElementById('form-edicao').addEventListener('submit', async (evento) => {
+            evento.preventDefault(); // Evita que a página recarregue
+
+            try {
+                const resposta = await fetch(`${API_URL}/edicoes`, {
+                    method: 'POST'
+                });
+
+                const dados = await resposta.json();
+                if (resposta.ok) {
+                    alert(`${dados.mensagem} (ID: ${dados.edicao.id_edicao})`);
+                } else {
+                    alert(dados.erro);
+                }
+            } catch (erro) {
+                alert('Erro ao conectar com o servidor Node.js!');
+            }
+        });
+
+        // === 2. CADASTRAR TIME ===
+        document.getElementById('form-time').addEventListener('submit', async (evento) => {
+            evento.preventDefault();
+
+            // Pega os valores que você digitou
+            const nome_time = document.getElementById('input-nome-time').value;
+            const logo = document.getElementById('input-logo-time').value;
+
+            try {
+                const resposta = await fetch(`${API_URL}/times`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json' // Avisa pro Node que estamos mandando JSON
+                    },
+                    body: JSON.stringify({ nome_time, logo }) // Transforma os dados em texto JSON
+                });
+
+                const dados = await resposta.json();
+
+                if (resposta.ok) {
+                    alert(dados.mensagem);
+                    evento.target.reset(); // Limpa os campos após salvar
+                } else {
+                    alert(dados.erro);
+                }
+            } catch (erro) {
+                alert('Erro ao conectar com o servidor Node.js!');
+            }
+        });
+    </script>
+</body>
+
+</html>

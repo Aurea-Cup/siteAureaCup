@@ -25,3 +25,36 @@ db.sequelize.sync({ force: false })
     .catch((erro) => {
         console.error('❌ Deu ruim na conexão com o banco de dados:', erro);
     });
+
+
+// ==========================================
+// ROTAS DA API
+// ==========================================
+
+// Rota para CRIAR uma nova Edição
+app.post('/edicoes', async (req, res) => {
+  try {
+    // Como na sua tabela a edição só tem o id_edicao (auto_increment), a gente só manda criar.
+    const novaEdicao = await db.Edicao.create();
+    res.status(201).json({ mensagem: 'Edição criada com sucesso!', edicao: novaEdicao });
+  } catch (erro) {
+    console.error(erro);
+    res.status(500).json({ erro: 'Deu ruim ao criar a edição.' });
+  }
+});
+
+// Rota para CADASTRAR um novo Time
+app.post('/times', async (req, res) => {
+  try {
+    // Puxa os dados que vão vir lá do HTML
+    const { nome_time, logo } = req.body;
+    
+    // Insere no banco
+    const novoTime = await db.Time.create({ nome_time, logo });
+    
+    res.status(201).json({ mensagem: `${nome_time} cadastrado com sucesso!`, time: novoTime });
+  } catch (erro) {
+    console.error(erro);
+    res.status(500).json({ erro: 'Deu ruim ao cadastrar o time.' });
+  }
+});

@@ -1,20 +1,22 @@
 const { Sequelize, DataTypes } = require('sequelize');
+require('dotenv').config(); // Puxa as variáveis seguras do .env
 
-// Configure sua conexão com o banco aqui
-const { Sequelize, DataTypes } = require('sequelize');
-require('dotenv').config(); // <-- ADICIONE ESTA LINHA AQUI NO TOPO!
-
-// Agora ele puxa as informações seguras do arquivo .env
+// Configura a conexão lendo os dados do .env
 const sequelize = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USER,
-    process.env.DB_PASS,
-    {
-        host: process.env.DB_HOST,
-        dialect: 'mysql',
-        logging: false,
-    }
+  process.env.DB_NAME, 
+  process.env.DB_USER, 
+  process.env.DB_PASS, 
+  {
+    host: process.env.DB_HOST,
+    dialect: 'mysql',
+    logging: false,
+  }
 );
+
+// Daqui pra baixo continua o código que você já tinha:
+// const Usuario = require('./Usuario')(sequelize, DataTypes);
+// const Edicao = require('./Edicao')(sequelize, DataTypes);
+// ... e o resto das associações ...
 // Inicializando os Modelos
 const Usuario = require('./Usuario')(sequelize, DataTypes);
 const Edicao = require('./Edicao')(sequelize, DataTypes);
