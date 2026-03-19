@@ -1,12 +1,20 @@
 const { Sequelize, DataTypes } = require('sequelize');
 
 // Configure sua conexão com o banco aqui
-const sequelize = new Sequelize('aureacup', 'seu_usuario', 'sua_senha', {
-  host: 'localhost',
-  dialect: 'mysql', // ou o banco que estiver usando
-  logging: false,
-});
+const { Sequelize, DataTypes } = require('sequelize');
+require('dotenv').config(); // <-- ADICIONE ESTA LINHA AQUI NO TOPO!
 
+// Agora ele puxa as informações seguras do arquivo .env
+const sequelize = new Sequelize(
+    process.env.DB_NAME,
+    process.env.DB_USER,
+    process.env.DB_PASS,
+    {
+        host: process.env.DB_HOST,
+        dialect: 'mysql',
+        logging: false,
+    }
+);
 // Inicializando os Modelos
 const Usuario = require('./Usuario')(sequelize, DataTypes);
 const Edicao = require('./Edicao')(sequelize, DataTypes);
@@ -61,13 +69,13 @@ GolJogo.belongsTo(Jogo, { foreignKey: 'id_jogo' });
 
 // Exportando tudo para usar na aplicação
 module.exports = {
-  sequelize,
-  Usuario,
-  Edicao,
-  Time,
-  Jogador,
-  EstatisticasTime,
-  EstatisticasJogadores,
-  Jogo,
-  GolJogo
+    sequelize,
+    Usuario,
+    Edicao,
+    Time,
+    Jogador,
+    EstatisticasTime,
+    EstatisticasJogadores,
+    Jogo,
+    GolJogo
 };
