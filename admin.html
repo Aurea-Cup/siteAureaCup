@@ -35,6 +35,9 @@
             <button onclick="mudarTela('tela-geralzao')"
                 class="flex items-center gap-3 w-full text-left px-4 py-3 rounded-lg hover:bg-aurea-white/5 hover:text-aurea-gold transition font-bold text-aurea-white/70">🏆
                 Geralzão</button>
+            <button onclick="mudarTela('tela-confrontos')"
+                class="flex items-center gap-3 w-full text-left px-4 py-3 rounded-lg hover:bg-aurea-white/5 hover:text-aurea-gold transition font-bold text-aurea-white/70">⚔️
+                Raio-X</button>
         </nav>
     </aside>
 
@@ -179,6 +182,48 @@
                 </div>
             </div>
         </div>
+        <div id="tela-confrontos" class="secao-tela hidden">
+            <h2 class="text-3xl font-bold mb-8 border-b border-aurea-gold/20 pb-4 italic">⚔️ Raio-X <span
+                    class="text-aurea-gold">Frente a Frente</span></h2>
+
+            <div class="bg-aurea-dark border border-aurea-white/10 p-6 rounded-2xl shadow-xl mb-8">
+                <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+                    <select id="rx-time-a"
+                        class="w-full md:w-1/3 bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-3 outline-none font-bold text-center">
+                        <option value="">Selecione o Time A</option>
+                    </select>
+                    <span class="font-black text-2xl text-aurea-gold text-center">X</span>
+                    <select id="rx-time-b"
+                        class="w-full md:w-1/3 bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-3 outline-none font-bold text-center">
+                        <option value="">Selecione o Time B</option>
+                    </select>
+                    <button onclick="compararTimes()"
+                        class="bg-aurea-gold text-aurea-black font-bold px-8 py-3 rounded-lg hover:bg-yellow-500 transition w-full md:w-auto">Comparar</button>
+                </div>
+            </div>
+
+            <div id="rx-resultados" class="hidden">
+                <div id="rx-placar-geral"
+                    class="grid grid-cols-3 gap-4 mb-8 text-center bg-aurea-black p-6 rounded-2xl border border-aurea-white/5">
+                </div>
+                <h3
+                    class="text-lg font-bold text-aurea-gold mb-4 uppercase tracking-wider border-b border-aurea-white/5 pb-2">
+                    Histórico de Partidas</h3>
+                <div id="rx-lista-jogos" class="flex flex-col gap-4">
+                </div>
+            </div>
+        </div>
+
+        <div id="modal-time"
+            class="hidden fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 backdrop-blur-sm overflow-y-auto">
+            <div
+                class="bg-aurea-dark border border-aurea-gold/30 rounded-2xl w-full max-w-4xl min-h-[60vh] relative shadow-[0_0_50px_rgba(216,188,0,0.1)] flex flex-col my-8">
+                <button onclick="fecharModalTime()"
+                    class="absolute top-4 right-4 text-3xl text-aurea-white/50 hover:text-red-500 transition">&times;</button>
+                <div id="modal-time-content" class="p-8 flex-1">
+                </div>
+            </div>
+        </div>
 
     </main>
 
@@ -208,6 +253,7 @@
             if (idTela === 'tela-lista-jogadores') carregarListaJogadores();
             if (idTela === 'tela-lista-partidas') carregarPartidas();
             if (idTela === 'tela-geralzao') carregarEstatisticasGerais();
+            if (idTela === 'tela-confrontos') prepararTelaConfrontos();
         }
 
         // ==========================================
@@ -570,7 +616,7 @@
         });
 
         // ==========================================
-        // 5. HALL DA FAMA (ESTATÍSTICAS GERAIS E ARTILHARIA HISTÓRICA)
+        // 5. HALL DA FAMA (ESTATÍSTICAS GERAIS E DA COPA)
         // ==========================================
         async function carregarEstatisticasGerais() {
             const gridGeral = document.getElementById('grid-stats-times');
@@ -579,26 +625,48 @@
             if (!gridGeral || !listaArtilheiros) return;
 
             try {
-                // 1. Puxa todos os dados brutos de uma vez
                 const resJogos = await fetch(`${API_URL}/jogos`);
                 const jogos = await resJogos.json();
                 const resTimes = await fetch(`${API_URL}/times`);
                 const times = await resTimes.json();
-
-                // 🚀 NOVO: Puxa a lista de jogadores para saber o time ATUAL deles
                 const resJogadores = await fetch(`${API_URL}/jogadores`);
                 const jogadores = await resJogadores.json();
+                const resEdicoes = await fetch(`${API_URL}/edicoes`);
+                const edicoes = await resEdicoes.json();
 
-                // 2. Prepara os dicionários para os times
-                const statsMap = {};
-                times.forEach(t => {
-                    statsMap[t.id_time] = {
-                        nome: t.nome_time, logo: t.logo,
-                        J: 0, V: 0, E: 0, D: 0, GF: 0, GS: 0, P: 0
-                    };
+                // ESTATÍSTICAS GERAIS DA COMPETIÇÃO
+                let totalPartidas = 0, totalGolsCopa = 0;
+                jogos.forEach(j => {
+                    if (j.status_partida !== 'agendado') {
+                        totalPartidas++;
+                        totalGolsCopa += (parseInt(j.placar_casa) || 0) + (parseInt(j.placar_fora) || 0);
+                    }
                 });
 
-                // Dicionário rápido para achar o time atual do jogador
+                // Insere os números da Copa no topo da tela
+                const painelCopa = document.getElementById('painel-estatisticas-copa');
+                if (!painelCopa) {
+                    const headerGeralzao = gridGeral.parentElement;
+                    headerGeralzao.insertAdjacentHTML('afterbegin', `
+                        <div id="painel-estatisticas-copa" class="grid grid-cols-3 gap-4 mb-8 bg-aurea-black p-4 rounded-xl border border-aurea-gold/20 text-center">
+                            <div><span class="block text-2xl font-black text-aurea-gold">${edicoes.length}</span><span class="text-[9px] uppercase tracking-widest text-aurea-white/50 block mt-1">Edições</span></div>
+                            <div class="border-l border-r border-aurea-white/5"><span class="block text-2xl font-black text-aurea-white">${totalPartidas}</span><span class="text-[9px] uppercase tracking-widest text-aurea-white/50 block mt-1">Jogos Realizados</span></div>
+                            <div><span class="block text-2xl font-black text-aurea-white">${totalGolsCopa}</span><span class="text-[9px] uppercase tracking-widest text-aurea-white/50 block mt-1">Gols Marcados</span></div>
+                        </div>
+                    `);
+                } else {
+                    painelCopa.innerHTML = `
+                        <div><span class="block text-2xl font-black text-aurea-gold">${edicoes.length}</span><span class="text-[9px] uppercase tracking-widest text-aurea-white/50 block mt-1">Edições</span></div>
+                        <div class="border-l border-r border-aurea-white/5"><span class="block text-2xl font-black text-aurea-white">${totalPartidas}</span><span class="text-[9px] uppercase tracking-widest text-aurea-white/50 block mt-1">Jogos Realizados</span></div>
+                        <div><span class="block text-2xl font-black text-aurea-white">${totalGolsCopa}</span><span class="text-[9px] uppercase tracking-widest text-aurea-white/50 block mt-1">Gols Marcados</span></div>
+                    `;
+                }
+
+                const statsMap = {};
+                times.forEach(t => {
+                    statsMap[t.id_time] = { id: t.id_time, nome: t.nome_time, logo: t.logo, J: 0, V: 0, E: 0, D: 0, GF: 0, GS: 0, P: 0 };
+                });
+
                 const timeAtualMap = {};
                 if (Array.isArray(jogadores)) {
                     jogadores.forEach(j => {
@@ -609,45 +677,29 @@
 
                 const statsGols = {};
 
-                // 3. Matemática dos Jogos e Gols
                 jogos.forEach(j => {
                     if (j.status_partida === 'agendado') return;
-
                     const idCasa = j.id_time_casa;
                     const idFora = j.id_time_fora;
                     const golsCasa = parseInt(j.placar_casa) || 0;
                     const golsFora = parseInt(j.placar_fora) || 0;
 
                     if (statsMap[idCasa] && statsMap[idFora]) {
-                        statsMap[idCasa].J++;
-                        statsMap[idFora].J++;
-                        statsMap[idCasa].GF += golsCasa;
-                        statsMap[idCasa].GS += golsFora;
-                        statsMap[idFora].GF += golsFora;
-                        statsMap[idFora].GS += golsCasa;
+                        statsMap[idCasa].J++; statsMap[idFora].J++;
+                        statsMap[idCasa].GF += golsCasa; statsMap[idCasa].GS += golsFora;
+                        statsMap[idFora].GF += golsFora; statsMap[idFora].GS += golsCasa;
 
-                        if (golsCasa > golsFora) {
-                            statsMap[idCasa].V++; statsMap[idCasa].P += 3; statsMap[idFora].D++;
-                        } else if (golsFora > golsCasa) {
-                            statsMap[idFora].V++; statsMap[idFora].P += 3; statsMap[idCasa].D++;
-                        } else {
-                            statsMap[idCasa].E++; statsMap[idCasa].P += 1; statsMap[idFora].E++; statsMap[idFora].P += 1;
-                        }
+                        if (golsCasa > golsFora) { statsMap[idCasa].V++; statsMap[idCasa].P += 3; statsMap[idFora].D++; }
+                        else if (golsFora > golsCasa) { statsMap[idFora].V++; statsMap[idFora].P += 3; statsMap[idCasa].D++; }
+                        else { statsMap[idCasa].E++; statsMap[idCasa].P += 1; statsMap[idFora].E++; statsMap[idFora].P += 1; }
                     }
 
-                    // A MÁGICA DA ARTILHARIA: Usa o mapa de times atualizados!
                     if (j.gols) {
                         j.gols.forEach(gol => {
                             if (gol.marcador) {
                                 const idJog = gol.marcador.id_jogador;
-
                                 if (!statsGols[idJog]) {
-                                    statsGols[idJog] = {
-                                        nome: gol.marcador.nome,
-                                        gols: 0,
-                                        // Pega o clube atualizado lá do dicionário que criamos
-                                        clubeAtual: timeAtualMap[idJog] || 'Sem Clube'
-                                    };
+                                    statsGols[idJog] = { nome: gol.marcador.nome, gols: 0, clubeAtual: timeAtualMap[idJog] || 'Sem Clube' };
                                 }
                                 statsGols[idJog].gols++;
                             }
@@ -655,54 +707,36 @@
                     }
                 });
 
-                // 4. Renderiza os Cards dos Times
                 const performanceArray = Object.values(statsMap).sort((a, b) => {
                     if (b.P !== a.P) return b.P - a.P;
                     if (b.V !== a.V) return b.V - a.V;
                     return (b.GF - b.GS) - (a.GF - a.GS);
                 });
 
+                // ATENÇÃO: Agora a div tem cursor-pointer e chama abrirDetalhesTime()
                 gridGeral.innerHTML = performanceArray.map(stats => {
                     const logoUrl = stats.logo ? `${API_URL}${stats.logo}` : 'https://cdn-icons-png.flaticon.com/512/8054/8054060.png';
                     const saldo = stats.GF - stats.GS;
                     return `
-                    <div class="bg-aurea-dark border border-aurea-white/10 p-5 rounded-2xl flex flex-col items-center hover:border-aurea-gold hover:-translate-y-1 transition group shadow-lg">
-                        <img src="${logoUrl}" class="h-12 w-12 rounded-full object-cover border border-aurea-white/10 mb-3">
-                        <h3 class="font-extrabold text-aurea-white text-center text-sm mb-1 uppercase">${stats.nome}</h3>
-                        <p class="text-[10px] text-aurea-white/40 mb-4 tracking-wider">${stats.J} Partidas Disputadas</p>
+                    <div onclick="abrirDetalhesTime(${stats.id})" class="bg-aurea-dark border border-aurea-white/10 p-5 rounded-2xl flex flex-col items-center hover:border-aurea-gold hover:-translate-y-1 transition group shadow-lg cursor-pointer relative">
+                        <div class="absolute inset-0 bg-aurea-gold/5 opacity-0 group-hover:opacity-100 transition rounded-2xl pointer-events-none"></div>
+                        <img src="${logoUrl}" class="h-12 w-12 rounded-full object-cover border border-aurea-white/10 mb-3 z-10 bg-aurea-black">
+                        <h3 class="font-extrabold text-aurea-white text-center text-sm mb-1 uppercase z-10">${stats.nome}</h3>
+                        <p class="text-[10px] text-aurea-white/40 mb-4 tracking-wider z-10">${stats.J} Partidas Disputadas</p>
                         
-                        <div class="grid grid-cols-3 gap-2 w-full text-center border-t border-aurea-white/5 pt-4">
-                            <div class="bg-aurea-black py-2 rounded-lg border border-aurea-white/5 flex flex-col justify-center">
-                                <span class="block text-lg font-black text-green-400">${stats.V}</span>
-                                <span class="block text-[7px] uppercase tracking-widest text-aurea-white/40 mt-0.5">VITÓRIAS</span>
-                            </div>
-                            <div class="bg-aurea-black py-2 rounded-lg border border-aurea-white/5 flex flex-col justify-center">
-                                <span class="block text-lg font-black text-aurea-white/60">${stats.E}</span>
-                                <span class="block text-[7px] uppercase tracking-widest text-aurea-white/40 mt-0.5">EMPATES</span>
-                            </div>
-                            <div class="bg-aurea-black py-2 rounded-lg border border-aurea-white/5 flex flex-col justify-center">
-                                <span class="block text-lg font-black text-red-400">${stats.D}</span>
-                                <span class="block text-[7px] uppercase tracking-widest text-aurea-white/40 mt-0.5">DERROTAS</span>
-                            </div>
-                            <div class="bg-aurea-black py-2 rounded-lg border border-aurea-white/5 flex flex-col justify-center">
-                                <span class="block text-lg font-black text-aurea-gold">${stats.P}</span>
-                                <span class="block text-[7px] uppercase tracking-widest text-aurea-white/40 mt-0.5">PONTOS</span>
-                            </div>
-                            <div class="bg-aurea-black py-2 rounded-lg border border-aurea-white/5 flex flex-col justify-center">
-                                <span class="block text-lg font-black text-aurea-white">${stats.GF} - ${stats.GS}</span>
-                                <span class="block text-[7px] uppercase tracking-widest text-aurea-white/40 mt-0.5">GP - GC</span>
-                            </div>
-                            <div class="bg-aurea-black py-2 rounded-lg border border-aurea-white/5 flex flex-col justify-center">
-                                <span class="block text-lg font-black ${saldo > 0 ? 'text-green-400' : (saldo < 0 ? 'text-red-400' : 'text-aurea-white')}">${saldo > 0 ? '+' + saldo : saldo}</span>
-                                <span class="block text-[7px] uppercase tracking-widest text-aurea-white/40 mt-0.5">SALDO</span>
-                            </div>
+                        <div class="grid grid-cols-3 gap-2 w-full text-center border-t border-aurea-white/5 pt-4 z-10">
+                            <div class="bg-aurea-black py-2 rounded-lg border border-aurea-white/5"><span class="block text-lg font-black text-green-400">${stats.V}</span><span class="block text-[7px] uppercase tracking-widest text-aurea-white/40 mt-0.5">V</span></div>
+                            <div class="bg-aurea-black py-2 rounded-lg border border-aurea-white/5"><span class="block text-lg font-black text-aurea-white/60">${stats.E}</span><span class="block text-[7px] uppercase tracking-widest text-aurea-white/40 mt-0.5">E</span></div>
+                            <div class="bg-aurea-black py-2 rounded-lg border border-aurea-white/5"><span class="block text-lg font-black text-red-400">${stats.D}</span><span class="block text-[7px] uppercase tracking-widest text-aurea-white/40 mt-0.5">D</span></div>
+                            <div class="bg-aurea-black py-2 rounded-lg border border-aurea-white/5"><span class="block text-lg font-black text-aurea-gold">${stats.P}</span><span class="block text-[7px] uppercase tracking-widest text-aurea-white/40 mt-0.5">PTS</span></div>
+                            <div class="bg-aurea-black py-2 rounded-lg border border-aurea-white/5"><span class="block text-lg font-black text-aurea-white">${stats.GF}-${stats.GS}</span><span class="block text-[7px] uppercase tracking-widest text-aurea-white/40 mt-0.5">GOLS</span></div>
+                            <div class="bg-aurea-black py-2 rounded-lg border border-aurea-white/5"><span class="block text-lg font-black ${saldo > 0 ? 'text-green-400' : (saldo < 0 ? 'text-red-400' : 'text-aurea-white')}">${saldo > 0 ? '+' + saldo : saldo}</span><span class="block text-[7px] uppercase tracking-widest text-aurea-white/40 mt-0.5">SALDO</span></div>
                         </div>
+                        <span class="text-[9px] text-aurea-gold/60 uppercase mt-4 opacity-0 group-hover:opacity-100 transition font-bold">Ver Histórico do Time ➔</span>
                     </div>`;
                 }).join('');
 
-                // 5. Renderiza a Artilharia Histórica
                 const arrayArtilheiros = Object.values(statsGols).sort((a, b) => b.gols - a.gols);
-
                 if (arrayArtilheiros.length === 0) {
                     listaArtilheiros.innerHTML = '<p class="text-center py-6 text-aurea-white/30 italic text-sm">A rede ainda não balançou na história.</p>';
                 } else {
@@ -721,11 +755,333 @@
                         </div>
                     </div>`).join('');
                 }
+            } catch (erro) { console.error(erro); }
+        }
 
-            } catch (erro) {
-                console.error(erro);
-                if (gridGeral) gridGeral.innerHTML = '<p class="text-red-500 col-span-full">Erro ao processar as estatísticas gerais.</p>';
-            }
+        // ==========================================
+        // 6. HISTÓRICO FRENTE A FRENTE (RAIO-X)
+        // ==========================================
+        async function prepararTelaConfrontos() {
+            try {
+                const res = await fetch(`${API_URL}/times`);
+                const times = await res.json();
+                const options = '<option value="">Selecione um Time</option>' + times.map(t => `<option value="${t.id_time}">${t.nome_time}</option>`).join('');
+                document.getElementById('rx-time-a').innerHTML = options;
+                document.getElementById('rx-time-b').innerHTML = options;
+            } catch (e) { console.error(e); }
+        }
+
+        async function compararTimes() {
+            const idA = document.getElementById('rx-time-a').value;
+            const idB = document.getElementById('rx-time-b').value;
+            if (!idA || !idB || idA === idB) return alert("Selecione dois times diferentes para comparar!");
+
+            try {
+                // Puxa os jogos e os times do banco
+                const resJogos = await fetch(`${API_URL}/jogos`);
+                const jogos = await resJogos.json();
+                const resTimes = await fetch(`${API_URL}/times`);
+                const times = await resTimes.json();
+
+                const timeA = times.find(t => t.id_time == idA);
+                const timeB = times.find(t => t.id_time == idB);
+
+                // Filtra apenas jogos onde os dois times se enfrentaram
+                const confrontos = jogos.filter(j =>
+                    (j.id_time_casa == idA && j.id_time_fora == idB) ||
+                    (j.id_time_casa == idB && j.id_time_fora == idA)
+                );
+
+                let vitA = 0, vitB = 0, empates = 0, golsA = 0, golsB = 0;
+                let artilheirosA = {};
+                let artilheirosB = {};
+
+                // Faz a matemática do confronto e separa os artilheiros GERAIS
+                confrontos.forEach(j => {
+                    if (j.status_partida !== 'agendado') {
+                        const gc = parseInt(j.placar_casa) || 0;
+                        const gf = parseInt(j.placar_fora) || 0;
+
+                        if (j.id_time_casa == idA) {
+                            golsA += gc; golsB += gf;
+                            if (gc > gf) vitA++; else if (gf > gc) vitB++; else empates++;
+                        } else {
+                            golsB += gc; golsA += gf;
+                            if (gf > gc) vitA++; else if (gc > gf) vitB++; else empates++;
+                        }
+
+                        // ARTILHEIROS GERAIS DO CONFRONTO: Separa quem fez gol pra quem nesse histórico
+                        // LEITURA DE GOLS NO RAIO-X
+                        if (j.gols) {
+                            j.gols.forEach(gol => {
+                                // Se o marcador for null, o nome é "Sem Info"
+                                const nomeJogador = (gol.marcador && gol.marcador.nome) ? gol.marcador.nome : 'Sem Info';
+
+                                if (gol.id_time == idA) {
+                                    artilheirosA[nomeJogador] = (artilheirosA[nomeJogador] || 0) + 1;
+                                } else if (gol.id_time == idB) {
+                                    artilheirosB[nomeJogador] = (artilheirosB[nomeJogador] || 0) + 1;
+                                }
+                            });
+                        }
+                    }
+                });
+
+                // Ordena os artilheiros gerais
+                const arrArtA = Object.entries(artilheirosA).sort((a, b) => b[1] - a[1]);
+                const arrArtB = Object.entries(artilheirosB).sort((a, b) => b[1] - a[1]);
+
+                // Gera o HTML da listinha de artilheiros GERAIS
+                const htmlArtA = arrArtA.length ? arrArtA.map(a => `<div class="flex justify-between items-center border-b border-aurea-white/5 py-1 text-xs"><span class="text-aurea-white font-bold ${a[0] === 'Sem Informação' ? 'italic opacity-50' : ''}">${a[0]}</span><span class="text-aurea-gold font-black">${a[1]} ⚽</span></div>`).join('') : '<span class="text-[10px] text-aurea-white/30 italic block text-center py-2">Nenhum gol registrado</span>';
+
+                const htmlArtB = arrArtB.length ? arrArtB.map(b => `<div class="flex justify-between items-center border-b border-aurea-white/5 py-1 text-xs"><span class="text-aurea-white font-bold ${b[0] === 'Sem Informação' ? 'italic opacity-50' : ''}">${b[0]}</span><span class="text-aurea-gold font-black">${b[1]} ⚽</span></div>`).join('') : '<span class="text-[10px] text-aurea-white/30 italic block text-center py-2">Nenhum gol registrado</span>';
+
+                // Títulos (Mocado como 0 por enquanto)
+                const titulosA = 0;
+                const titulosB = 0;
+
+                const logoA = timeA.logo ? `${API_URL}${timeA.logo}` : 'https://cdn-icons-png.flaticon.com/512/8054/8054060.png';
+                const logoB = timeB.logo ? `${API_URL}${timeB.logo}` : 'https://cdn-icons-png.flaticon.com/512/8054/8054060.png';
+
+                // Desenha o Placar Resumo Superior (Raio-X)
+                document.getElementById('rx-resultados').classList.remove('hidden');
+                document.getElementById('rx-placar-geral').innerHTML = `
+                    <div class="flex flex-col items-center">
+                        <img src="${logoA}" class="w-16 h-16 rounded-full object-cover border-4 border-aurea-gold/50 shadow-lg mb-2 bg-aurea-black">
+                        <span class="font-black text-aurea-white uppercase text-base tracking-tight leading-tight text-center">${timeA.nome_time}</span>
+                        
+                        <div class="bg-aurea-dark w-full rounded-xl p-3 mt-3 border border-aurea-white/5 shadow-inner">
+                            <span class="text-3xl font-black text-green-400 block">${vitA}</span>
+                            <span class="text-[9px] text-aurea-white/50 uppercase tracking-widest font-bold">Vitórias</span>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-2 w-full mt-2">
+                            <div class="bg-aurea-dark rounded-xl p-2 border border-aurea-white/5 shadow-inner">
+                                <span class="text-xl font-black text-aurea-gold block">${golsA}</span>
+                                <span class="text-[8px] text-aurea-white/50 uppercase tracking-widest font-bold">Gols</span>
+                            </div>
+                            <div class="bg-aurea-dark rounded-xl p-2 border border-aurea-white/5 shadow-inner">
+                                <span class="text-xl font-black text-aurea-gold block">🏆 ${titulosA}</span>
+                                <span class="text-[8px] text-aurea-white/50 uppercase tracking-widest font-bold">Títulos</span>
+                            </div>
+                        </div>
+
+                        <div class="w-full mt-4 bg-aurea-dark rounded-xl p-4 border border-aurea-white/5 text-left shadow-inner flex-1">
+                             <span class="text-[9px] text-aurea-gold font-black uppercase tracking-widest block mb-3 border-b border-aurea-white/10 pb-2 text-center">Artilheiros do Confronto</span>
+                             <div class="flex flex-col gap-1">${htmlArtA}</div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col justify-center items-center px-4">
+                        <span class="text-[10px] text-aurea-white/30 mb-2 uppercase tracking-widest font-bold text-center">${confrontos.length} Partidas</span>
+                        <div class="w-full h-[1px] bg-aurea-white/10 mb-6"></div>
+                        <span class="text-5xl font-black text-aurea-white/30">${empates}</span>
+                        <span class="text-[11px] text-aurea-white/40 mt-1 uppercase tracking-widest font-bold">Empates</span>
+                        <div class="w-full h-[1px] bg-aurea-white/10 mt-6"></div>
+                    </div>
+
+                    <div class="flex flex-col items-center">
+                        <img src="${logoB}" class="w-16 h-16 rounded-full object-cover border-4 border-aurea-gold/50 shadow-lg mb-2 bg-aurea-black">
+                        <span class="font-black text-aurea-white uppercase text-base tracking-tight leading-tight text-center">${timeB.nome_time}</span>
+                        
+                        <div class="bg-aurea-dark w-full rounded-xl p-3 mt-3 border border-aurea-white/5 shadow-inner">
+                            <span class="text-3xl font-black text-green-400 block">${vitB}</span>
+                            <span class="text-[9px] text-aurea-white/50 uppercase tracking-widest font-bold">Vitórias</span>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-2 w-full mt-2">
+                            <div class="bg-aurea-dark rounded-xl p-2 border border-aurea-white/5 shadow-inner">
+                                <span class="text-xl font-black text-aurea-gold block">${golsB}</span>
+                                <span class="text-[8px] text-aurea-white/50 uppercase tracking-widest font-bold">Gols</span>
+                            </div>
+                            <div class="bg-aurea-dark rounded-xl p-2 border border-aurea-white/5 shadow-inner">
+                                <span class="text-xl font-black text-aurea-gold block">🏆 ${titulosB}</span>
+                                <span class="text-[8px] text-aurea-white/50 uppercase tracking-widest font-bold">Títulos</span>
+                            </div>
+                        </div>
+
+                        <div class="w-full mt-4 bg-aurea-dark rounded-xl p-4 border border-aurea-white/5 text-left shadow-inner flex-1">
+                             <span class="text-[9px] text-aurea-gold font-black uppercase tracking-widest block mb-3 border-b border-aurea-white/10 pb-2 text-center">Artilheiros do Confronto</span>
+                             <div class="flex flex-col gap-1">${htmlArtB}</div>
+                        </div>
+                    </div>
+                `;
+
+                // Renderiza a lista de partidas (Histórico) COM GOLEADORES E "SEM INFO"
+                const listaJogosDiv = document.getElementById('rx-lista-jogos');
+                if (confrontos.length === 0) {
+                    listaJogosDiv.innerHTML = '<p class="text-center text-aurea-white/30 italic py-10 bg-aurea-black rounded-xl border border-aurea-white/5">Estes times nunca se enfrentaram na história da copa.</p>';
+                } else {
+                    listaJogosDiv.innerHTML = confrontos.map(j => {
+                        let corCasa = 'text-aurea-white';
+                        let corFora = 'text-aurea-white';
+                        if (parseInt(j.placar_casa) > parseInt(j.placar_fora)) { corCasa = 'text-green-400'; corFora = 'text-red-400'; }
+                        else if (parseInt(j.placar_fora) > parseInt(j.placar_casa)) { corFora = 'text-green-400'; corCasa = 'text-red-400'; }
+
+                        const golsCasa = {};
+                        const golsFora = {};
+
+                        if (j.status_partida === 'finalizada' && j.gols) {
+                            j.gols.forEach(gol => {
+                                // Se não tem nome, vira "Sem Info"
+                                const nomeJogador = (gol.marcador && gol.marcador.nome) ? gol.marcador.nome : 'Sem Info';
+
+                                if (gol.id_time == j.id_time_casa) {
+                                    golsCasa[nomeJogador] = (golsCasa[nomeJogador] || '') + '⚽';
+                                } else if (gol.id_time == j.id_time_fora) {
+                                    golsFora[nomeJogador] = (golsFora[nomeJogador] || '') + '⚽';
+                                }
+                            });
+                        }
+
+                        // Formatação vertical: Sem Info fica opaco, nomes ficam em destaque
+                        const formatGolsVertical = (golsObj) => Object.entries(golsObj)
+                            .map(([nome, bolas]) => {
+                                const isSemInfo = nome === 'Sem Info';
+                                return `<span class="text-[10px] ${isSemInfo ? 'text-aurea-white/20 italic' : 'text-aurea-gold/90 font-medium'}">${nome} ${bolas}</span>`;
+                            })
+                            .join('');
+
+                        const listaCasa = formatGolsVertical(golsCasa);
+                        const listaFora = formatGolsVertical(golsFora);
+
+                        return `
+                        <div class="bg-aurea-black border border-aurea-white/10 p-5 rounded-2xl flex flex-col hover:border-aurea-gold/30 transition shadow-md">
+                            <div class="flex justify-between items-center w-full mb-3">
+                                <span class="w-1/3 text-right font-black text-sm uppercase ${corCasa} truncate pr-2">${j.timeCasa?.nome_time || 'Time A'}</span>
+                                <div class="bg-aurea-dark px-5 py-2 rounded-xl border-2 border-aurea-gold/20 font-black text-2xl mx-2 shadow-inner">
+                                    ${j.placar_casa} <span class="text-aurea-white/20 text-sm font-normal px-1">X</span> ${j.placar_fora}
+                                </div>
+                                <span class="w-1/3 text-left font-black text-sm uppercase ${corFora} truncate pl-2">${j.timeFora?.nome_time || 'Time B'}</span>
+                            </div>
+
+                            <div class="flex justify-between border-t border-aurea-white/5 pt-3 w-full text-xs">
+                                <div class="flex flex-col gap-1 w-1/2 items-start pr-2">
+                                    ${listaCasa || '<span class="text-[10px] text-aurea-white/5 italic">sem gols</span>'}
+                                </div>
+                                <div class="flex flex-col gap-1 w-1/2 items-end pl-2">
+                                    ${listaFora || '<span class="text-[10px] text-aurea-white/5 italic">sem gols</span>'}
+                                </div>
+                            </div>
+                        </div>
+                        `;
+                    }).join('');
+                }
+
+
+            } catch (e) { console.error(e); }
+        }
+
+        // ==========================================
+        // 7. MODAL DE DETALHES DO TIME
+        // ==========================================
+        async function abrirDetalhesTime(idTime) {
+            const modal = document.getElementById('modal-time');
+            const content = document.getElementById('modal-time-content');
+            modal.classList.remove('hidden');
+            content.innerHTML = '<p class="text-center text-aurea-gold mt-10">Carregando história do clube...</p>';
+
+            try {
+                const resTimes = await fetch(`${API_URL}/times`);
+                const times = await resTimes.json();
+                const time = times.find(t => t.id_time == idTime);
+                if (!time) return content.innerHTML = '<p class="text-center text-red-500">Erro ao achar o time.</p>';
+
+                const resJogos = await fetch(`${API_URL}/jogos`);
+                const jogos = await resJogos.json();
+
+                const artilheirosDesteTime = {};
+                let jogosDoTime = [];
+
+                jogos.forEach(j => {
+                    // Separa os jogos dele
+                    if (j.id_time_casa == idTime || j.id_time_fora == idTime) {
+                        jogosDoTime.push(j);
+                    }
+
+                    // Conta os gols apenas marcados com a camisa Deste time (id_time na tabela de gols)
+                    if (j.status_partida === 'finalizada' && j.gols) {
+                        j.gols.forEach(gol => {
+                            if (gol.id_time == idTime) {
+                                const nomeJogador = gol.marcador ? gol.marcador.nome : 'Sem Informação';
+                                artilheirosDesteTime[nomeJogador] = (artilheirosDesteTime[nomeJogador] || 0) + 1;
+                            }
+                        });
+                    }
+                });
+
+                const arrayArt = Object.entries(artilheirosDesteTime).sort((a, b) => b[1] - a[1]);
+                const logoUrl = time.logo ? `${API_URL}${time.logo}` : 'https://cdn-icons-png.flaticon.com/512/8054/8054060.png';
+
+                // TÍTULOS: Definido estático por enquanto até termos a tabela de Campeões no banco
+                const titulosHTML = `
+                    <div class="bg-aurea-black p-4 rounded-xl border border-aurea-gold/20 text-center col-span-full">
+                        <span class="text-2xl mb-1 block">🏆</span>
+                        <span class="block text-2xl font-black text-aurea-gold">0</span>
+                        <span class="block text-[10px] uppercase tracking-widest text-aurea-white/50">Títulos da Copa</span>
+                    </div>
+                `;
+
+                const artilhariaHTML = arrayArt.length === 0 ? '<p class="text-aurea-white/40 italic text-sm py-4">Nenhum gol registrado pelo clube.</p>' :
+                    arrayArt.map((art, i) => `
+                        <div class="flex justify-between items-center border-b border-aurea-white/5 py-2">
+                            <span class="text-sm font-bold text-aurea-white ${art[0] === 'Sem Informação' ? 'opacity-50 italic' : ''}"><span class="text-aurea-gold mr-2 text-xs">#${i + 1}</span> ${art[0]}</span>
+                            <span class="text-aurea-gold font-black">${art[1]} ⚽</span>
+                        </div>
+                    `).join('');
+
+                content.innerHTML = `
+                    <div class="flex items-center gap-6 mb-8 border-b border-aurea-white/10 pb-6">
+                        <img src="${logoUrl}" class="h-24 w-24 rounded-full object-cover border-4 border-aurea-gold shadow-[0_0_20px_rgba(216,188,0,0.3)] bg-aurea-black">
+                        <div>
+                            <h2 class="text-4xl font-black uppercase tracking-tight text-aurea-white">${time.nome_time}</h2>
+                            <p class="text-aurea-gold font-bold uppercase tracking-widest text-xs mt-1">Histórico do Clube</p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="font-bold text-aurea-gold uppercase tracking-wider mb-4 text-sm border-b border-aurea-white/5 pb-2">Prateleira de Troféus</h3>
+                            <div class="grid grid-cols-1 gap-4 mb-6">
+                                ${titulosHTML}
+                            </div>
+                            
+                            <h3 class="font-bold text-aurea-gold uppercase tracking-wider mb-4 text-sm border-b border-aurea-white/5 pb-2 mt-8">Maiores Artilheiros do Clube</h3>
+                            <div class="bg-aurea-black p-4 rounded-xl border border-aurea-white/5">
+                                ${artilhariaHTML}
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-bold text-aurea-gold uppercase tracking-wider mb-4 text-sm border-b border-aurea-white/5 pb-2">Últimos Jogos</h3>
+                            <div class="flex flex-col gap-2 max-h-[400px] overflow-y-auto pr-2">
+                                ${jogosDoTime.length === 0 ? '<p class="text-aurea-white/40 italic text-sm">Nenhum jogo na história.</p>' :
+                        jogosDoTime.reverse().map(j => {
+                            let cor = 'text-aurea-white/50 border-aurea-white/10'; // Empate
+                            if (j.status_partida !== 'agendado') {
+                                const isCasa = j.id_time_casa == idTime;
+                                const golNosso = isCasa ? j.placar_casa : j.placar_fora;
+                                const golDeles = isCasa ? j.placar_fora : j.placar_casa;
+                                if (golNosso > golDeles) cor = 'border-green-500/30';
+                                else if (golNosso < golDeles) cor = 'border-red-500/30';
+                            }
+                            return `
+                                      <div class="bg-aurea-black p-3 rounded-lg border ${cor} flex justify-between items-center text-xs">
+                                          <span class="w-[40%] text-right font-bold truncate ${j.id_time_casa == idTime ? 'text-aurea-gold' : 'text-aurea-white'}">${j.timeCasa?.nome_time || 'A'}</span>
+                                          <span class="font-black text-sm px-2 bg-aurea-dark rounded mx-2">${j.placar_casa}x${j.placar_fora}</span>
+                                          <span class="w-[40%] text-left font-bold truncate ${j.id_time_fora == idTime ? 'text-aurea-gold' : 'text-aurea-white'}">${j.timeFora?.nome_time || 'B'}</span>
+                                      </div>`
+                        }).join('')
+                    }
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } catch (e) { console.error(e); }
+        }
+
+        function fecharModalTime() {
+            document.getElementById('modal-time').classList.add('hidden');
         }
 
         // INÍCIO
