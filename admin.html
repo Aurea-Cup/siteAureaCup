@@ -7,227 +7,732 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'aurea-black': '#141515',
-                        'aurea-dark': '#1e1f1f',
-                        'aurea-white': '#ffffff',
-                        'aurea-gold': '#d8bc00',
-                    }
-                }
-            }
+            theme: { extend: { colors: { 'aurea-black': '#141515', 'aurea-dark': '#1e1f1f', 'aurea-white': '#ffffff', 'aurea-gold': '#d8bc00' } } }
         }
     </script>
 </head>
 
-<body class="bg-aurea-black text-aurea-white p-6 md:p-10 font-sans antialiased">
+<body class="bg-aurea-black text-aurea-white font-sans antialiased flex min-h-screen">
 
-    <div class="max-w-7xl mx-auto">
-        <div class="flex items-center justify-between mb-10 border-b border-aurea-gold/20 pb-6">
-            <div>
-                <h1 class="text-3xl font-extrabold text-aurea-white">Áurea Cup <span
-                        class="text-aurea-gold">Admin</span></h1>
-                <p class="text-sm text-aurea-white/60 mt-1">Painel de inserção de dados e histórico</p>
+    <aside class="w-64 bg-aurea-dark border-r border-aurea-gold/10 flex flex-col">
+        <div class="p-6 border-b border-aurea-gold/10 text-center">
+            <h1 class="text-2xl font-extrabold text-aurea-white italic">AUREA <span
+                    class="text-aurea-gold text-sm">ADMIN</span></h1>
+        </div>
+        <nav class="flex-1 p-4 flex flex-col gap-2">
+            <button onclick="mudarTela('tela-cadastros')"
+                class="flex items-center gap-3 w-full text-left px-4 py-3 rounded-lg hover:bg-aurea-white/5 hover:text-aurea-gold transition font-bold text-aurea-white/70">📝
+                Lançar Dados</button>
+            <button onclick="mudarTela('tela-lista-times')"
+                class="flex items-center gap-3 w-full text-left px-4 py-3 rounded-lg hover:bg-aurea-white/5 hover:text-aurea-gold transition font-bold text-aurea-white/70">🛡️
+                Equipes</button>
+            <button onclick="mudarTela('tela-lista-jogadores')"
+                class="flex items-center gap-3 w-full text-left px-4 py-3 rounded-lg hover:bg-aurea-white/5 hover:text-aurea-gold transition font-bold text-aurea-white/70">🏃
+                Jogadores</button>
+            <button onclick="mudarTela('tela-lista-partidas')"
+                class="flex items-center gap-3 w-full text-left px-4 py-3 rounded-lg hover:bg-aurea-white/5 hover:text-aurea-gold transition font-bold text-aurea-white/70">⚽
+                Partidas</button>
+            <button onclick="mudarTela('tela-geralzao')"
+                class="flex items-center gap-3 w-full text-left px-4 py-3 rounded-lg hover:bg-aurea-white/5 hover:text-aurea-gold transition font-bold text-aurea-white/70">🏆
+                Geralzão</button>
+        </nav>
+    </aside>
+
+    <main class="flex-1 p-8 md:p-12 overflow-y-auto h-screen relative">
+
+        <div id="tela-cadastros" class="secao-tela block">
+            <h2 class="text-3xl font-bold mb-8 border-b border-aurea-gold/20 pb-4 italic">Painel de <span
+                    class="text-aurea-gold">Controle</span></h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="flex flex-col gap-6">
+                    <div class="bg-aurea-dark border border-aurea-white/10 rounded-xl p-6">
+                        <h3 class="text-lg font-bold text-aurea-gold mb-4 uppercase tracking-wider">1. Torneio</h3>
+                        <form id="form-edicao"><button type="submit"
+                                class="w-full bg-aurea-gold text-aurea-black font-bold px-6 py-2 rounded-lg hover:bg-yellow-500 transition">Gerar
+                                Nova Edição</button></form>
+                    </div>
+                    <div class="bg-aurea-dark border border-aurea-white/10 rounded-xl p-6">
+                        <h3 class="text-lg font-bold text-aurea-gold mb-4 uppercase tracking-wider">2. Cadastrar Equipe
+                        </h3>
+                        <form id="form-time" class="flex flex-col gap-4">
+                            <input id="input-nome-time" type="text" placeholder="Nome da Equipe" required
+                                class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 outline-none">
+                            <input id="input-logo-time" type="file" accept="image/*"
+                                class="text-xs file:bg-aurea-white/10 file:text-aurea-gold file:border-0 file:px-3 file:py-1 file:rounded-full file:mr-2">
+                            <button type="submit"
+                                class="bg-aurea-gold text-aurea-black font-bold px-6 py-2 rounded-lg hover:bg-yellow-500 transition">Salvar
+                                Time</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-6">
+                    <div class="bg-aurea-dark border border-aurea-white/10 rounded-xl p-6">
+                        <h3 class="text-lg font-bold text-aurea-gold mb-4 uppercase tracking-wider">3. Contratar Jogador
+                        </h3>
+                        <form id="form-jogador" class="flex flex-col gap-4">
+                            <input id="input-nome-jogador" type="text" placeholder="Nome do Craque" required
+                                class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 outline-none">
+                            <select id="select-time-jogador" required
+                                class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 outline-none">
+                                <option value="">Carregando times...</option>
+                            </select>
+                            <button type="submit"
+                                class="bg-aurea-gold text-aurea-black font-bold px-6 py-2 rounded-lg hover:bg-yellow-500 transition">Salvar
+                                Jogador</button>
+                        </form>
+                    </div>
+                    <div class="bg-aurea-dark border border-aurea-white/10 rounded-xl p-6">
+                        <h3 class="text-lg font-bold text-aurea-gold mb-4 uppercase tracking-wider">4. Registrar Partida
+                        </h3>
+                        <form id="form-jogo" class="flex flex-col gap-4">
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <select id="select-edicao-jogo" required
+                                    class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 outline-none text-sm">
+                                    <option value="">Edição...</option>
+                                </select>
+                                <input id="input-data-jogo" type="date" required
+                                    class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 outline-none text-sm">
+                            </div>
+
+                            <div>
+                                <label
+                                    class="block text-[10px] font-bold text-aurea-white/40 mb-1 uppercase">Status</label>
+                                <select id="select-status-partida" required
+                                    class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 outline-none text-sm text-aurea-gold font-bold">
+                                    <option value="agendado">📅 Agendado</option>
+                                    <option value="finalizada" selected>✅ Finalizada (Atualiza Tabela)</option>
+                                </select>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <select id="select-casa" onchange="atualizarListaGoleadores()"
+                                    class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-2 py-2 outline-none text-sm">
+                                    <option value="">Casa...</option>
+                                </select>
+                                <input id="input-gols-casa" type="number" value="0" readonly
+                                    class="w-12 bg-aurea-dark border border-aurea-white/20 rounded-lg py-2 text-center font-bold text-aurea-gold">
+                                <span class="font-bold">X</span>
+                                <input id="input-gols-fora" type="number" value="0" readonly
+                                    class="w-12 bg-aurea-dark border border-aurea-white/20 rounded-lg py-2 text-center font-bold text-aurea-gold">
+                                <select id="select-fora" onchange="atualizarListaGoleadores()"
+                                    class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-2 py-2 outline-none text-sm">
+                                    <option value="">Fora...</option>
+                                </select>
+                            </div>
+
+                            <div class="bg-aurea-black/40 p-3 rounded-lg border border-aurea-white/5">
+                                <p class="text-[10px] font-bold text-aurea-gold mb-2 uppercase">Atribuir Gols</p>
+                                <div id="container-gols" class="flex flex-col gap-2 mb-2"></div>
+                                <button type="button" onclick="adicionarLinhaGol()"
+                                    class="text-[10px] bg-aurea-white/5 hover:bg-aurea-white/10 px-3 py-1 rounded text-aurea-white">+
+                                    Adicionar Gol</button>
+                            </div>
+
+                            <button type="submit"
+                                class="bg-aurea-gold text-aurea-black font-bold px-6 py-2 rounded-lg hover:bg-yellow-500 transition">Gravar
+                                Resultado</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <a href="index.html" class="text-sm font-bold text-aurea-gold hover:underline">← Voltar pro Site</a>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-
-            <div class="flex flex-col gap-8">
-
-                <div class="bg-aurea-dark border border-aurea-white/10 rounded-xl p-6">
-                    <h2 class="text-xl font-bold mb-4 text-aurea-gold border-b border-aurea-white/10 pb-2">1. Nova
-                        Edição</h2>
-                    <form id="form-edicao" class="flex items-end gap-4">
-                        <div class="flex-grow">
-                            <label class="block text-xs font-bold text-aurea-white/60 mb-1">Apenas clique para gerar um
-                                novo ID de Edição</label>
-                            <input type="text" disabled placeholder="ID gerado automaticamente"
-                                class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 text-aurea-white/50 cursor-not-allowed">
-                        </div>
-                        <button type="submit"
-                            class="bg-aurea-gold text-aurea-black font-bold px-6 py-2 rounded-lg hover:bg-yellow-500 transition">Criar</button>
-                    </form>
-                </div>
-
-                <div class="bg-aurea-dark border border-aurea-white/10 rounded-xl p-6">
-                    <h2 class="text-xl font-bold mb-4 text-aurea-gold border-b border-aurea-white/10 pb-2">2. Cadastrar
-                        Time</h2>
-                    <form id="form-time" class="flex flex-col gap-4">
-                        <div>
-                            <label class="block text-xs font-bold text-aurea-white/60 mb-1">Nome da Equipe</label>
-                            <input id="input-nome-time" type="text" required
-                                class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 text-aurea-white focus:outline-none focus:border-aurea-gold">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-aurea-white/60 mb-1">URL da Logo
-                                (Opcional)</label>
-                            <input id="input-logo-time" type="url" placeholder="https://link-da-imagem.com/logo.png"
-                                class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 text-aurea-white focus:outline-none focus:border-aurea-gold">
-                        </div>
-                        <button type="submit"
-                            class="bg-aurea-gold text-aurea-black font-bold px-6 py-2 rounded-lg hover:bg-yellow-500 transition mt-2 w-full">Salvar
-                            Time</button>
-                    </form>
-                </div>
-
-                <div class="bg-aurea-dark border border-aurea-white/10 rounded-xl p-6">
-                    <h2 class="text-xl font-bold mb-4 text-aurea-gold border-b border-aurea-white/10 pb-2">3. Cadastrar
-                        Jogador</h2>
-                    <form class="flex flex-col gap-4" onsubmit="event.preventDefault();">
-                        <div>
-                            <label class="block text-xs font-bold text-aurea-white/60 mb-1">Nome do Jogador</label>
-                            <input type="text" required
-                                class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 text-aurea-white focus:outline-none focus:border-aurea-gold">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-aurea-white/60 mb-1">Vincular a qual
-                                Time?</label>
-                            <select required
-                                class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 text-aurea-white focus:outline-none focus:border-aurea-gold">
-                                <option value="">Selecione um time...</option>
-                                <option value="1">Corinthians</option>
-                                <option value="2">Flamengo</option>
-                            </select>
-                        </div>
-                        <button type="submit"
-                            class="bg-aurea-gold text-aurea-black font-bold px-6 py-2 rounded-lg hover:bg-yellow-500 transition mt-2 w-full">Salvar
-                            Jogador</button>
-                    </form>
-                </div>
-
-            </div>
-
-            <div class="flex flex-col gap-8">
-
-                <div class="bg-aurea-dark border border-aurea-white/10 rounded-xl p-6">
-                    <h2 class="text-xl font-bold mb-4 text-aurea-gold border-b border-aurea-white/10 pb-2">4. Lançar
-                        Jogo / Resultado</h2>
-                    <form class="flex flex-col gap-4" onsubmit="event.preventDefault();">
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-bold text-aurea-white/60 mb-1">Edição</label>
-                                <select
-                                    class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 text-aurea-white focus:outline-none focus:border-aurea-gold">
-                                    <option value="1">Edição #294</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-aurea-white/60 mb-1">Data e Hora</label>
-                                <input type="datetime-local"
-                                    class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 text-aurea-white focus:outline-none focus:border-aurea-gold">
-                            </div>
-                        </div>
-
-                        <div
-                            class="grid grid-cols-5 gap-2 items-center mt-2 bg-aurea-black p-4 rounded-lg border border-aurea-white/5">
-
-                            <div class="col-span-2">
-                                <label
-                                    class="block text-[10px] uppercase tracking-widest text-aurea-white/50 mb-1 text-center">Time
-                                    Casa</label>
-                                <select
-                                    class="w-full bg-aurea-dark border border-aurea-white/20 rounded-md px-2 py-2 text-sm text-aurea-white focus:outline-none focus:border-aurea-gold">
-                                    <option value="1">Corinthians</option>
-                                </select>
-                                <input type="number" min="0" placeholder="Gols"
-                                    class="w-full mt-2 bg-aurea-dark border border-aurea-white/20 rounded-md px-2 py-2 text-center text-xl font-bold text-aurea-white focus:outline-none focus:border-aurea-gold">
-                            </div>
-
-                            <div class="col-span-1 text-center font-bold text-aurea-white/30 text-xl">
-                                X
-                            </div>
-
-                            <div class="col-span-2">
-                                <label
-                                    class="block text-[10px] uppercase tracking-widest text-aurea-white/50 mb-1 text-center">Time
-                                    Fora</label>
-                                <select
-                                    class="w-full bg-aurea-dark border border-aurea-white/20 rounded-md px-2 py-2 text-sm text-aurea-white focus:outline-none focus:border-aurea-gold">
-                                    <option value="2">Flamengo</option>
-                                </select>
-                                <input type="number" min="0" placeholder="Gols"
-                                    class="w-full mt-2 bg-aurea-dark border border-aurea-white/20 rounded-md px-2 py-2 text-center text-xl font-bold text-aurea-white focus:outline-none focus:border-aurea-gold">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold text-aurea-white/60 mb-1 mt-2">Status da
-                                Partida</label>
-                            <select required
-                                class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 text-aurea-white focus:outline-none focus:border-aurea-gold">
-                                <option value="em_breve">Em Breve (Agendado)</option>
-                                <option value="em_andamento">Em Andamento</option>
-                                <option value="finalizada" selected>Finalizada (Histórico)</option>
-                            </select>
-                        </div>
-
-                        <button type="submit"
-                            class="bg-aurea-gold text-aurea-black font-bold px-6 py-3 rounded-lg hover:bg-yellow-500 transition mt-4 w-full text-lg">Gravar
-                            Partida</button>
-                    </form>
-                </div>
-
-            </div>
-
+        <div id="tela-lista-times" class="secao-tela hidden">
+            <h2 class="text-3xl font-bold mb-8 border-b border-aurea-gold/20 pb-4 italic">🛡️ Equipes <span
+                    class="text-aurea-gold">Ativas</span></h2>
+            <div id="grid-times" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6"></div>
         </div>
-    </div>
+
+        <div id="tela-lista-jogadores" class="secao-tela hidden">
+            <h2 class="text-3xl font-bold mb-8 border-b border-aurea-gold/20 pb-4 italic">🏃 Lista de <span
+                    class="text-aurea-gold">Jogadores</span></h2>
+            <div id="grid-jogadores" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6"></div>
+        </div>
+        <div id="tela-lista-partidas" class="secao-tela hidden">
+            <h2 class="text-3xl font-bold mb-8 border-b border-aurea-gold/20 pb-4 italic">📅 Histórico de <span
+                    class="text-aurea-gold">Partidas</span></h2>
+            <div id="lista-jogos-cards" class="flex flex-col gap-4"></div>
+        </div>
+        <div id="tela-geralzao" class="secao-tela hidden">
+            <div class="flex justify-between items-end mb-8 border-b border-aurea-gold/20 pb-4">
+                <h2 class="text-3xl font-bold mb-8 italic">Hall da <span class="text-aurea-gold">Fama</span></h2>
+                <button onclick="carregarEstatisticasGerais()" class="text-xs text-aurea-gold hover:underline">Atualizar
+                    Dados ↻</button>
+            </div>
+
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                <div class="xl:col-span-2">
+                    <h3
+                        class="text-lg font-bold text-aurea-gold mb-4 uppercase tracking-wider border-b border-aurea-white/5 pb-2">
+                        Desempenho Histórico das Equipes</h3>
+                    <div id="grid-stats-times" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    </div>
+                </div>
+
+                <div class="xl:col-span-1 bg-aurea-dark border border-aurea-white/10 rounded-2xl p-6 shadow-2xl h-fit">
+                    <h3
+                        class="text-lg font-bold text-aurea-gold mb-4 uppercase tracking-wider border-b border-aurea-white/5 pb-2">
+                        Artilheiros (Toda a História)</h3>
+                    <div id="lista-artilharia-geral" class="flex flex-col gap-3">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
 
     <script>
-        // URL da sua API Node.js
         const API_URL = 'http://localhost:3000';
+        let listaJogadoresCache = []; // Guarda os jogadores para não precisar carregar toda hora
 
-        // === 1. CADASTRAR EDIÇÃO ===
-        document.getElementById('form-edicao').addEventListener('submit', async (evento) => {
-            evento.preventDefault(); // Evita que a página recarregue
+        // ==========================================
+        // 1. MOTOR DE NAVEGAÇÃO (SPA)
+        // ==========================================
+        function mudarTela(idTela) {
+            document.querySelectorAll('.secao-tela').forEach(t => {
+                t.classList.add('hidden');
+                t.classList.remove('block');
+            });
+
+            const telaAlvo = document.getElementById(idTela);
+            if (telaAlvo) {
+                telaAlvo.classList.remove('hidden');
+                telaAlvo.classList.add('block');
+                window.location.hash = idTela;
+            }
+
+            // Gatilhos de carregamento automático
+            if (idTela === 'tela-cadastros') carregarListasDropdown();
+            if (idTela === 'tela-lista-times') carregarTimes();
+            if (idTela === 'tela-lista-jogadores') carregarListaJogadores();
+            if (idTela === 'tela-lista-partidas') carregarPartidas();
+            if (idTela === 'tela-geralzao') carregarEstatisticasGerais();
+        }
+
+        // ==========================================
+        // 2. FUNÇÕES DE BUSCA (GET)
+        // ==========================================
+
+        async function carregarListasDropdown() {
+            try {
+                const resEd = await fetch(`${API_URL}/edicoes`);
+                const edicoes = await resEd.json();
+                document.getElementById('select-edicao-jogo').innerHTML = '<option value="">Edição...</option>' + edicoes.map(e => `<option value="${e.id_edicao}">Edição #${e.id_edicao}</option>`).join('');
+
+                const resTi = await fetch(`${API_URL}/times`);
+                const times = await resTi.json();
+                const options = '<option value="">Selecione o Time...</option>' + times.map(t => `<option value="${t.id_time}">${t.nome_time}</option>`).join('');
+
+                document.getElementById('select-time-jogador').innerHTML = options;
+                document.getElementById('select-casa').innerHTML = options;
+                document.getElementById('select-fora').innerHTML = options;
+
+                // Atualiza o cache de jogadores para o formulário de gols
+                const resJog = await fetch(`${API_URL}/jogadores`);
+                listaJogadoresCache = await resJog.json();
+            } catch (e) { console.error("Erro ao carregar dropdowns:", e); }
+        }
+
+        async function carregarTimes() {
+            const grid = document.getElementById('grid-times');
+            try {
+                const res = await fetch(`${API_URL}/times`);
+                const times = await res.json();
+                grid.innerHTML = times.map(t => {
+                    const logo = t.logo ? `${API_URL}${t.logo}` : 'https://cdn-icons-png.flaticon.com/512/8054/8054060.png';
+                    return `
+            <div class="bg-aurea-dark border border-aurea-white/10 rounded-2xl p-6 flex flex-col items-center hover:border-aurea-gold hover:-translate-y-1 transition duration-300 relative group">
+              <span class="absolute top-3 left-3 text-[10px] font-mono text-aurea-white/30">#${t.id_time}</span>
+              <div class="h-20 w-20 bg-aurea-white/5 rounded-full flex items-center justify-center mb-4 overflow-hidden p-1 border border-aurea-white/5">
+                <img src="${logo}" class="h-full w-full rounded-full aspect-square object-cover">
+              </div>
+              <h3 class="font-extrabold text-aurea-white text-center leading-tight">${t.nome_time}</h3>
+            </div>`;
+                }).join('');
+            } catch (e) { grid.innerHTML = 'Erro ao carregar times.'; }
+        }
+
+        // 1. CARREGAR JOGADORES (Correção de Duplicatas e Layout)
+        async function carregarListaJogadores() {
+            const grid = document.getElementById('grid-jogadores');
+            try {
+                const res = await fetch(`${API_URL}/jogadores`);
+                const jogadoresRaw = await res.json();
+
+                // FIX: Remove duplicatas do array bruto
+                const jogadoresMap = new Map();
+                jogadoresRaw.forEach(jog => {
+                    const oTime = jog.time || jog.Time;
+                    // Cria uma chave única baseada no nome e clube (ou 'Sem Clube')
+                    const uniqueId = `${jog.nome}_${oTime ? oTime.id_time : 'Sem Clube'}`;
+                    jogadoresMap.set(uniqueId, jog);
+                });
+                const jogadores = Array.from(jogadoresMap.values());
+                // FIM FIX
+
+                grid.innerHTML = jogadores.map(jog => {
+                    const oTime = jog.time || jog.Time;
+                    const logoTime = (oTime && oTime.logo) ? `${API_URL}${oTime.logo}` : 'https://cdn-icons-png.flaticon.com/512/8054/8054060.png';
+                    return `
+            <div class="bg-aurea-dark border border-aurea-white/10 rounded-2xl p-6 flex flex-col items-center hover:border-aurea-gold hover:-translate-y-1 transition relative group shadow-lg">
+              <div class="absolute top-2 right-2 h-8 w-8 bg-aurea-black/50 rounded-full p-1 border border-aurea-white/10">
+                 <img src="${logoTime}" class="h-full w-full object-contain rounded-full">
+              </div>
+              <div class="h-16 w-16 bg-aurea-gold/10 rounded-full flex items-center justify-center mb-3 border border-aurea-gold/20"><span class="text-2xl">🏃</span></div>
+              <h3 class="font-extrabold text-aurea-white text-center leading-tight text-sm">${jog.nome}</h3>
+              <p class="text-[10px] uppercase text-aurea-gold font-bold mt-2">${oTime ? oTime.nome_time : 'Sem Clube'}</p>
+            </div>`;
+                }).join('');
+            } catch (e) { grid.innerHTML = 'Erro ao carregar craques.'; }
+        }
+        // ==========================================
+        // 3. LÓGICA DE GOLS E PARTIDAS
+        // ==========================================
+        // 2. ADICIONAR LINHA DE GOL (COM OPÇÃO DE GOL ANÔNIMO)
+        function adicionarLinhaGol() {
+            const container = document.getElementById('container-gols');
+            const idCasa = document.getElementById('select-casa').value;
+            const idFora = document.getElementById('select-fora').value;
+
+            if (!idCasa || !idFora) return alert("Selecione os times antes de atribuir gols!");
+
+            const disponiveis = listaJogadoresCache.filter(j => j.id_time == idCasa || j.id_time == idFora);
+
+            const div = document.createElement('div');
+            div.className = "flex gap-2 items-center bg-aurea-black p-1 rounded-lg border border-aurea-white/10 mb-2 anim-fade-in";
+
+            div.innerHTML = `
+                <div class="relative flex-1">
+                  <select class="select-autor-gol w-full bg-aurea-black text-aurea-white text-xs py-2 px-3 rounded-lg outline-none appearance-none cursor-pointer focus:border-aurea-gold border border-transparent transition">
+                    <option value="" class="bg-aurea-dark text-aurea-white/50">Quem marcou?</option>
+                    
+                    <option value="999998" class="bg-aurea-white/10 text-aurea-gold font-bold">❓ Sem Informação (Casa)</option>
+                    <option value="999999" class="bg-aurea-white/10 text-aurea-gold font-bold">❓ Sem Informação (Fora)</option>
+                    
+                    ${disponiveis.map(j => `
+                      <option value="${j.id_jogador}" data-time="${j.id_time}" class="bg-aurea-dark text-aurea-white">
+                        ${j.nome}
+                      </option>`).join('')}
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-aurea-gold/50">
+                    <svg class="fill-current h-3 w-3" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                  </div>
+                </div>
+                <button type="button" onclick="this.parentElement.remove(); calcularPlacar();" class="text-red-500 hover:text-red-400 font-bold px-3 transition text-lg">
+                  &times;
+                </button>
+            `;
+
+            container.appendChild(div);
+            div.querySelector('select').addEventListener('change', calcularPlacar);
+        }
+
+        function calcularPlacar() {
+            const casa = document.getElementById('select-casa').value;
+            const fora = document.getElementById('select-fora').value;
+            let golsCasa = 0; let golsFora = 0;
+
+            document.querySelectorAll('.select-autor-gol').forEach(sel => {
+                const opt = sel.options[sel.selectedIndex];
+                const optValue = sel.value;
+                const optTimeId = opt.getAttribute('data-time');
+
+                if (optValue === "999998") { // GOL ANÔNIMO CASA
+                    golsCasa++;
+                } else if (optValue === "999999") { // GOL ANÔNIMO FORA
+                    golsFora++;
+                } else if (optValue) { // GOL DE JOGADOR REAL
+                    if (optTimeId == casa) golsCasa++;
+                    if (optTimeId == fora) golsFora++;
+                }
+            });
+            document.getElementById('input-gols-casa').value = golsCasa;
+            document.getElementById('input-gols-fora').value = golsFora;
+        }
+
+        // 3. CARREGAR PARTIDAS (Cálculo e Exibição de Gols Anônimos)
+        // 3. CARREGAR PARTIDAS (Separação por Extremidades e Cálculo de Gols Anônimos)
+        async function carregarPartidas() {
+            const grid = document.getElementById('lista-jogos-cards');
+            if (!grid) return;
 
             try {
-                const resposta = await fetch(`${API_URL}/edicoes`, {
-                    method: 'POST'
-                });
+                const res = await fetch(`${API_URL}/jogos`);
+                const jogos = await res.json();
 
-                const dados = await resposta.json();
-                if (resposta.ok) {
-                    alert(`${dados.mensagem} (ID: ${dados.edicao.id_edicao})`);
-                } else {
-                    alert(dados.erro);
+                if (!jogos || jogos.length === 0) {
+                    grid.innerHTML = '<div class="col-span-full text-center py-10 text-aurea-white/30 italic">Nenhuma partida registrada.</div>';
+                    return;
                 }
-            } catch (erro) {
-                alert('Erro ao conectar com o servidor Node.js!');
+
+                grid.innerHTML = jogos.map(j => {
+                    // Dicionários para gols de cada lado
+                    const golsCasa = {};
+                    const golsFora = {};
+                    let golsReaisCasa = 0;
+                    let golsReaisFora = 0;
+
+                    if (j.gols) {
+                        j.gols.forEach(g => {
+                            if (g.marcador) {
+                                const nome = g.marcador.nome;
+                                const idTimeDoGol = g.id_time; // 👈 OLHA PARA O TIME GRAVADO NO GOL
+
+                                // Separa perfeitamente na esquerda e na direita
+                                if (idTimeDoGol == j.id_time_casa) {
+                                    golsReaisCasa++;
+                                    golsCasa[nome] = (golsCasa[nome] || '') + '⚽';
+                                } else if (idTimeDoGol == j.id_time_fora) {
+                                    golsReaisFora++;
+                                    golsFora[nome] = (golsFora[nome] || '') + '⚽';
+                                }
+                            }
+                        });
+                    }
+
+                    // GOLS ANÔNIMOS: Pela diferença entre placar e gols reais
+                    const golsAnonCasa = j.placar_casa - golsReaisCasa;
+                    const golsAnonFora = j.placar_fora - golsReaisFora;
+
+                    if (golsAnonCasa > 0) {
+                        const nome = '<span class="italic opacity-60">Sem Informação</span>';
+                        golsCasa[nome] = (golsCasa[nome] || '') + Array(golsAnonCasa + 1).join('⚽');
+                    }
+                    if (golsAnonFora > 0) {
+                        const nome = '<span class="italic opacity-60">Sem Informação</span>';
+                        golsFora[nome] = (golsFora[nome] || '') + Array(golsAnonFora + 1).join('⚽');
+                    }
+
+                    // Função para formatar a lista de goleadores (um embaixo do outro)
+                    const formatarGolsHTML = (obj) => Object.entries(obj)
+                        .map(([nome, bolas]) => `<span class="text-[10px] bg-aurea-white/5 px-2 py-1 rounded border border-aurea-white/10 ${nome.includes('italic') ? 'text-aurea-gold bg-aurea-white/10' : ''}">${nome} ${bolas}</span>`)
+                        .join(' ');
+
+                    const listaCasa = formatarGolsHTML(golsCasa);
+                    const listaFora = formatarGolsHTML(golsFora);
+
+                    // Fallbacks de Imagem e Nome
+                    const logoCasa = j.timeCasa?.logo ? `${API_URL}${j.timeCasa.logo}` : 'https://cdn-icons-png.flaticon.com/512/8054/8054060.png';
+                    const logoFora = j.timeFora?.logo ? `${API_URL}${j.timeFora.logo}` : 'https://cdn-icons-png.flaticon.com/512/8054/8054060.png';
+                    const nomeCasa = j.timeCasa?.nome_time || 'Time A';
+                    const nomeFora = j.timeFora?.nome_time || 'Time B';
+
+                    return `
+                <div class="bg-aurea-dark border border-aurea-white/10 p-5 rounded-2xl flex flex-col gap-4 shadow-xl hover:border-aurea-gold/30 transition">
+                  <div class="flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-3 w-1/3">
+                      <img src="${logoCasa}" class="h-10 w-10 rounded-full object-cover border border-aurea-white/10">
+                      <span class="font-black text-sm uppercase truncate text-aurea-white">${nomeCasa}</span>
+                    </div>
+
+                    <div class="flex flex-col items-center">
+                       <div class="bg-aurea-black px-5 py-2 rounded-xl border-2 border-aurea-gold/20 font-black text-2xl text-aurea-gold tracking-tighter">
+                          ${j.placar_casa} <span class="text-aurea-white/20 px-1 text-lg">X</span> ${j.placar_fora}
+                       </div>
+                       <span class="text-[9px] uppercase tracking-widest text-aurea-white/30 mt-2 font-bold">${j.status_partida === 'agendado' ? '📅 Agendado' : '✅ Finalizada'}</span>
+                    </div>
+
+                    <div class="flex items-center gap-3 w-1/3 justify-end text-right">
+                      <span class="font-black text-sm uppercase truncate text-aurea-white">${nomeFora}</span>
+                      <img src="${logoFora}" class="h-10 w-10 rounded-full object-cover border border-aurea-white/10">
+                    </div>
+                  </div>
+
+                  <div class="flex justify-between border-t border-aurea-white/5 pt-3 w-full mt-2 text-xs">
+                    
+                    <div class="flex flex-col gap-1 w-1/2 items-start pr-2">
+                        ${listaCasa || '<span class="text-[10px] text-aurea-white/10 italic">-</span>'}
+                    </div>
+                    
+                    <div class="flex flex-col gap-1 w-1/2 items-end pl-2">
+                        ${listaFora || '<span class="text-[10px] text-aurea-white/10 italic">-</span>'}
+                    </div>
+
+                  </div>
+                </div>
+              `;
+                }).join('');
+            } catch (e) {
+                console.error("Erro ao carregar partidas:", e);
+                grid.innerHTML = '<div class="text-center text-red-500 py-10 font-bold">Erro ao carregar histórico de jogos.</div>';
+            }
+        }
+        // ==========================================
+        // 4. ENVIO DE DADOS (POST)
+        // ==========================================
+
+        document.getElementById('form-time').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fd = new FormData();
+            fd.append('nome_time', document.getElementById('input-nome-time').value);
+            const f = document.getElementById('input-logo-time').files[0];
+            if (f) fd.append('logo', f);
+            const res = await fetch(`${API_URL}/times`, { method: 'POST', body: fd });
+            if (res.ok) { alert('Time Salvo!'); e.target.reset(); carregarListasDropdown(); }
+        });
+
+        document.getElementById('form-jogador').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const payload = { nome: document.getElementById('input-nome-jogador').value, id_time: document.getElementById('select-time-jogador').value };
+            const res = await fetch(`${API_URL}/jogadores`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            if (res.ok) { alert('Craque Contratado!'); e.target.reset(); carregarListasDropdown(); }
+        });
+
+        // ==========================================
+        // EVENTO DO BOTÃO GERAR EDIÇÃO
+        // ==========================================
+        document.getElementById('form-edicao').addEventListener('submit', async (e) => {
+            e.preventDefault(); // Impede a página de recarregar
+
+            try {
+                const res = await fetch(`${API_URL}/edicoes`, { method: 'POST' });
+                const dados = await res.json();
+
+                if (res.ok) {
+                    alert('🏆 ' + dados.mensagem);
+                    carregarListasDropdown(); // Atualiza a caixinha de seleção na mesma hora!
+                } else {
+                    alert('❌ Erro: ' + (dados.erro || 'Falha ao gerar.'));
+                }
+            } catch (err) {
+                alert('🚨 Erro de conexão com o servidor ao tentar gerar a edição.');
             }
         });
 
-        // === 2. CADASTRAR TIME ===
-        document.getElementById('form-time').addEventListener('submit', async (evento) => {
-            evento.preventDefault();
+        document.getElementById('form-jogo').addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-            // Pega os valores que você digitou
-            const nome_time = document.getElementById('input-nome-time').value;
-            const logo = document.getElementById('input-logo-time').value;
+            // Captura dos elementos - Garante que nenhum é null
+            const elEdicao = document.getElementById('select-edicao-jogo');
+            const elCasa = document.getElementById('select-casa');
+            const elFora = document.getElementById('select-fora');
+            const elGolsCasa = document.getElementById('input-gols-casa');
+            const elGolsFora = document.getElementById('input-gols-fora');
+            const elData = document.getElementById('input-data-jogo');
+            const elStatus = document.getElementById('select-status-partida');
+
+            // Validação básica de segurança
+            if (!elEdicao || !elCasa || !elFora || !elStatus) {
+                alert("Erro técnico: Alguns campos do formulário não foram encontrados!");
+                return;
+            }
+
+            const golsColetados = [];
+            document.querySelectorAll('.select-autor-gol').forEach(sel => {
+                if (sel.value) {
+                    const opt = sel.options[sel.selectedIndex];
+                    const idTimeDoGol = opt.getAttribute('data-time');
+
+                    // Se for gol desconhecido, manda null para o banco. Se for jogador, manda o ID.
+                    const idJogador = sel.value === 'desconhecido' ? null : sel.value;
+
+                    golsColetados.push({
+                        id_jogador: idJogador,
+                        id_time: idTimeDoGol
+                    });
+                }
+            });
+
+            const payload = {
+                id_edicao: elEdicao.value,
+                id_time_casa: elCasa.value,
+                id_time_fora: elFora.value,
+                placar_casa: elGolsCasa.value,
+                placar_fora: elGolsFora.value,
+                horario: elData.value || new Date().toISOString(),
+                status_partida: elStatus.value,
+                gols: golsColetados
+            };
+
+            console.log("Enviando partida:", payload);
 
             try {
-                const resposta = await fetch(`${API_URL}/times`, {
+                const res = await fetch(`${API_URL}/jogos`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json' // Avisa pro Node que estamos mandando JSON
-                    },
-                    body: JSON.stringify({ nome_time, logo }) // Transforma os dados em texto JSON
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
                 });
 
-                const dados = await resposta.json();
+                const dados = await res.json();
 
-                if (resposta.ok) {
-                    alert(dados.mensagem);
-                    evento.target.reset(); // Limpa os campos após salvar
+                if (res.ok) {
+                    alert('✅ Partida registrada com sucesso!');
+                    document.getElementById('container-gols').innerHTML = '';
+                    e.target.reset();
+                    if (typeof carregarPartidas === 'function') carregarPartidas();
                 } else {
-                    alert(dados.erro);
+                    alert('❌ Erro: ' + (dados.erro || 'Falha ao salvar'));
                 }
-            } catch (erro) {
-                alert('Erro ao conectar com o servidor Node.js!');
+            } catch (err) {
+                alert('🚨 Erro de conexão com o servidor.');
             }
+        });
+
+        // ==========================================
+        // 5. HALL DA FAMA (ESTATÍSTICAS GERAIS E ARTILHARIA HISTÓRICA)
+        // ==========================================
+        async function carregarEstatisticasGerais() {
+            const gridGeral = document.getElementById('grid-stats-times');
+            const listaArtilheiros = document.getElementById('lista-artilharia-geral');
+
+            if (!gridGeral || !listaArtilheiros) return;
+
+            try {
+                // 1. Puxa todos os dados brutos de uma vez
+                const resJogos = await fetch(`${API_URL}/jogos`);
+                const jogos = await resJogos.json();
+                const resTimes = await fetch(`${API_URL}/times`);
+                const times = await resTimes.json();
+
+                // 🚀 NOVO: Puxa a lista de jogadores para saber o time ATUAL deles
+                const resJogadores = await fetch(`${API_URL}/jogadores`);
+                const jogadores = await resJogadores.json();
+
+                // 2. Prepara os dicionários para os times
+                const statsMap = {};
+                times.forEach(t => {
+                    statsMap[t.id_time] = {
+                        nome: t.nome_time, logo: t.logo,
+                        J: 0, V: 0, E: 0, D: 0, GF: 0, GS: 0, P: 0
+                    };
+                });
+
+                // Dicionário rápido para achar o time atual do jogador
+                const timeAtualMap = {};
+                if (Array.isArray(jogadores)) {
+                    jogadores.forEach(j => {
+                        const timeDele = j.time || j.Time;
+                        timeAtualMap[j.id_jogador] = timeDele ? timeDele.nome_time : 'Sem Clube';
+                    });
+                }
+
+                const statsGols = {};
+
+                // 3. Matemática dos Jogos e Gols
+                jogos.forEach(j => {
+                    if (j.status_partida === 'agendado') return;
+
+                    const idCasa = j.id_time_casa;
+                    const idFora = j.id_time_fora;
+                    const golsCasa = parseInt(j.placar_casa) || 0;
+                    const golsFora = parseInt(j.placar_fora) || 0;
+
+                    if (statsMap[idCasa] && statsMap[idFora]) {
+                        statsMap[idCasa].J++;
+                        statsMap[idFora].J++;
+                        statsMap[idCasa].GF += golsCasa;
+                        statsMap[idCasa].GS += golsFora;
+                        statsMap[idFora].GF += golsFora;
+                        statsMap[idFora].GS += golsCasa;
+
+                        if (golsCasa > golsFora) {
+                            statsMap[idCasa].V++; statsMap[idCasa].P += 3; statsMap[idFora].D++;
+                        } else if (golsFora > golsCasa) {
+                            statsMap[idFora].V++; statsMap[idFora].P += 3; statsMap[idCasa].D++;
+                        } else {
+                            statsMap[idCasa].E++; statsMap[idCasa].P += 1; statsMap[idFora].E++; statsMap[idFora].P += 1;
+                        }
+                    }
+
+                    // A MÁGICA DA ARTILHARIA: Usa o mapa de times atualizados!
+                    if (j.gols) {
+                        j.gols.forEach(gol => {
+                            if (gol.marcador) {
+                                const idJog = gol.marcador.id_jogador;
+
+                                if (!statsGols[idJog]) {
+                                    statsGols[idJog] = {
+                                        nome: gol.marcador.nome,
+                                        gols: 0,
+                                        // Pega o clube atualizado lá do dicionário que criamos
+                                        clubeAtual: timeAtualMap[idJog] || 'Sem Clube'
+                                    };
+                                }
+                                statsGols[idJog].gols++;
+                            }
+                        });
+                    }
+                });
+
+                // 4. Renderiza os Cards dos Times
+                const performanceArray = Object.values(statsMap).sort((a, b) => {
+                    if (b.P !== a.P) return b.P - a.P;
+                    if (b.V !== a.V) return b.V - a.V;
+                    return (b.GF - b.GS) - (a.GF - a.GS);
+                });
+
+                gridGeral.innerHTML = performanceArray.map(stats => {
+                    const logoUrl = stats.logo ? `${API_URL}${stats.logo}` : 'https://cdn-icons-png.flaticon.com/512/8054/8054060.png';
+                    const saldo = stats.GF - stats.GS;
+                    return `
+                    <div class="bg-aurea-dark border border-aurea-white/10 p-5 rounded-2xl flex flex-col items-center hover:border-aurea-gold hover:-translate-y-1 transition group shadow-lg">
+                        <img src="${logoUrl}" class="h-12 w-12 rounded-full object-cover border border-aurea-white/10 mb-3">
+                        <h3 class="font-extrabold text-aurea-white text-center text-sm mb-1 uppercase">${stats.nome}</h3>
+                        <p class="text-[10px] text-aurea-white/40 mb-4 tracking-wider">${stats.J} Partidas Disputadas</p>
+                        
+                        <div class="grid grid-cols-3 gap-2 w-full text-center border-t border-aurea-white/5 pt-4">
+                            <div class="bg-aurea-black py-2 rounded-lg border border-aurea-white/5 flex flex-col justify-center">
+                                <span class="block text-lg font-black text-green-400">${stats.V}</span>
+                                <span class="block text-[7px] uppercase tracking-widest text-aurea-white/40 mt-0.5">VITÓRIAS</span>
+                            </div>
+                            <div class="bg-aurea-black py-2 rounded-lg border border-aurea-white/5 flex flex-col justify-center">
+                                <span class="block text-lg font-black text-aurea-white/60">${stats.E}</span>
+                                <span class="block text-[7px] uppercase tracking-widest text-aurea-white/40 mt-0.5">EMPATES</span>
+                            </div>
+                            <div class="bg-aurea-black py-2 rounded-lg border border-aurea-white/5 flex flex-col justify-center">
+                                <span class="block text-lg font-black text-red-400">${stats.D}</span>
+                                <span class="block text-[7px] uppercase tracking-widest text-aurea-white/40 mt-0.5">DERROTAS</span>
+                            </div>
+                            <div class="bg-aurea-black py-2 rounded-lg border border-aurea-white/5 flex flex-col justify-center">
+                                <span class="block text-lg font-black text-aurea-gold">${stats.P}</span>
+                                <span class="block text-[7px] uppercase tracking-widest text-aurea-white/40 mt-0.5">PONTOS</span>
+                            </div>
+                            <div class="bg-aurea-black py-2 rounded-lg border border-aurea-white/5 flex flex-col justify-center">
+                                <span class="block text-lg font-black text-aurea-white">${stats.GF} - ${stats.GS}</span>
+                                <span class="block text-[7px] uppercase tracking-widest text-aurea-white/40 mt-0.5">GP - GC</span>
+                            </div>
+                            <div class="bg-aurea-black py-2 rounded-lg border border-aurea-white/5 flex flex-col justify-center">
+                                <span class="block text-lg font-black ${saldo > 0 ? 'text-green-400' : (saldo < 0 ? 'text-red-400' : 'text-aurea-white')}">${saldo > 0 ? '+' + saldo : saldo}</span>
+                                <span class="block text-[7px] uppercase tracking-widest text-aurea-white/40 mt-0.5">SALDO</span>
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('');
+
+                // 5. Renderiza a Artilharia Histórica
+                const arrayArtilheiros = Object.values(statsGols).sort((a, b) => b.gols - a.gols);
+
+                if (arrayArtilheiros.length === 0) {
+                    listaArtilheiros.innerHTML = '<p class="text-center py-6 text-aurea-white/30 italic text-sm">A rede ainda não balançou na história.</p>';
+                } else {
+                    listaArtilheiros.innerHTML = arrayArtilheiros.map((jog, i) => `
+                    <div class="flex items-center justify-between gap-3 bg-aurea-black p-3 rounded-lg border border-aurea-white/5 transition hover:border-aurea-gold/30">
+                        <div class="flex items-center gap-3">
+                            <span class="font-mono text-xs ${i < 3 ? 'text-aurea-gold font-black text-sm' : 'text-aurea-white/40'}">#${i + 1}</span>
+                            <div class="flex flex-col">
+                                <p class="font-bold text-aurea-white text-sm uppercase leading-tight">${jog.nome}</p>
+                                <p class="text-[9px] text-aurea-gold font-bold uppercase mt-0.5">${jog.clubeAtual}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xl font-black text-aurea-gold">${jog.gols}</span>
+                            <span class="text-[9px] uppercase tracking-widest text-aurea-white/40 block">Gols</span>
+                        </div>
+                    </div>`).join('');
+                }
+
+            } catch (erro) {
+                console.error(erro);
+                if (gridGeral) gridGeral.innerHTML = '<p class="text-red-500 col-span-full">Erro ao processar as estatísticas gerais.</p>';
+            }
+        }
+
+        // INÍCIO
+        document.addEventListener('DOMContentLoaded', () => {
+            carregarListasDropdown();
+            const h = window.location.hash.replace('#', '');
+            mudarTela(h || 'tela-cadastros');
         });
     </script>
 </body>
