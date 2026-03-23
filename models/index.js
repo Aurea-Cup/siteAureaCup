@@ -69,6 +69,8 @@ GolJogo.belongsTo(Jogador, { foreignKey: 'id_jogador', as: 'marcador' });
 Jogo.hasMany(GolJogo, { foreignKey: 'id_jogo', as: 'gols' });
 GolJogo.belongsTo(Jogo, { foreignKey: 'id_jogo' });
 
+Edicao.belongsTo(Time, { as: 'campeao', foreignKey: 'id_time_campeao' });
+
 // Exportando tudo para usar na aplicação
 module.exports = {
     sequelize,

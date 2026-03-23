@@ -116,10 +116,13 @@ app.get('/jogos', async (req, res) => {
     }
 });
 
-// Rota para listar as EDIÇÕES
 app.get('/edicoes', async (req, res) => {
     try {
-        const edicoes = await db.Edicao.findAll();
+        const edicoes = await db.Edicao.findAll({
+            include: [
+                { model: db.Time, as: 'campeao' }
+            ]
+        });
         res.json(edicoes);
     } catch (erro) {
         res.status(500).json({ erro: 'Erro ao buscar edições.' });
@@ -136,6 +139,23 @@ app.post('/edicoes', async (req, res) => {
     } catch (erro) {
         console.error("Erro ao gerar edição:", erro);
         res.status(500).json({ erro: 'Erro interno ao criar a edição.' });
+    }
+});
+
+// Rota para ATRIBUIR CAMPEÃO A UMA EDIÇÃO
+app.put('/edicoes/:id', async (req, res) => {
+    try {
+        const { id_time_campeao } = req.body;
+        const edicao = await db.Edicao.findByPk(req.params.id);
+
+        if (!edicao) return res.status(404).json({ erro: 'Edição não encontrada.' });
+
+        edicao.id_time_campeao = id_time_campeao;
+        await edicao.save();
+
+        res.json({ mensagem: '🏆 Campeão coroado com sucesso!' });
+    } catch (erro) {
+        res.status(500).json({ erro: 'Erro ao atribuir título.' });
     }
 });
 
