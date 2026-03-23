@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Áurea Cup | Site Oficial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { 
+                extend: { 
+                    colors: { 
+                        'aurea-black': '#0a0a0a', // Um pouco mais escuro para o site público
+                        'aurea-dark': '#141515', 
+                        'aurea-panel': '#1e1f1f',
+                        'aurea-white': '#ffffff', 
+                        'aurea-gold': '#d8bc00' 
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                    }
+                } 
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        
+        body { font-family: 'Inter', sans-serif; background: radial-gradient(circle at top, #1e1f1f 0%, #0a0a0a 100%); background-attachment: fixed; }
+        .shadow-gold { filter: drop-shadow(0 0 8px rgba(216, 188, 0, 0.6)); }
+        .text-glow { text-shadow: 0 0 10px rgba(216, 188, 0, 0.5); }
+        
+        /* Barra de rolagem estilizada e invisível no mobile nav */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #d8bc00; border-radius: 4px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+
+<body class="text-aurea-white min-h-screen flex flex-col">
+
+    <header class="sticky top-0 z-40 bg-aurea-black/90 backdrop-blur-md border-b border-aurea-gold/20 shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center py-4 gap-4 md:gap-0">
+                <div class="flex items-center gap-3 cursor-pointer" onclick="mudarTela('tela-home')">
+                    <div class="h-10 w-10 bg-aurea-gold rounded-full flex items-center justify-center shadow-gold">
+                        <span class="text-aurea-black font-black text-xl">A</span>
+                    </div>
+                    <h1 class="text-2xl font-black uppercase tracking-widest text-glow text-aurea-white">Áurea <span class="text-aurea-gold">Cup</span></h1>
+                </div>
+                
+                <nav class="flex overflow-x-auto no-scrollbar w-full md:w-auto gap-1 sm:gap-2 pb-2 md:pb-0 justify-start md:justify-center">
+                    <button onclick="mudarTela('tela-home')" class="nav-btn px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-aurea-white/70 hover:text-aurea-gold hover:bg-aurea-white/5 whitespace-nowrap transition">Últimos Jogos</button>
+                    <button onclick="mudarTela('tela-equipes')" class="nav-btn px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-aurea-white/70 hover:text-aurea-gold hover:bg-aurea-white/5 whitespace-nowrap transition">Equipes</button>
+                    <button onclick="mudarTela('tela-craques')" class="nav-btn px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-aurea-white/70 hover:text-aurea-gold hover:bg-aurea-white/5 whitespace-nowrap transition">Craques</button>
+                    <button onclick="mudarTela('tela-estatisticas')" class="nav-btn px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-aurea-gold bg-aurea-gold/10 border border-aurea-gold/30 whitespace-nowrap transition shadow-inner">Hall da Fama</button>
+                    <button onclick="mudarTela('tela-raiox')" class="nav-btn px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-aurea-white/70 hover:text-aurea-gold hover:bg-aurea-white/5 whitespace-nowrap transition">Raio-X</button>
+                    <button onclick="mudarTela('tela-campeoes')" class="nav-btn px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-aurea-white/70 hover:text-aurea-gold hover:bg-aurea-white/5 whitespace-nowrap transition">Campeões</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <div id="tela-home" class="secao-tela hidden">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Central de <span class="text-aurea-gold text-glow">Partidas</span></h2>
+                <p class="text-aurea-white/50 uppercase tracking-widest text-xs md:text-sm">Acompanhe todos os resultados e a história sendo escrita na quadra.</p>
+            </div>
+            <div id="lista-jogos-cards" class="flex flex-col gap-6 max-w-4xl mx-auto"></div>
+        </div>
+
+        <div id="tela-equipes" class="secao-tela hidden">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Clubes <span class="text-aurea-gold text-glow">Participantes</span></h2>
+                <p class="text-aurea-white/50 uppercase tracking-widest text-xs md:text-sm">As franquias que disputam a glória máxima.</p>
+            </div>
+            <div id="grid-times" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"></div>
+        </div>
+
+        <div id="tela-craques" class="secao-tela hidden">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-6 bg-aurea-panel p-6 rounded-2xl border border-aurea-white/10 shadow-xl">
+                <div>
+                    <h2 class="text-3xl font-black uppercase tracking-tight text-aurea-gold text-glow mb-2">Base de Dados</h2>
+                    <p class="text-aurea-white/50 uppercase tracking-widest text-[10px]">Encontre as estrelas da competição</p>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                    <input type="text" id="pesquisa-jogador" placeholder="Buscar pelo nome..." oninput="filtrarJogadores()" class="bg-aurea-black border border-aurea-white/20 rounded-xl px-5 py-3 outline-none focus:border-aurea-gold transition text-sm w-full sm:w-64 placeholder:text-aurea-white/30 shadow-inner">
+                    <select id="filtro-time-jogador" onchange="filtrarJogadores()" class="bg-aurea-black border border-aurea-white/20 rounded-xl px-5 py-3 outline-none focus:border-aurea-gold transition text-sm w-full sm:w-56 cursor-pointer shadow-inner">
+                        <option value="todos">Todos os Times</option>
+                        <option value="sem-clube">Agentes Livres</option>
+                        </select>
+                </div>
+            </div>
+            <div id="grid-jogadores" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"></div>
+        </div>
+
+        <div id="tela-estatisticas" class="secao-tela block">
+            <div class="text-center mb-12">
+                <span class="text-5xl mb-4 block shadow-gold">🏆</span>
+                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Hall da <span class="text-aurea-gold text-glow">Fama</span></h2>
+                <p class="text-aurea-white/50 uppercase tracking-widest text-xs md:text-sm">O ranking absoluto de desempenho da Áurea Cup.</p>
+            </div>
+
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                <div class="xl:col-span-2">
+                    <h3 class="text-xl font-black text-aurea-gold mb-6 uppercase tracking-widest flex items-center gap-3"><span class="w-8 h-1 bg-aurea-gold rounded-full"></span> Classificação Histórica</h3>
+                    <div id="grid-stats-times" class="grid grid-cols-1 sm:grid-cols-2 gap-6"></div>
+                </div>
+
+                <div class="xl:col-span-1">
+                    <div class="bg-aurea-panel border border-aurea-white/10 rounded-3xl p-8 shadow-2xl sticky top-24">
+                        <h3 class="text-xl font-black text-aurea-gold mb-6 uppercase tracking-widest text-center">Chuteira de Ouro</h3>
+                        <p class="text-center text-[10px] uppercase text-aurea-white/40 tracking-widest mb-6">Os maiores goleadores da história</p>
+                        <div id="lista-artilharia-geral" class="flex flex-col gap-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tela-raiox" class="secao-tela hidden">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Frente a <span class="text-aurea-gold text-glow">Frente</span></h2>
+                <p class="text-aurea-white/50 uppercase tracking-widest text-xs md:text-sm">Analise o histórico de confrontos diretos entre dois clubes.</p>
+            </div>
+
+            <div class="bg-aurea-panel border-t-4 border-t-aurea-gold border-x border-x-aurea-white/5 border-b border-b-aurea-white/5 p-8 rounded-3xl shadow-2xl mb-12">
+                <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+                    <select id="rx-time-a" class="w-full md:w-1/3 bg-aurea-black border border-aurea-white/10 rounded-xl px-5 py-4 outline-none font-black text-center uppercase tracking-wider shadow-inner text-sm hover:border-aurea-gold/50 transition cursor-pointer"></select>
+                    <span class="font-black text-4xl text-aurea-gold text-glow px-4">X</span>
+                    <select id="rx-time-b" class="w-full md:w-1/3 bg-aurea-black border border-aurea-white/10 rounded-xl px-5 py-4 outline-none font-black text-center uppercase tracking-wider shadow-inner text-sm hover:border-aurea-gold/50 transition cursor-pointer"></select>
+                    <button onclick="compararTimes()" class="bg-aurea-gold text-aurea-black font-black uppercase tracking-widest px-10 py-4 rounded-xl hover:bg-yellow-500 transition w-full md:w-auto shadow-gold transform hover:scale-105 duration-200">Comparar</button>
+                </div>
+            </div>
+
+            <div id="rx-resultados" class="hidden">
+                <div id="rx-placar-geral" class="grid grid-cols-3 gap-4 mb-12 text-center bg-aurea-panel p-8 rounded-3xl border border-aurea-white/5 shadow-xl"></div>
+                <h3 class="text-xl font-black text-aurea-gold mb-6 uppercase tracking-widest flex items-center gap-3 justify-center"><span class="w-8 h-1 bg-aurea-gold rounded-full"></span> Arquivo de Partidas <span class="w-8 h-1 bg-aurea-gold rounded-full"></span></h3>
+                <div id="rx-lista-jogos" class="flex flex-col gap-4 max-w-4xl mx-auto"></div>
+            </div>
+        </div>
+
+        <div id="tela-campeoes" class="secao-tela hidden">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Galeria de <span class="text-aurea-gold text-glow">Campeões</span></h2>
+                <p class="text-aurea-white/50 uppercase tracking-widest text-xs md:text-sm">Os esquadrões que eternizaram seus nomes na taça.</p>
+            </div>
+            <div id="grid-historico-campeoes" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"></div>
+        </div>
+
+    </main>
+
+    <div id="modal-time" class="hidden fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 backdrop-blur-md overflow-y-auto">
+        <div class="bg-aurea-panel border border-aurea-gold/30 rounded-3xl w-full max-w-5xl min-h-[70vh] relative shadow-[0_0_80px_rgba(216,188,0,0.15)] flex flex-col my-8">
+            <button onclick="fecharModal('modal-time')" class="absolute top-6 right-6 text-4xl text-aurea-white/30 hover:text-aurea-gold transition bg-aurea-black h-12 w-12 rounded-full flex items-center justify-center">&times;</button>
+            <div id="modal-time-content" class="p-8 sm:p-12 flex-1"></div>
+        </div>
+    </div>
+
+    <div id="modal-jogador" class="hidden fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 backdrop-blur-md overflow-y-auto">
+        <div class="bg-aurea-panel border border-aurea-gold/30 rounded-3xl w-full max-w-3xl min-h-[60vh] relative shadow-[0_0_80px_rgba(216,188,0,0.15)] flex flex-col my-8">
+            <button onclick="fecharModal('modal-jogador')" class="absolute top-6 right-6 text-4xl text-aurea-white/30 hover:text-aurea-gold transition bg-aurea-black h-12 w-12 rounded-full flex items-center justify-center">&times;</button>
+            <div id="modal-jogador-content" class="p-8 sm:p-12 flex-1"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000';
+        let jogadoresTelaCache = [];
+
+        // ==========================================
+        // 1. NAVEGAÇÃO SPA
+        // ==========================================
+        function mudarTela(idTela) {
+            document.querySelectorAll('.secao-tela').forEach(t => {
+                t.classList.add('hidden'); t.classList.remove('block');
+            });
+            document.getElementById(idTela).classList.remove('hidden');
+            document.getElementById(idTela).classList.add('block');
+            window.location.hash = idTela;
+            window.scrollTo(0, 0);
+
+            // Estiliza o botão ativo na navbar
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if(btn.getAttribute('onclick').includes(idTela)) {
+                    btn.classList.add('text-aurea-gold', 'bg-aurea-gold/10', 'border', 'border-aurea-gold/30', 'shadow-inner');
+                    btn.classList.remove('text-aurea-white/70', 'border-transparent');
+                } else {
+                    btn.classList.remove('text-aurea-gold', 'bg-aurea-gold/10', 'border', 'border-aurea-gold/30', 'shadow-inner');
+                    btn.classList.add('text-aurea-white/70');
+                }
+            });
+
+            if (idTela === 'tela-home') carregarPartidas();
+            if (idTela === 'tela-equipes') carregarTimes();
+            if (idTela === 'tela-craques') carregarListaJogadores();
+            if (idTela === 'tela-estatisticas') carregarEstatisticasGerais();
+            if (idTela === 'tela-raiox') prepararTelaConfrontos();
+            if (idTela === 'tela-campeoes') carregarHistoricoCampeoes();
+        }
+
+        // ==========================================
+        // 2. FUNÇÕES DE EXIBIÇÃO DE DADOS (GET)
+        // ==========================================
+        async function carregarPartidas() {
+            const grid = document.getElementById('lista-jogos-cards');
+            try {
+                const res = await fetch(`${API_URL}/jogos`);
+                const jogos = await res.json();
+                if (!jogos.length) { grid.innerHTML = '<p class="text-center text-aurea-white/30 italic py-12">Nenhuma partida registrada.</p>'; return; }
+
+                grid.innerHTML = jogos.map(j => {
+                    const gCasa = {}, gFora = {};
+                    let cReal = 0, fReal = 0;
+                    if (j.gols) j.gols.forEach(g => {
+                        const n = g.marcador ? g.marcador.nome : 'Sem Info';
+                        if (g.id_time == j.id_time_casa) { cReal++; gCasa[n] = (gCasa[n]||'')+'⚽'; }
+                        else if (g.id_time == j.id_time_fora) { fReal++; gFora[n] = (gFora[n]||'')+'⚽'; }
+                    });
+
+                    const aC = j.placar_casa - cReal, aF = j.placar_fora - fReal;
+                    if (aC > 0) gCasa['Sem Info'] = (gCasa['Sem Info']||'') + Array(aC+1).join('⚽');
+                    if (aF > 0) gFora['Sem Info'] = (gFora['Sem Info']||'') + Array(aF+1).join('⚽');
+
+                    const form = (obj) => Object.entries(obj).map(([n,b])=>`<span class="text-[10px] ${n==='Sem Info'?'text-aurea-white/30 italic':'text-aurea-gold/90 font-bold'}">${n} ${b}</span>`).join('');
+                    
+                    let statusColor = j.status_partida === 'agendado' ? 'text-aurea-white/40' : 'text-green-400';
+                    let statusText = j.status_partida === 'agendado' ? '📅 Agendado' : '✅ Finalizada';
+
+                    return `
+                    <div class="bg-aurea-panel border border-aurea-white/5 p-6 rounded-3xl flex flex-col gap-4 shadow-xl hover:border-aurea-gold/30 hover:shadow-[0_0_30px_rgba(216,188,0,0.1)] transition duration-300 relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-gradient-to-r from-aurea-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                        
+                        <div class="flex items-center justify-between gap-4 relative z-10">
+                            <div class="flex items-center gap-4 w-[40%] justify-end cursor-pointer hover:opacity-80 transition" onclick="abrirDetalhesTime(${j.id_time_casa})">
+                                <span class="font-black text-sm sm:text-base uppercase truncate text-aurea-white hidden sm:block">${j.timeCasa?.nome_time}</span>
+                                <span class="font-black text-xs uppercase truncate text-aurea-white block sm:hidden">${j.timeCasa?.nome_time.substring(0,3)}</span>
+                                <img src="${j.timeCasa?.logo?API_URL+j.timeCasa.logo:''}" class="h-10 w-10 sm:h-12 sm:w-12 rounded-full object-cover border-2 border-aurea-white/10 bg-aurea-black shadow-md">
+                            </div>
+
+                            <div class="flex flex-col items-center w-[20%]">
+                                <div class="bg-aurea-black px-4 sm:px-6 py-2 rounded-xl border border-aurea-gold/20 font-black text-xl sm:text-3xl text-aurea-gold tracking-tighter shadow-inner">
+                                    ${j.placar_casa} <span class="text-aurea-white/10 text-lg font-normal mx-1">x</span> ${j.placar_fora}
+                                </div>
+                                <span class="text-[8px] sm:text-[9px] uppercase tracking-widest ${statusColor} mt-2 font-bold">${statusText}</span>
+                            </div>
+
+                            <div class="flex items-center gap-4 w-[40%] justify-start cursor-pointer hover:opacity-80 transition" onclick="abrirDetalhesTime(${j.id_time_fora})">
+                                <img src="${j.timeFora?.logo?API_URL+j.timeFora.logo:''}" class="h-10 w-10 sm:h-12 sm:w-12 rounded-full object-cover border-2 border-aurea-white/10 bg-aurea-black shadow-md">
+                                <span class="font-black text-sm sm:text-base uppercase truncate text-aurea-white hidden sm:block">${j.timeFora?.nome_time}</span>
+                                <span class="font-black text-xs uppercase truncate text-aurea-white block sm:hidden">${j.timeFora?.nome_time.substring(0,3)}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between border-t border-aurea-white/5 pt-4 w-full text-xs relative z-10">
+                            <div class="flex flex-col gap-1 w-1/2 items-end pr-8 sm:pr-12 text-right">${form(gCasa) || '<span class="text-[10px] text-aurea-white/5 italic">sem gols</span>'}</div>
+                            <div class="flex flex-col gap-1 w-1/2 items-start pl-8 sm:pl-12 text-left">${form(gFora) || '<span class="text-[10px] text-aurea-white/5 italic">sem gols</span>'}</div>
+                        </div>
+                    </div>`;
+                }).join('');
+            } catch(e) { grid.innerHTML = '<p class="text-red-500 text-center">Erro ao conectar à API.</p>'; }
+        }
+
+        async function carregarTimes() {
+            const grid = document.getElementById('grid-times');
+            try {
+                const [resT, resE] = await Promise.all([fetch(`${API_URL}/times`), fetch(`${API_URL}/edicoes`)]);
+                const times = await resT.json();
+                const edicoes = await resE.json();
+
+                grid.innerHTML = times.map(t => {
+                    const titulos = edicoes.filter(ed => ed.id_time_campeao == t.id_time).length;
+                    const bge = titulos > 0 ? 'bg-gradient-to-b from-aurea-gold/20 to-aurea-panel border-aurea-gold/50 shadow-gold' : 'bg-aurea-panel border-aurea-white/10';
+                    return `
+                    <div onclick="abrirDetalhesTime(${t.id_time})" class="${bge} border rounded-3xl p-6 flex flex-col items-center hover:-translate-y-2 transition duration-300 cursor-pointer relative shadow-lg group">
+                        <div class="absolute inset-0 bg-aurea-white/5 opacity-0 group-hover:opacity-100 transition rounded-3xl pointer-events-none"></div>
+                        ${titulos > 0 ? `<div class="absolute top-3 right-3 text-lg drop-shadow-md">🏆<span class="text-[10px] text-aurea-gold font-black bg-aurea-black px-1.5 py-0.5 rounded-md ml-1">${titulos}</span></div>` : ''}
+                        <img src="${t.logo?API_URL+t.logo:''}" class="h-20 w-20 rounded-full object-cover border-4 border-aurea-black shadow-xl mb-4 bg-aurea-black">
+                        <h3 class="font-black text-aurea-white text-center uppercase tracking-tight text-sm truncate w-full">${t.nome_time}</h3>
+                        <span class="text-[9px] uppercase tracking-widest text-aurea-gold font-bold mt-2 opacity-0 group-hover:opacity-100 transition">Ver Clube ➔</span>
+                    </div>`;
+                }).join('');
+            } catch (e) { grid.innerHTML = 'Erro ao carregar times.'; }
+        }
+
+        async function carregarListaJogadores() {
+            try {
+                const [resJ, resT] = await Promise.all([fetch(`${API_URL}/jogadores`), fetch(`${API_URL}/times`)]);
+                const jRaw = await resJ.json(), times = await resT.json();
+                
+                document.getElementById('filtro-time-jogador').innerHTML = '<option value="todos">Todos os Times</option><option value="sem-clube">Agentes Livres</option>' + times.map(t => `<option value="${t.id_time}">${t.nome_time}</option>`).join('');
+
+                const jMap = new Map();
+                jRaw.forEach(j => jMap.set(`${j.nome}_${(j.time||j.Time)?(j.time||j.Time).id_time:'S'}`, j));
+                jogadoresTelaCache = Array.from(jMap.values());
+                document.getElementById('pesquisa-jogador').value = '';
+                document.getElementById('filtro-time-jogador').value = 'todos';
+                renderizarJogadores(jogadoresTelaCache);
+            } catch (e) {}
+        }
+
+        function renderizarJogadores(lista) {
+            const grid = document.getElementById('grid-jogadores');
+            if (!lista.length) return grid.innerHTML = '<p class="col-span-full text-center text-aurea-white/30 italic py-10 bg-aurea-panel rounded-2xl border border-aurea-white/5">Nenhum jogador encontrado com esses filtros.</p>';
+            grid.innerHTML = lista.map(j => {
+                const t = j.time || j.Time;
+                return `
+                <div onclick="abrirDetalhesJogador(${j.id_jogador})" class="bg-aurea-panel border border-aurea-white/5 rounded-3xl p-6 flex flex-col items-center hover:border-aurea-gold/50 hover:-translate-y-2 hover:shadow-[0_0_20px_rgba(216,188,0,0.15)] transition duration-300 relative cursor-pointer group">
+                    <img src="${t?.logo?API_URL+t.logo:''}" class="absolute top-3 right-3 h-8 w-8 rounded-full border border-aurea-white/10 bg-aurea-black shadow-md object-cover ${!t?'hidden':''}">
+                    <div class="h-16 w-16 bg-aurea-gold/5 rounded-full flex items-center justify-center mb-4 border border-aurea-gold/30 shadow-inner group-hover:bg-aurea-gold/20 transition"><span class="text-2xl">🏃</span></div>
+                    <h3 class="font-black text-aurea-white text-center leading-tight text-sm uppercase truncate w-full">${j.nome}</h3>
+                    <p class="text-[9px] uppercase tracking-widest text-aurea-gold font-bold mt-2 truncate w-full text-center">${t?t.nome_time:'Sem Clube'}</p>
+                </div>`;
+            }).join('');
+        }
+
+        function filtrarJogadores() {
+            const tBusca = document.getElementById('pesquisa-jogador').value.toLowerCase();
+            const idT = document.getElementById('filtro-time-jogador').value;
+            const filtrada = jogadoresTelaCache.filter(j => {
+                const t = j.time || j.Time;
+                const bN = j.nome.toLowerCase().includes(tBusca);
+                const bT = idT === 'todos' ? true : (idT === 'sem-clube' ? !t : t && t.id_time == idT);
+                return bN && bT;
+            });
+            renderizarJogadores(filtrada);
+        }
+
+        async function carregarEstatisticasGerais() {
+            try {
+                const [rJ, rT, rJog, rE] = await Promise.all([fetch(`${API_URL}/jogos`), fetch(`${API_URL}/times`), fetch(`${API_URL}/jogadores`), fetch(`${API_URL}/edicoes`)]);
+                const jogos = await rJ.json(), times = await rT.json(), jogadores = await rJog.json(), edicoes = await rE.json();
+
+                const stats = {}; times.forEach(t => stats[t.id_time] = { ...t, J:0, V:0, E:0, D:0, GF:0, GS:0, P:0, titulos:0 });
+                edicoes.forEach(ed => { if(ed.id_time_campeao && stats[ed.id_time_campeao]) stats[ed.id_time_campeao].titulos++; });
+
+                const tAtual = {}; jogadores.forEach(j => { const t = j.time||j.Time; tAtual[j.id_jogador] = t?t.nome_time:'Sem Clube'; });
+                const statsG = {};
+
+                jogos.forEach(j => {
+                    if (j.status_partida === 'agendado') return;
+                    const c = j.id_time_casa, f = j.id_time_fora, gc = parseInt(j.placar_casa)||0, gf = parseInt(j.placar_fora)||0;
+                    if(stats[c] && stats[f]) {
+                        stats[c].J++; stats[f].J++; stats[c].GF+=gc; stats[c].GS+=gf; stats[f].GF+=gf; stats[f].GS+=gc;
+                        if(gc>gf){stats[c].V++;stats[c].P+=3;stats[f].D++;} else if(gf>gc){stats[f].V++;stats[f].P+=3;stats[c].D++;} else{stats[c].E++;stats[f].E++;stats[c].P++;stats[f].P++;}
+                    }
+                    if(j.gols) j.gols.forEach(g => {
+                        if(g.marcador) {
+                            const id = g.marcador.id_jogador;
+                            if(!statsG[id]) statsG[id] = { nome: g.marcador.nome, gols: 0, cAtual: tAtual[id]||'Sem Clube' };
+                            statsG[id].gols++;
+                        }
+                    });
+                });
+
+                document.getElementById('grid-stats-times').innerHTML = Object.values(stats).sort((a,b)=>b.P-a.P || (b.GF-b.GS)-(a.GF-a.GS)).map((s, i) => `
+                <div onclick="abrirDetalhesTime(${s.id_time})" class="bg-aurea-panel border border-aurea-white/5 p-6 rounded-3xl flex flex-col items-center hover:border-aurea-gold/50 transition cursor-pointer shadow-lg relative group">
+                    <span class="absolute top-4 left-4 text-aurea-white/30 font-black italic text-xl w-6 text-center">#${i+1}</span>
+                    ${s.titulos>0?`<span class="absolute top-4 right-4 text-xl drop-shadow-md">🏆<span class="text-[9px] font-black text-aurea-gold block text-center">${s.titulos}</span></span>`:''}
+                    <img src="${s.logo?API_URL+s.logo:''}" class="h-16 w-16 rounded-full border-4 border-aurea-black shadow-md mb-3 bg-aurea-black">
+                    <h3 class="font-black text-aurea-white text-sm uppercase truncate w-full text-center">${s.nome_time}</h3>
+                    <p class="text-[9px] text-aurea-white/40 uppercase tracking-widest mb-4">${s.J} Jogos</p>
+                    <div class="w-full flex justify-between bg-aurea-black rounded-xl p-3 border border-aurea-white/5">
+                        <div class="text-center w-1/4"><span class="block font-black text-green-400">${s.V}</span><span class="text-[7px] uppercase text-aurea-white/40">V</span></div>
+                        <div class="text-center w-1/4 border-l border-aurea-white/5"><span class="block font-black text-aurea-white/50">${s.E}</span><span class="text-[7px] uppercase text-aurea-white/40">E</span></div>
+                        <div class="text-center w-1/4 border-l border-aurea-white/5"><span class="block font-black text-red-400">${s.D}</span><span class="text-[7px] uppercase text-aurea-white/40">D</span></div>
+                        <div class="text-center w-1/4 border-l border-aurea-white/5"><span class="block font-black text-aurea-gold">${s.P}</span><span class="text-[7px] uppercase text-aurea-gold/50">PTS</span></div>
+                    </div>
+                </div>`).join('');
+
+                document.getElementById('lista-artilharia-geral').innerHTML = Object.values(statsG).sort((a,b)=>b.gols-a.gols).map((j, i) => `
+                <div onclick="abrirDetalhesJogador(${Object.keys(statsG).find(k=>statsG[k]===j)})" class="flex items-center justify-between bg-aurea-black p-4 rounded-2xl border border-aurea-white/5 hover:border-aurea-gold/30 cursor-pointer transition">
+                    <div class="flex items-center gap-4">
+                        <span class="font-black text-lg ${i<3?'text-aurea-gold text-glow':'text-aurea-white/30'} w-6 text-center">${i+1}</span>
+                        <div><p class="font-black text-aurea-white text-sm uppercase tracking-tight">${j.nome}</p><p class="text-[9px] text-aurea-gold font-bold uppercase tracking-widest mt-0.5">${j.cAtual}</p></div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-2xl font-black text-aurea-gold block leading-none">${j.gols}</span>
+                        <span class="text-[8px] uppercase text-aurea-white/40 tracking-widest font-bold">Gols</span>
+                    </div>
+                </div>`).join('');
+            } catch(e) {}
+        }
+
+        async function prepararTelaConfrontos() {
+            try {
+                const times = await (await fetch(`${API_URL}/times`)).json();
+                const opts = '<option value="">Selecione a equipe</option>' + times.map(t => `<option value="${t.id_time}">${t.nome_time}</option>`).join('');
+                document.getElementById('rx-time-a').innerHTML = opts; document.getElementById('rx-time-b').innerHTML = opts;
+            } catch(e) {}
+        }
+
+        async function compararTimes() {
+            const idA = document.getElementById('rx-time-a').value, idB = document.getElementById('rx-time-b').value;
+            if(!idA || !idB || idA===idB) return alert("Selecione dois times diferentes!");
+            try {
+                const [rJ, rT, rE] = await Promise.all([fetch(`${API_URL}/jogos`), fetch(`${API_URL}/times`), fetch(`${API_URL}/edicoes`)]);
+                const jogos = await rJ.json(), times = await rT.json(), ed = await rE.json();
+                const tA = times.find(t=>t.id_time==idA), tB = times.find(t=>t.id_time==idB);
+                const confs = jogos.filter(j => (j.id_time_casa==idA && j.id_time_fora==idB) || (j.id_time_casa==idB && j.id_time_fora==idA));
+                
+                let vA=0, vB=0, e=0, gA=0, gB=0; const aA={}, aB={};
+                confs.forEach(j => {
+                    if(j.status_partida==='agendado') return;
+                    const gc=parseInt(j.placar_casa)||0, gf=parseInt(j.placar_fora)||0;
+                    if(j.id_time_casa==idA){ gA+=gc; gB+=gf; if(gc>gf)vA++; else if(gf>gc)vB++; else e++; }
+                    else { gB+=gc; gA+=gf; if(gf>gc)vA++; else if(gc>gf)vB++; else e++; }
+                    if(j.gols) j.gols.forEach(g => {
+                        const n = g.marcador?g.marcador.nome:'Sem Info';
+                        if(g.id_time==idA) aA[n]=(aA[n]||0)+1; else if(g.id_time==idB) aB[n]=(aB[n]||0)+1;
+                    });
+                });
+
+                document.getElementById('rx-resultados').classList.remove('hidden');
+                const fmtArt = (obj) => Object.entries(obj).sort((a,b)=>b[1]-a[1]).map(a=>`<div class="flex justify-between text-[11px] py-1.5 border-b border-aurea-white/5 font-bold"><span class="text-aurea-white uppercase truncate">${a[0]}</span><span class="text-aurea-gold">${a[1]} ⚽</span></div>`).join('');
+                
+                document.getElementById('rx-placar-geral').innerHTML = `
+                    <div class="flex flex-col items-center">
+                        <img src="${tA.logo?API_URL+tA.logo:''}" class="w-20 h-20 rounded-full border-4 border-aurea-gold/30 bg-aurea-black shadow-lg mb-4">
+                        <span class="text-4xl sm:text-5xl font-black text-green-400 drop-shadow-md">${vA}</span><span class="text-[10px] uppercase text-aurea-white/50 tracking-widest font-bold mt-1 mb-4">Vitórias</span>
+                        <div class="bg-aurea-black rounded-xl p-4 w-full shadow-inner border border-aurea-white/5"><div class="flex justify-between text-xs mb-2 border-b border-aurea-white/10 pb-2"><span class="text-aurea-white/50 font-bold">GOLS</span><span class="text-aurea-gold font-black">${gA}</span></div><div class="flex justify-between text-xs"><span class="text-aurea-white/50 font-bold">TÍTULOS</span><span class="text-aurea-gold font-black">🏆 ${ed.filter(x=>x.id_time_campeao==idA).length}</span></div></div>
+                        <div class="w-full mt-4 bg-aurea-black p-4 rounded-xl border border-aurea-white/5 text-left"><span class="text-[9px] text-aurea-gold font-black uppercase tracking-widest block mb-2 text-center">Carrascos</span>${fmtArt(aA)}</div>
+                    </div>
+                    <div class="flex flex-col justify-center items-center px-2 sm:px-6">
+                        <span class="text-[10px] uppercase font-bold text-aurea-white/30 tracking-widest mb-2">${confs.length} Jogos</span>
+                        <div class="w-full h-px bg-gradient-to-r from-transparent via-aurea-white/20 to-transparent mb-6"></div>
+                        <span class="text-5xl sm:text-6xl font-black text-aurea-white/20">${e}</span><span class="text-[10px] uppercase text-aurea-white/40 tracking-widest font-bold mt-2">Empates</span>
+                        <div class="w-full h-px bg-gradient-to-r from-transparent via-aurea-white/20 to-transparent mt-6"></div>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <img src="${tB.logo?API_URL+tB.logo:''}" class="w-20 h-20 rounded-full border-4 border-aurea-gold/30 bg-aurea-black shadow-lg mb-4">
+                        <span class="text-4xl sm:text-5xl font-black text-green-400 drop-shadow-md">${vB}</span><span class="text-[10px] uppercase text-aurea-white/50 tracking-widest font-bold mt-1 mb-4">Vitórias</span>
+                        <div class="bg-aurea-black rounded-xl p-4 w-full shadow-inner border border-aurea-white/5"><div class="flex justify-between text-xs mb-2 border-b border-aurea-white/10 pb-2"><span class="text-aurea-white/50 font-bold">GOLS</span><span class="text-aurea-gold font-black">${gB}</span></div><div class="flex justify-between text-xs"><span class="text-aurea-white/50 font-bold">TÍTULOS</span><span class="text-aurea-gold font-black">🏆 ${ed.filter(x=>x.id_time_campeao==idB).length}</span></div></div>
+                        <div class="w-full mt-4 bg-aurea-black p-4 rounded-xl border border-aurea-white/5 text-left"><span class="text-[9px] text-aurea-gold font-black uppercase tracking-widest block mb-2 text-center">Carrascos</span>${fmtArt(aB)}</div>
+                    </div>
+                `;
+
+                document.getElementById('rx-lista-jogos').innerHTML = confs.length ? confs.map(j => {
+                    let cC = 'text-aurea-white', cF = 'text-aurea-white';
+                    if(j.placar_casa>j.placar_fora){cC='text-green-400';cF='text-red-400';}else if(j.placar_fora>j.placar_casa){cF='text-green-400';cC='text-red-400';}
+                    const gc={}, gf={};
+                    if(j.gols) j.gols.forEach(g=>{ const n = g.marcador?g.marcador.nome:'Sem Info'; if(g.id_time==j.id_time_casa)gc[n]=(gc[n]||'')+'⚽'; else if(g.id_time==j.id_time_fora)gf[n]=(gf[n]||'')+'⚽';});
+                    const fmtG = (o) => Object.entries(o).map(([n,b])=>`<span class="text-[10px] ${n==='Sem Info'?'text-aurea-white/30 italic':'text-aurea-gold/90 font-bold'}">${n} ${b}</span>`).join('');
+                    
+                    return `
+                    <div class="bg-aurea-black border border-aurea-white/5 p-6 rounded-3xl flex flex-col hover:border-aurea-gold/30 transition shadow-lg w-full">
+                        <div class="flex justify-between items-center w-full mb-4">
+                            <span class="w-[40%] text-right font-black text-sm uppercase ${cC} truncate pr-2 sm:pr-6">${j.timeCasa?.nome_time}</span>
+                            <div class="bg-aurea-dark px-6 py-2 rounded-xl border border-aurea-gold/20 font-black text-2xl mx-2 shadow-inner text-aurea-gold">${j.placar_casa} <span class="text-aurea-white/20 text-sm font-normal mx-1">x</span> ${j.placar_fora}</div>
+                            <span class="w-[40%] text-left font-black text-sm uppercase ${cF} truncate pl-2 sm:pl-6">${j.timeFora?.nome_time}</span>
+                        </div>
+                        <div class="flex justify-between border-t border-aurea-white/5 pt-4 w-full text-xs">
+                            <div class="flex flex-col w-1/2 items-end pr-2 sm:pr-8 text-right">${fmtG(gc)||'<span class="text-[10px] text-aurea-white/10 italic">sem gols</span>'}</div>
+                            <div class="flex flex-col w-1/2 items-start pl-2 sm:pl-8 text-left">${fmtG(gf)||'<span class="text-[10px] text-aurea-white/10 italic">sem gols</span>'}</div>
+                        </div>
+                    </div>`;
+                }).join('') : '<p class="text-center text-aurea-white/30 italic py-10 bg-aurea-black rounded-3xl">Nenhum confronto registrado.</p>';
+            } catch(e) {}
+        }
+
+        async function carregarHistoricoCampeoes() {
+            const grid = document.getElementById('grid-historico-campeoes');
+            try {
+                const ed = await (await fetch(`${API_URL}/edicoes`)).json();
+                const campons = ed.filter(e => e.id_time_campeao && e.campeao);
+                if(!campons.length) return grid.innerHTML = '<p class="col-span-full text-center text-aurea-white/30 italic py-12 bg-aurea-panel rounded-3xl border border-aurea-white/5">A taça ainda não tem dono na história.</p>';
+                
+                grid.innerHTML = campons.map(e => `
+                <div onclick="abrirDetalhesTime(${e.campeao.id_time})" class="bg-gradient-to-b from-aurea-gold/20 to-aurea-panel border border-aurea-gold/30 rounded-[2rem] p-8 flex flex-col items-center hover:-translate-y-2 transition duration-300 cursor-pointer relative shadow-[0_10px_30px_rgba(216,188,0,0.15)] group overflow-hidden">
+                    <div class="absolute inset-0 bg-aurea-white/5 opacity-0 group-hover:opacity-100 transition rounded-[2rem] pointer-events-none"></div>
+                    <span class="absolute top-4 left-4 text-[10px] font-black uppercase tracking-widest text-aurea-gold">${e.id_edicao}º Edição</span>
+                    <span class="text-6xl mb-6 shadow-gold drop-shadow-2xl z-10 transform group-hover:scale-110 transition duration-500">🏆</span>
+                    <img src="${e.campeao.logo?API_URL+e.campeao.logo:''}" class="h-20 w-20 rounded-full object-cover border-4 border-aurea-black shadow-xl mb-4 bg-aurea-black z-10">
+                    <h3 class="font-black text-aurea-white text-center uppercase tracking-tight text-lg z-10">${e.campeao.nome_time}</h3>
+                </div>`).join('');
+            } catch(e) {}
+        }
+
+        // ==========================================
+        // 7. MODAIS
+        // ==========================================
+        function fecharModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+        async function abrirDetalhesTime(id) {
+            const m = document.getElementById('modal-time'), c = document.getElementById('modal-time-content');
+            m.classList.remove('hidden'); c.innerHTML = '<p class="text-center text-aurea-gold mt-10 italic">Acessando arquivos do clube... ⏳</p>';
+            try {
+                const [rT, rJ, rE] = await Promise.all([fetch(`${API_URL}/times`), fetch(`${API_URL}/jogos`), fetch(`${API_URL}/edicoes`)]);
+                const time = (await rT.json()).find(t=>t.id_time==id), jogos = await rJ.json(), ed = await rE.json();
+                const tits = ed.filter(e=>e.id_time_campeao==id).length;
+                const arts = {}, js = [];
+                jogos.forEach(j => {
+                    if(j.id_time_casa==id || j.id_time_fora==id) js.push(j);
+                    if(j.status_partida==='finalizada' && j.gols) j.gols.forEach(g=>{if(g.id_time==id){const n=g.marcador?g.marcador.nome:'Sem Info'; arts[n]=(arts[n]||0)+1;}});
+                });
+                
+                c.innerHTML = `
+                <div class="flex items-center gap-6 mb-10 pb-8 border-b border-aurea-white/10">
+                    <img src="${time.logo?API_URL+time.logo:''}" class="h-24 w-24 rounded-full border-4 border-aurea-gold shadow-[0_0_20px_rgba(216,188,0,0.3)] bg-aurea-black object-cover">
+                    <div>
+                        <h2 class="text-4xl sm:text-5xl font-black uppercase text-aurea-white tracking-tight">${time.nome_time}</h2>
+                        <p class="text-aurea-gold font-bold uppercase tracking-widest text-[10px] mt-2">Dossiê do Clube</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 text-sm">
+                    <div>
+                        <div class="bg-gradient-to-r from-aurea-gold/20 to-aurea-black p-6 rounded-2xl border border-aurea-gold/30 flex items-center justify-between mb-8 shadow-inner">
+                            <span class="font-black text-aurea-white uppercase tracking-widest">Títulos Oficiais</span>
+                            <span class="text-4xl font-black text-aurea-gold shadow-gold drop-shadow-md">${tits} 🏆</span>
+                        </div>
+                        <h3 class="font-black text-aurea-gold mb-4 uppercase tracking-widest text-xs">Hall de Artilheiros</h3>
+                        <div class="bg-aurea-black p-4 sm:p-6 rounded-2xl border border-aurea-white/5 shadow-inner">
+                            ${Object.keys(arts).length===0?'<p class="text-aurea-white/30 italic">Nenhum gol registrado.</p>':
+                            Object.entries(arts).sort((a,b)=>b[1]-a[1]).map((a,i)=>`<div class="flex justify-between py-3 border-b border-aurea-white/5 last:border-0 items-center"><span class="font-bold text-aurea-white uppercase"><span class="text-aurea-gold text-xs mr-2 w-4 inline-block">#${i+1}</span>${a[0]}</span><span class="text-aurea-gold font-black bg-aurea-white/5 px-3 py-1 rounded-lg">${a[1]} ⚽</span></div>`).join('')}
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-black text-aurea-gold mb-4 uppercase tracking-widest text-xs">Últimas Batalhas</h3>
+                        <div class="flex flex-col gap-3 max-h-[500px] overflow-y-auto pr-2 no-scrollbar">
+                            ${!js.length?'<p class="text-aurea-white/30 italic bg-aurea-black p-4 rounded-xl">Nenhum jogo no histórico.</p>':
+                            js.reverse().map(j=>{
+                                let cor = 'border-aurea-white/10 text-aurea-white/50';
+                                if(j.status_partida!=='agendado'){
+                                    const meu = j.id_time_casa==id?j.placar_casa:j.placar_fora, deles = j.id_time_casa==id?j.placar_fora:j.placar_casa;
+                                    if(meu>deles)cor='border-green-500/40 text-green-400 bg-green-500/5'; else if(meu<deles)cor='border-red-500/40 text-red-400 bg-red-500/5';
+                                }
+                                return `<div class="bg-aurea-black p-4 rounded-xl border ${cor} flex justify-between items-center text-xs font-bold transition hover:bg-aurea-white/5"><span class="w-[40%] text-right truncate ${j.id_time_casa==id?'text-aurea-white':'text-aurea-white/50'}">${j.timeCasa.nome_time}</span><span class="px-3 py-1 bg-aurea-dark rounded-md mx-2 border border-aurea-white/5">${j.placar_casa}x${j.placar_fora}</span><span class="w-[40%] text-left truncate ${j.id_time_fora==id?'text-aurea-white':'text-aurea-white/50'}">${j.timeFora.nome_time}</span></div>`
+                            }).join('')}
+                        </div>
+                    </div>
+                </div>`;
+            } catch(e) {}
+        }
+
+        async function abrirDetalhesJogador(id) {
+            const m = document.getElementById('modal-jogador'), c = document.getElementById('modal-jogador-content');
+            m.classList.remove('hidden'); c.innerHTML = '<p class="text-center text-aurea-gold mt-10 italic">Buscando perfil do craque... ⏳</p>';
+            try {
+                const [rJ, rJs, rT] = await Promise.all([fetch(`${API_URL}/jogadores`), fetch(`${API_URL}/jogos`), fetch(`${API_URL}/times`)]);
+                const jog = (await rJ.json()).find(j=>j.id_jogador==id), jogos = await rJs.json(), times = await rT.json();
+                
+                let tG=0; const vit={};
+                jogos.forEach(j=>{
+                    if(j.status_partida==='finalizada'&&j.gols) j.gols.forEach(g=>{
+                        if(g.id_jogador==id){
+                            tG++; const vitId = g.id_time==j.id_time_casa?j.id_time_fora:j.id_time_casa;
+                            vit[vitId] = (vit[vitId]||0)+1;
+                        }
+                    });
+                });
+                
+                const rVit = Object.entries(vit).map(([iT,q])=>{const t=times.find(x=>x.id_time==iT); return {n:t?t.nome_time:'?',l:t?API_URL+t.logo:'',g:q}}).sort((a,b)=>b.g-a.g);
+                const tA = jog.time||jog.Time;
+
+                c.innerHTML = `
+                <div class="flex items-center gap-6 mb-10 border-b border-aurea-white/10 pb-8 relative">
+                    <div class="h-24 w-24 bg-aurea-gold/5 rounded-full flex items-center justify-center border-2 border-aurea-gold shadow-gold relative flex-shrink-0">
+                        <span class="text-4xl">🏃</span>
+                        <div class="absolute -bottom-2 -right-2 h-10 w-10 bg-aurea-black rounded-full p-1 border border-aurea-white/20 shadow-lg"><img src="${tA?.logo?API_URL+tA.logo:''}" class="h-full w-full object-cover rounded-full ${!tA?'hidden':''}"></div>
+                    </div>
+                    <div>
+                        <h2 class="text-4xl sm:text-5xl font-black uppercase tracking-tight text-aurea-white leading-tight">${jog.nome}</h2>
+                        <p class="text-aurea-gold font-bold uppercase tracking-widest text-xs mt-2">Equipe: <span class="text-aurea-white">${tA?tA.nome_time:'Agente Livre'}</span></p>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-r from-aurea-black via-aurea-gold/10 to-aurea-black p-8 rounded-3xl border border-aurea-gold/20 text-center shadow-inner mb-10">
+                    <span class="text-[10px] text-aurea-white/70 uppercase tracking-widest font-bold mb-2 block">Gols na Carreira</span>
+                    <span class="text-7xl font-black text-aurea-gold shadow-gold drop-shadow-xl">${tG}</span>
+                </div>
+
+                <div class="w-full">
+                    <h3 class="font-black text-aurea-gold uppercase tracking-widest mb-6 text-sm text-center">Maiores Vítimas na Copa</h3>
+                    <div class="bg-aurea-black p-4 sm:p-8 rounded-3xl border border-aurea-white/5 shadow-inner">
+                        ${!rVit.length?'<p class="text-center text-aurea-white/30 italic text-sm py-4">Ainda não marcou gols na competição.</p>':
+                        rVit.map((v,i)=>`<div class="flex justify-between items-center border-b border-aurea-white/5 py-4 last:border-0 hover:bg-aurea-white/5 transition px-4 rounded-xl"><span class="font-bold text-aurea-white flex items-center gap-4"><span class="text-aurea-gold text-xs w-4">#${i+1}</span><img src="${v.l}" class="w-10 h-10 rounded-full object-cover bg-aurea-dark border border-aurea-white/10 shadow-md"><span class="uppercase tracking-tight">${v.n}</span></span><span class="text-aurea-gold font-black bg-aurea-white/5 px-4 py-2 rounded-lg text-lg shadow-inner">${v.g} ⚽</span></div>`).join('')}
+                    </div>
+                </div>`;
+            } catch(e) {}
+        }
+
+        // ==========================================
+        // INICIALIZAÇÃO
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => mudarTela(window.location.hash.replace('#', '') || 'tela-home'));
+    </script>
+</body>
+</html
