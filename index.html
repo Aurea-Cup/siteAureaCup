@@ -95,18 +95,17 @@
                     <button onclick="mudarTela('tela-equipes')"
                         class="nav-btn flex-shrink-0 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-aurea-white/70 hover:text-aurea-gold hover:bg-aurea-white/5 transition">Equipes</button>
                     <button onclick="mudarTela('tela-craques')"
-                        class="nav-btn flex-shrink-0 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-aurea-white/70 hover:text-aurea-gold hover:bg-aurea-white/5 transition">Craques</button>
+                        class="nav-btn flex-shrink-0 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-aurea-white/70 hover:text-aurea-gold hover:bg-aurea-white/5 transition">Jogadores</button>
                     <button onclick="mudarTela('tela-estatisticas')"
-                        class="nav-btn flex-shrink-0 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-aurea-white/70 hover:text-aurea-gold hover:bg-aurea-white/5 transition">Hall
-                        da Fama</button>
+                        class="nav-btn flex-shrink-0 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-aurea-white/70 hover:text-aurea-gold hover:bg-aurea-white/5 transition">Histórico</button>
+                    <button onclick="mudarTela('tela-dados')"
+                        class="nav-btn flex-shrink-0 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-aurea-white/70 hover:text-aurea-gold hover:bg-aurea-white/5 transition">Estatísticas</button>
                     <button onclick="mudarTela('tela-artilheiros')"
                         class="nav-btn flex-shrink-0 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-aurea-white/70 hover:text-aurea-gold hover:bg-aurea-white/5 transition">Artilheiros</button>
                     <button onclick="mudarTela('tela-raiox')"
                         class="nav-btn flex-shrink-0 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-aurea-white/70 hover:text-aurea-gold hover:bg-aurea-white/5 transition">Raio-X</button>
                     <button onclick="mudarTela('tela-campeoes')"
                         class="nav-btn flex-shrink-0 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-aurea-white/70 hover:text-aurea-gold hover:bg-aurea-white/5 transition">Campeões</button>
-                    <button onclick="mudarTela('tela-dados')"
-                        class="nav-btn flex-shrink-0 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-aurea-white/70 hover:text-aurea-gold hover:bg-aurea-white/5 transition">Números</button>
                     <button onclick="mudarTela('tela-transmissao')"
                         class="nav-btn flex-shrink-0 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider text-aurea-white/70 hover:text-aurea-gold hover:bg-aurea-white/5 transition flex items-center gap-2">
                         <img src="bigtv.png" alt="BigTV" class="w-6 h-6 object-contain rounded-full shadow-md"> BigTV
@@ -170,7 +169,7 @@
                     <h3 class="text-xl md:text-2xl font-black text-aurea-white uppercase mb-2 tracking-tight">Números
                         Absolutos</h3>
                     <p class="text-aurea-white/50 text-sm">Explore as estatísticas, maiores goleadas, defesas
-                        intransponíveis e o raio-x histórico.</p>
+                        menos vazadas e o raio-x histórico.</p>
                 </div>
             </div>
         </div>
@@ -178,7 +177,8 @@
         <div id="tela-transmissao" class="secao-tela hidden">
             <div class="text-center mb-12">
                 <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Transmissão
-                    <span class="text-aurea-gold text-glow">Oficial</span></h2>
+                    <span class="text-aurea-gold text-glow">Oficial</span>
+                </h2>
                 <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">A emoção da Áurea Cup na
                     sua tela.</p>
             </div>
@@ -235,8 +235,8 @@
             <div class="text-center mb-12">
                 <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Clubes <span
                         class="text-aurea-gold text-glow">Participantes</span></h2>
-                <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">As franquias que disputam
-                    a glória máxima.</p>
+                <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">As equipes que disputam
+                    a competição.</p>
             </div>
             <div id="grid-times" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
         </div>
@@ -247,7 +247,7 @@
                 <div class="text-center md:text-left">
                     <h2 class="text-3xl font-black uppercase tracking-tight text-aurea-gold text-glow mb-2">Base de
                         Dados</h2>
-                    <p class="text-aurea-white/50 uppercase tracking-widest text-xs">Encontre as estrelas da competição
+                    <p class="text-aurea-white/50 uppercase tracking-widest text-xs">Encontre os jogadores da competição
                     </p>
                 </div>
 
@@ -268,10 +268,10 @@
         <div id="tela-estatisticas" class="secao-tela hidden">
             <div class="text-center mb-12">
                 <span class="text-5xl mb-4 block shadow-gold">🏆</span>
-                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Hall da <span
-                        class="text-aurea-gold text-glow">Fama</span></h2>
-                <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">A classificação histórica
-                    e absoluta da Áurea Cup.</p>
+                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Histórico dos
+                    <span class="text-aurea-gold text-glow">Times</span></h2>
+                <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">A classificação de toda a
+                    história da Áurea Cup.</p>
             </div>
             <div id="grid-stats-times" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </div>
@@ -279,8 +279,9 @@
         <div id="tela-artilheiros" class="secao-tela hidden">
             <div class="text-center mb-12">
                 <span class="text-5xl mb-4 block shadow-gold">⚽</span>
-                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Chuteira de
-                    <span class="text-aurea-gold text-glow">Ouro</span></h2>
+                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Maiores
+                    <span class="text-aurea-gold text-glow">Goleadores</span>
+                </h2>
                 <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">Os maiores goleadores da
                     história da competição.</p>
             </div>
@@ -293,7 +294,8 @@
         <div id="tela-raiox" class="secao-tela hidden">
             <div class="text-center mb-12">
                 <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Frente a
-                    <span class="text-aurea-gold text-glow">Frente</span></h2>
+                    <span class="text-aurea-gold text-glow">Frente</span>
+                </h2>
                 <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">Analise o histórico de
                     confrontos diretos entre dois clubes.</p>
             </div>
@@ -327,8 +329,9 @@
         <div id="tela-campeoes" class="secao-tela hidden">
             <div class="text-center mb-12">
                 <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Galeria de
-                    <span class="text-aurea-gold text-glow">Campeões</span></h2>
-                <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">Os esquadrões que
+                    <span class="text-aurea-gold text-glow">Campeões</span>
+                </h2>
+                <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">As equipes que
                     eternizaram seus nomes na taça.</p>
             </div>
             <div id="grid-historico-campeoes"
@@ -670,7 +673,7 @@
                         </div>
                     </div>
                     <div class="w-full mt-3 md:mt-4 bg-aurea-black p-2 md:p-5 rounded-xl border border-aurea-white/5 text-left">
-                        <span class="text-[9px] md:text-xs text-aurea-gold font-black uppercase tracking-widest block mb-2 md:mb-3 text-center border-b border-aurea-white/10 pb-2">Carrascos</span>
+                        <span class="text-[9px] md:text-xs text-aurea-gold font-black uppercase tracking-widest block mb-2 md:mb-3 text-center border-b border-aurea-white/10 pb-2">Artilheiros do confronto</span>
                         ${fmtArt(aA)}
                     </div>
                 </div>
@@ -699,7 +702,7 @@
                         </div>
                     </div>
                     <div class="w-full mt-3 md:mt-4 bg-aurea-black p-2 md:p-5 rounded-xl border border-aurea-white/5 text-left">
-                        <span class="text-[9px] md:text-xs text-aurea-gold font-black uppercase tracking-widest block mb-2 md:mb-3 text-center border-b border-aurea-white/10 pb-2">Carrascos</span>
+                        <span class="text-[9px] md:text-xs text-aurea-gold font-black uppercase tracking-widest block mb-2 md:mb-3 text-center border-b border-aurea-white/10 pb-2">Artilheiros do confronto</span>
                         ${fmtArt(aB)}
                     </div>
                 </div>
@@ -808,7 +811,6 @@
                 <img src="${time.logo ? API_URL + time.logo : ''}" class="h-24 w-24 md:h-32 md:w-32 object-contain drop-shadow-[0_0_20px_rgba(216,188,0,0.5)] flex-shrink-0">
                 <div>
                     <h2 class="text-3xl md:text-5xl font-black uppercase text-aurea-white tracking-tight leading-tight">${time.nome_time}</h2>
-                    <p class="text-aurea-gold font-bold uppercase tracking-widest text-[10px] md:text-xs mt-2">Dossiê do Clube</p>
                 </div>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-10 text-sm md:text-base">
@@ -834,7 +836,7 @@
                     </div>
 
                     <div class="mb-4 md:mb-6">
-                        <h3 class="font-black text-aurea-gold mb-4 uppercase tracking-widest text-xs md:text-sm">Hall de Artilheiros</h3>
+                        <h3 class="font-black text-aurea-gold mb-4 uppercase tracking-widest text-xs md:text-sm">Artilheiros</h3>
                         <div class="bg-aurea-black p-4 sm:p-6 rounded-2xl border border-aurea-white/5 shadow-inner">
                             ${Object.keys(arts).length === 0 ? '<p class="text-aurea-white/30 italic">Nenhum gol registrado.</p>' :
                         Object.entries(arts).sort((a, b) => b[1] - a[1]).map((a, i) => `<div class="flex justify-between py-3 border-b border-aurea-white/5 last:border-0 items-center gap-2"><span class="font-bold text-aurea-white uppercase text-xs md:text-sm truncate"><span class="text-aurea-gold text-xs mr-2 w-4 inline-block">#${i + 1}</span>${a[0]}</span><span class="text-aurea-gold font-black bg-aurea-white/5 px-3 py-1 rounded-lg text-xs md:text-sm whitespace-nowrap">${a[1]} ⚽</span></div>`).join('')}
@@ -842,7 +844,7 @@
                     </div>
                 </div>
                 <div>
-                    <h3 class="font-black text-aurea-gold mb-4 uppercase tracking-widest text-xs md:text-sm">Últimas Batalhas</h3>
+                    <h3 class="font-black text-aurea-gold mb-4 uppercase tracking-widest text-xs md:text-sm">Últimas Partidas</h3>
                     <div class="flex flex-col gap-3 max-h-[300px] md:max-h-[500px] overflow-y-auto pr-2 no-scrollbar">
                         ${!js.length ? '<p class="text-aurea-white/30 italic bg-aurea-black p-4 rounded-xl">Nenhum jogo no histórico.</p>' :
                         js.reverse().map(j => {
@@ -861,7 +863,7 @@
 
         async function abrirDetalhesJogador(id) {
             const m = document.getElementById('modal-jogador'), c = document.getElementById('modal-jogador-content');
-            m.classList.remove('hidden'); c.innerHTML = '<p class="text-center text-aurea-gold mt-10 italic text-lg">Buscando perfil do craque... ⏳</p>';
+            m.classList.remove('hidden'); c.innerHTML = '<p class="text-center text-aurea-gold mt-10 italic text-lg">Buscando perfil do jogador... ⏳</p>';
             try {
                 const [rJ, rJs, rT] = await Promise.all([fetch(`${API_URL}/jogadores`), fetch(`${API_URL}/jogos`), fetch(`${API_URL}/times`)]);
                 const jog = (await rJ.json()).find(j => j.id_jogador == id), jogos = await rJs.json(), times = await rT.json();
@@ -897,7 +899,7 @@
             </div>
 
             <div class="w-full">
-                <h3 class="font-black text-aurea-gold uppercase tracking-widest mb-4 md:mb-6 text-xs md:text-sm text-center md:text-left">Maiores Vítimas na Copa</h3>
+                <h3 class="font-black text-aurea-gold uppercase tracking-widest mb-4 md:mb-6 text-xs md:text-sm text-center md:text-left">Equipes que mais sofreram gols do jogador</h3>
                 <div class="bg-aurea-black p-4 sm:p-8 rounded-3xl border border-aurea-white/5 shadow-inner max-h-[250px] md:max-h-[350px] overflow-y-auto no-scrollbar">
                     ${!rVit.length ? '<p class="text-center text-aurea-white/30 italic text-sm py-4">Ainda não marcou gols na competição.</p>' :
                         rVit.map((v, i) => `<div class="flex justify-between items-center border-b border-aurea-white/5 py-4 last:border-0 hover:bg-aurea-white/5 transition px-2 md:px-4 rounded-xl gap-2"><span class="font-bold text-aurea-white flex items-center gap-2 md:gap-4 text-xs md:text-base truncate"><span class="text-aurea-gold text-[10px] md:text-xs w-4 inline-block">#${i + 1}</span><img src="${v.l}" class="w-8 h-8 md:w-10 md:h-10 object-contain drop-shadow-md flex-shrink-0"><span class="uppercase tracking-tight truncate">${v.n}</span></span><span class="text-aurea-gold font-black bg-aurea-white/5 px-3 md:px-4 py-1 md:py-2 rounded-lg text-base md:text-lg shadow-inner whitespace-nowrap">${v.g} ⚽</span></div>`).join('')}
@@ -1093,7 +1095,7 @@
                     ${box(tGols, 'Gols Marcados')}
                     ${box(mediaGols, 'Média Gols/Jogo')}
                     ${box(times.length, 'Equipes Oficiais')}
-                    ${box(jogadores.length, 'Atletas Inscritos')}
+                    ${box(jogadores.length, 'Atletas Marcaram Gol')}
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 mt-8">
@@ -1102,25 +1104,25 @@
                         ${mlhAtaque ? cardP('Melhor Ataque', '', mlhAtaque.nome, `${mlhAtaque.GF} Gols na história`, API_URL + mlhAtaque.logo) : ''}
                         ${pioDefesa ? cardP('Pior Defesa', '', pioDefesa.nome, `${pioDefesa.GS} Gols Sofridos`, API_URL + pioDefesa.logo) : ''}
                         ${maiVitoria ? cardP('Maior Vencedor', '', maiVitoria.nome, `${maiVitoria.V} Vitórias totais`, API_URL + maiVitoria.logo) : ''}
-                        ${maxCS > 0 ? cardP('Defesa Intransponível', '', nomeCS, `${maxCS} jogos sem sofrer gols`, API_URL + logoCS) : ''}
-                        ${reiEmpate ? cardP('Rei do Empate', '', reiEmpate.nome, `${reiEmpate.E} Empates na conta`, API_URL + reiEmpate.logo) : ''}
+                        ${maxCS > 0 ? cardP('mais jogos sem sofrer gols', '', nomeCS, `${maxCS} jogos sem sofrer gols`, API_URL + logoCS) : ''}
+                        ${reiEmpate ? cardP('Mais Empates', '', reiEmpate.nome, `${reiEmpate.E} Empates na conta`, API_URL + reiEmpate.logo) : ''}
                     </div>
 
                     <div class="flex flex-col gap-4 md:gap-5">
                         <h3 class="text-lg md:text-2xl font-black text-aurea-white uppercase tracking-widest border-b border-aurea-white/10 pb-3 mb-2 flex items-center gap-3"><span class="text-aurea-gold">🔥</span> Gols e Partidas</h3>
                         ${cardP('Maior Goleada da História', '😱', jogoGoleada ? `${maiorDif} gols de diferença` : '-', fmtJ(jogoGoleada))}
                         ${cardP('Jogo com Mais Gols', '🥅', jogoMaxGols ? `${maxGols} Gols na partida` : '-', fmtJ(jogoMaxGols))}
-                        ${cardP('Ameaça Constante', '🎩', nomeHatTrick, `Fez ${maxHatTrick} gols em um único jogo`)}
-                        ${cardP('Artilheiro Supremo', '👑', artilheiroM.nome, `${artilheiroM.gols} Gols Totais`)}
+                        ${cardP('Mais gols em um jogo', '🎩', nomeHatTrick, `Fez ${maxHatTrick} gols em um único jogo`)}
+                        ${cardP('Artilheiro da história', '👑', artilheiroM.nome, `${artilheiroM.gols} Gols Totais`)}
                         ${cardP('Edição Mais Goleadora', '🧨', nomeEdMax, `Média de ${maxMedEd.toFixed(2)} gols por jogo`)}
                     </div>
 
                     <div class="flex flex-col gap-4 md:gap-5">
                         <h3 class="text-lg md:text-2xl font-black text-aurea-white uppercase tracking-widest border-b border-aurea-white/10 pb-3 mb-2 flex items-center gap-3"><span class="text-aurea-gold">⚔️</span> Sequências e Tabus</h3>
-                        ${maxSeqV > 0 ? cardP('Time Mais Letal', '', nSeqV, `${maxSeqV} Vitórias Consecutivas`, API_URL + lSeqV) : ''}
-                        ${maxSeqD > 0 ? cardP('O Saco de Pancadas', '', nSeqD, `${maxSeqD} Derrotas Consecutivas`, API_URL + lSeqD) : ''}
+                        ${maxSeqV > 0 ? cardP('Maior Sequência de Vitórias', '', nSeqV, `${maxSeqV} Vitórias Consecutivas`, API_URL + lSeqV) : ''}
+                        ${maxSeqD > 0 ? cardP('Pior Sequência de Derrotas', '', nSeqD, `${maxSeqD} Derrotas Consecutivas`, API_URL + lSeqD) : ''}
                         ${maxFreg > 0 ? cardP('Maior Freguesia', '🦆', nomeFreg, `Já venceu o adversário ${maxFreg} vezes`) : ''}
-                        ${maxVice > 0 ? cardP('O Rei do Quase', '', nomeVice, `Chegou na final e perdeu ${maxVice} vezes`, API_URL + logoVice) : ''}
+                        ${maxVice > 0 ? cardP('O Maior Vice', '', nomeVice, `Chegou na final e perdeu ${maxVice} vezes`, API_URL + logoVice) : ''}
                         ${cardP('Partidas Terminadas Empatadas', '🤝', tEmpates, `Total de empates na história`)}
                     </div>
                 </div>
