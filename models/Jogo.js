@@ -13,6 +13,8 @@ module.exports = (sequelize, DataTypes) => {
     id_time_fora: DataTypes.INTEGER,
     placar_casa: DataTypes.INTEGER,
     placar_fora: DataTypes.INTEGER,
+    penaltis_casa: { type: DataTypes.INTEGER, allowNull: true },
+    penaltis_fora: { type: DataTypes.INTEGER, allowNull: true },
     horario: DataTypes.DATE,
     status_partida: DataTypes.STRING
   }, {
