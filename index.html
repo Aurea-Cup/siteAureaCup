@@ -185,7 +185,8 @@
         <div id="tela-transmissao" class="secao-tela hidden">
             <div class="text-center mb-12">
                 <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Transmissão
-                    <span class="text-aurea-gold text-glow">Oficial</span></h2>
+                    <span class="text-aurea-gold text-glow">Oficial</span>
+                </h2>
                 <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">A emoção da Áurea Cup na
                     sua tela.</p>
             </div>
@@ -230,7 +231,8 @@
         <div id="tela-edicoes" class="secao-tela hidden">
             <div class="text-center mb-12">
                 <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Arquivo de
-                    <span class="text-aurea-gold text-glow">Edições</span></h2>
+                    <span class="text-aurea-gold text-glow">Edições</span>
+                </h2>
                 <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">Mergulhe no histórico de
                     cada temporada da Áurea Cup.</p>
             </div>
@@ -349,7 +351,8 @@
         <div id="tela-raiox" class="secao-tela hidden">
             <div class="text-center mb-12">
                 <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Frente a
-                    <span class="text-aurea-gold text-glow">Frente</span></h2>
+                    <span class="text-aurea-gold text-glow">Frente</span>
+                </h2>
                 <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">Analise o histórico de
                     confrontos diretos entre dois clubes.</p>
             </div>
@@ -383,7 +386,8 @@
         <div id="tela-campeoes" class="secao-tela hidden">
             <div class="text-center mb-12">
                 <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Galeria de
-                    <span class="text-aurea-gold text-glow">Campeões</span></h2>
+                    <span class="text-aurea-gold text-glow">Campeões</span>
+                </h2>
                 <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">As equipes que eternizaram
                     seus nomes na taça.</p>
             </div>
@@ -394,7 +398,8 @@
         <div id="tela-dados" class="secao-tela hidden">
             <div class="text-center mb-12">
                 <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Estatísticas
-                    <span class="text-aurea-gold text-glow">Absolutas</span></h2>
+                    <span class="text-aurea-gold text-glow">Absolutas</span>
+                </h2>
                 <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">Todos os dados e recordes
                     gerados na história da Áurea Cup.</p>
             </div>
@@ -471,9 +476,7 @@
             if (idTela === 'tela-dados') carregarDadosAbsolutos();
         }
 
-        // ==========================================
-        // CARD DE PARTIDA CENTRALIZADO
-        // ==========================================
+        // Renderiza um Card de Partida (Usado em Partidas Gerais, Edições e Modal de Time)
         function renderCardPartida(j) {
             const gCasa = {}, gFora = {};
             let cReal = 0, fReal = 0;
@@ -516,12 +519,12 @@
                         <img src="${j.timeCasa?.logo ? API_URL + j.timeCasa.logo : ''}" class="h-10 w-10 md:h-14 md:w-14 object-contain drop-shadow-md order-1 md:order-2">
                     </div>
                     <div class="flex flex-col items-center justify-center w-[30%] md:w-[20%]">
-                        <div class="bg-aurea-black px-3 sm:px-6 py-2 rounded-xl border-2 ${placarBorder} font-black text-xl sm:text-3xl text-aurea-gold tracking-tighter shadow-inner flex items-center justify-center whitespace-nowrap">
-                            ${j.placar_casa} <span class="text-aurea-white/20 text-sm md:text-lg font-normal mx-1">x</span> ${j.placar_fora}
+                        <div class="bg-aurea-black px-3 sm:px-6 py-2 rounded-xl border-2 ${placarBorder} font-black text-xl sm:text-3xl text-aurea-gold tracking-tighter shadow-inner flex flex-col items-center justify-center whitespace-nowrap">
+                            <div>${j.placar_casa} <span class="text-aurea-white/20 text-xs font-normal mx-1">x</span> ${j.placar_fora}</div>
                         </div>
                         ${temPenaltis ? `
                         <div class="bg-aurea-black border border-aurea-gold/40 px-3 py-1 rounded-lg mt-2 flex items-center justify-center shadow-md">
-                            <span class="text-[11px] md:text-sm font-black text-aurea-gold tracking-widest whitespace-nowrap">(${j.penaltis_casa}) PÊN (${j.penaltis_fora})</span>
+                            <span class="text-[10px] md:text-xs font-black text-aurea-gold tracking-widest whitespace-nowrap">(${j.penaltis_casa}) PÊN (${j.penaltis_fora})</span>
                         </div>` : ''}
                         <span class="text-[9px] md:text-xs uppercase tracking-widest ${statusColor} mt-2 font-bold text-center">${statusText}</span>
                     </div>
@@ -611,6 +614,7 @@
                 const edicao = edicoes.find(e => e.id_edicao == idEdicao);
                 const jogosEdicao = todosJogos.filter(j => j.id_edicao == idEdicao);
 
+                // --- 1. CARD CAMPEÃO ---
                 const campeao = edicao.campeao;
                 if (campeao) {
                     const logoUrl = campeao.logo ? `${API_URL}${campeao.logo}` : '';
@@ -632,6 +636,7 @@
                     `;
                 }
 
+                // --- 2. ESTATÍSTICAS GERAIS ---
                 let tGols = 0, melhorAtaque = { id: null, gols: -1 }, piorDefesa = { id: null, gols: -1 };
                 let golsPorTime = {}, sofridosPorTime = {};
                 const artilharia = {};
@@ -649,7 +654,14 @@
 
                     if (j.gols) j.gols.forEach(g => {
                         const nome = g.marcador ? g.marcador.nome : 'Sem Informação';
-                        artilharia[nome] = (artilharia[nome] || 0) + 1;
+                        const idTimeGol = g.id_time;
+                        const timeGolObj = times.find(t => t.id_time == idTimeGol);
+                        const nomeTime = timeGolObj ? timeGolObj.nome_time : 'Sem Clube';
+
+                        if (!artilharia[nome]) {
+                            artilharia[nome] = { nome: nome, time: nomeTime, gols: 0 };
+                        }
+                        artilharia[nome].gols++;
                     });
                 });
 
@@ -660,12 +672,12 @@
                 const tPD = times.find(t => t.id_time == piorDefesa.id);
                 const mediaGols = jogosEdicao.length ? (tGols / jogosEdicao.length).toFixed(2) : 0;
 
-                const boxS = (n, l) => `<div class="bg-aurea-black border border-aurea-white/5 p-4 rounded-2xl flex flex-col items-center justify-center shadow-inner"><span class="text-3xl font-black text-aurea-gold mb-1">${n}</span><span class="text-[9px] text-aurea-white/50 uppercase tracking-widest font-bold text-center">${l}</span></div>`;
+                const boxS = (n, l, cls = '') => `<div class="bg-aurea-black border border-aurea-white/5 p-4 rounded-2xl flex flex-col items-center justify-center shadow-inner ${cls}"><span class="text-3xl font-black text-aurea-gold mb-1">${n}</span><span class="text-[9px] text-aurea-white/50 uppercase tracking-widest font-bold text-center">${l}</span></div>`;
 
                 document.getElementById('stats-gerais-edicao').innerHTML = `
                     ${boxS(jogosEdicao.length, 'Jogos Realizados')}
                     ${boxS(tGols, 'Gols Marcados')}
-                    ${boxS(mediaGols, 'Média de Gols')}
+                    ${boxS(mediaGols, 'Média de Gols', 'col-span-2 md:col-span-1')}
                     <div class="bg-aurea-black border border-aurea-white/5 p-4 rounded-2xl flex flex-col items-center justify-center shadow-inner col-span-2 md:col-span-1">
                         <span class="text-sm font-black text-aurea-white uppercase truncate w-full text-center">${tMA ? tMA.nome_time : '-'}</span>
                         <span class="text-[9px] text-green-400 uppercase tracking-widest font-bold mt-1 mb-1">Melhor Ataque</span>
@@ -678,17 +690,21 @@
                     </div>
                 `;
 
-                const arrArt = Object.entries(artilharia).sort((a, b) => b[1] - a[1]);
+                const arrArt = Object.values(artilharia).sort((a, b) => b.gols - a.gols);
                 document.getElementById('artilharia-edicao').innerHTML = arrArt.length === 0 ? '<p class="text-aurea-white/30 italic text-sm text-center py-4">Nenhum gol registrado.</p>' :
                     arrArt.map((a, i) => `
                         <div class="flex justify-between items-center border-b border-aurea-white/5 py-3 gap-2">
-                            <span class="font-bold text-aurea-white uppercase text-xs md:text-sm truncate ${a[0] === 'Sem Informação' ? 'opacity-50 italic' : ''}">
-                                <span class="text-aurea-gold text-xs mr-2 w-4 inline-block">#${i + 1}</span>${a[0]}
-                            </span>
-                            <span class="text-aurea-gold font-black bg-aurea-white/5 px-3 py-1 rounded-lg text-xs md:text-sm whitespace-nowrap">${a[1]} ⚽</span>
+                            <div class="flex items-center gap-3 truncate">
+                                <span class="text-aurea-gold font-black text-xs md:text-sm w-4 inline-block text-center flex-shrink-0">#${i + 1}</span>
+                                <div class="flex flex-col truncate">
+                                    <span class="font-bold text-aurea-white uppercase text-xs md:text-sm truncate ${a.nome === 'Sem Informação' ? 'opacity-50 italic' : ''}">${a.nome}</span>
+                                    ${a.nome !== 'Sem Informação' ? `<span class="text-[9px] md:text-[10px] text-aurea-gold font-bold uppercase tracking-widest mt-0.5 truncate">${a.time}</span>` : ''}
+                                </div>
+                            </div>
+                            <span class="text-aurea-gold font-black bg-aurea-white/5 px-3 py-1 rounded-lg text-xs md:text-sm whitespace-nowrap flex-shrink-0">${a.gols} ⚽</span>
                         </div>
                     `).join('');
-
+                // --- 4. JOGOS DA EDIÇÃO ---
                 document.getElementById('jogos-edicao').innerHTML = jogosEdicao.length === 0 ? '<p class="text-aurea-white/30 italic text-sm py-4">Nenhum jogo agendado para esta edição.</p>' :
                     jogosEdicao.map(renderCardPartida).join('');
 
@@ -858,7 +874,7 @@
                 });
 
                 document.getElementById('rx-resultados').classList.remove('hidden');
-                const fmtArt = (obj) => Object.entries(obj).sort((a, b) => b[1] - a[1]).map(a => `<div class="flex justify-between text-xs py-1 md:py-2 border-b border-aurea-white/5 font-bold"><span class="text-aurea-white uppercase truncate">${a[0]}</span><span class="text-aurea-gold">${a[1]} ⚽</span></div>`).join('');
+                const fmtArt = (obj) => Object.entries(obj).sort((a, b) => b[1] - a[1]).map(a => `<div class="flex justify-between text-xs md:text-sm py-1 md:py-2 border-b border-aurea-white/5 font-bold"><span class="text-aurea-white uppercase truncate">${a[0]}</span><span class="text-aurea-gold">${a[1]} ⚽</span></div>`).join('');
 
                 document.getElementById('rx-placar-geral').innerHTML = `
                 <div class="flex flex-col items-center">
@@ -931,6 +947,154 @@
                 <img src="${e.campeao.logo ? API_URL + e.campeao.logo : ''}" class="h-24 w-24 object-contain drop-shadow-xl mb-4 z-10">
                 <h3 class="font-black text-aurea-white text-center uppercase tracking-tight text-lg md:text-xl z-10 w-full truncate">${e.campeao.nome_time}</h3>
             </div>`).join('');
+            } catch (e) { }
+        }
+
+        // ==========================================
+        // MODAIS BLINDADOS E RESPONSIVOS
+        // ==========================================
+        function fecharModalTime() { document.getElementById('modal-time').classList.add('hidden'); }
+        function fecharModalJogador() { document.getElementById('modal-jogador').classList.add('hidden'); }
+
+        async function abrirDetalhesTime(id) {
+            const m = document.getElementById('modal-time'), c = document.getElementById('modal-time-content');
+            m.classList.remove('hidden'); c.innerHTML = '<p class="text-center text-aurea-gold mt-10 italic text-lg">Acessando arquivos do clube... ⏳</p>';
+            try {
+                const [rT, rJ, rE] = await Promise.all([fetch(`${API_URL}/times`), fetch(`${API_URL}/jogos`), fetch(`${API_URL}/edicoes`)]);
+                const time = (await rT.json()).find(t => t.id_time == id), jogos = await rJ.json(), ed = await rE.json();
+                const tits = ed.filter(e => e.id_time_campeao == id).length;
+
+                const js = [];
+                const meuTimeStats = { J: 0, V: 0, E: 0, D: 0, GF: 0, GS: 0, P: 0 };
+                const arts = {};
+
+                jogos.forEach(j => {
+                    if (j.id_time_casa == id || j.id_time_fora == id) {
+                        js.push(j);
+                        if (j.status_partida === 'finalizada') {
+                            meuTimeStats.J++;
+                            const gc = parseInt(j.placar_casa) || 0;
+                            const gf = parseInt(j.placar_fora) || 0;
+
+                            if (j.id_time_casa == id) {
+                                meuTimeStats.GF += gc; meuTimeStats.GS += gf;
+                                if (gc > gf) { meuTimeStats.V++; meuTimeStats.P += 3; }
+                                else if (gf > gc) meuTimeStats.D++;
+                                else { meuTimeStats.E++; meuTimeStats.P++; }
+                            } else {
+                                meuTimeStats.GF += gf; meuTimeStats.GS += gc;
+                                if (gf > gc) { meuTimeStats.V++; meuTimeStats.P += 3; }
+                                else if (gc > gf) meuTimeStats.D++;
+                                else { meuTimeStats.E++; meuTimeStats.P++; }
+                            }
+
+                            if (j.gols) j.gols.forEach(g => { if (g.id_time == id) { const n = g.marcador ? g.marcador.nome : 'Sem Info'; arts[n] = (arts[n] || 0) + 1; } });
+                        }
+                    }
+                });
+
+                const saldo = meuTimeStats.GF - meuTimeStats.GS;
+
+                c.innerHTML = `
+            <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6 mb-6 md:mb-10 pb-6 md:pb-8 border-b border-aurea-white/10 text-center md:text-left">
+                <img src="${time.logo ? API_URL + time.logo : ''}" class="h-24 w-24 md:h-32 md:w-32 object-contain drop-shadow-[0_0_20px_rgba(216,188,0,0.5)] flex-shrink-0">
+                <div>
+                    <h2 class="text-3xl md:text-5xl font-black uppercase text-aurea-white tracking-tight leading-tight">${time.nome_time}</h2>
+                    <p class="text-aurea-gold font-bold uppercase tracking-widest text-[10px] md:text-xs mt-2">Dossiê do Clube</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-10 text-sm md:text-base">
+                <div class="flex flex-col gap-6 md:gap-8">
+                    <div class="bg-gradient-to-r from-aurea-gold/20 to-aurea-black p-6 md:p-8 rounded-2xl border border-aurea-gold/30 flex items-center justify-between shadow-inner mb-4 md:mb-6">
+                        <span class="font-black text-aurea-white uppercase tracking-widest text-sm md:text-base">Títulos Oficiais</span>
+                        <span class="text-4xl md:text-5xl font-black text-aurea-gold shadow-gold drop-shadow-md">${tits} 🏆</span>
+                    </div>
+
+                    <div class="w-full flex flex-col gap-3 bg-aurea-black rounded-xl p-4 border border-aurea-white/5 mb-6 md:mb-8 shadow-inner">
+                        <div class="flex justify-between w-full">
+                            <div class="text-center w-1/4"><span class="block font-black text-green-400 text-lg md:text-xl">${meuTimeStats.V}</span><span class="text-[9px] md:text-[10px] uppercase text-aurea-white/40">V</span></div>
+                            <div class="text-center w-1/4 border-l border-aurea-white/5"><span class="block font-black text-aurea-white/50 text-lg md:text-xl">${meuTimeStats.E}</span><span class="text-[9px] md:text-[10px] uppercase text-aurea-white/40">E</span></div>
+                            <div class="text-center w-1/4 border-l border-aurea-white/5"><span class="block font-black text-red-400 text-lg md:text-xl">${meuTimeStats.D}</span><span class="text-[9px] md:text-[10px] uppercase text-aurea-white/40">D</span></div>
+                            <div class="text-center w-1/4 border-l border-aurea-white/5"><span class="block font-black text-aurea-gold text-lg md:text-xl">${meuTimeStats.P}</span><span class="text-[9px] md:text-[10px] uppercase text-aurea-gold/50 font-bold">PTS</span></div>
+                        </div>
+                        <div class="w-full h-px bg-aurea-white/5 my-2"></div>
+                        <div class="flex justify-between w-full">
+                            <div class="text-center w-1/3"><span class="block font-black text-aurea-white text-base md:text-lg">${meuTimeStats.GF}</span><span class="text-[9px] md:text-[10px] uppercase text-aurea-white/40">Gols Feitos</span></div>
+                            <div class="text-center w-1/3 border-l border-aurea-white/5"><span class="block font-black text-aurea-white text-base md:text-lg">${meuTimeStats.GS}</span><span class="text-[9px] md:text-[10px] uppercase text-aurea-white/40">Sofridos</span></div>
+                            <div class="text-center w-1/3 border-l border-aurea-white/5"><span class="block font-black text-base md:text-lg ${saldo > 0 ? 'text-green-400' : (saldo < 0 ? 'text-red-400' : 'text-aurea-white')}">${saldo > 0 ? '+' + saldo : saldo}</span><span class="text-[9px] md:text-[10px] uppercase text-aurea-white/40">Saldo</span></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4 md:mb-6">
+                        <h3 class="font-black text-aurea-gold mb-4 uppercase tracking-widest text-xs md:text-sm">Hall de Artilheiros</h3>
+                        <div class="bg-aurea-black p-4 sm:p-6 rounded-2xl border border-aurea-white/5 shadow-inner">
+                            ${Object.keys(arts).length === 0 ? '<p class="text-aurea-white/30 italic">Nenhum gol registrado.</p>' :
+                        Object.entries(arts).sort((a, b) => b[1] - a[1]).map((a, i) => `<div class="flex justify-between py-3 border-b border-aurea-white/5 last:border-0 items-center gap-2"><span class="font-bold text-aurea-white uppercase text-xs md:text-sm truncate"><span class="text-aurea-gold text-xs mr-2 w-4 inline-block">#${i + 1}</span>${a[0]}</span><span class="text-aurea-gold font-black bg-aurea-white/5 px-3 py-1 rounded-lg text-xs md:text-sm whitespace-nowrap">${a[1]} ⚽</span></div>`).join('')}
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-black text-aurea-gold mb-4 uppercase tracking-widest text-xs md:text-sm">Últimas Batalhas</h3>
+                    <div class="flex flex-col gap-3 max-h-[300px] md:max-h-[500px] overflow-y-auto pr-2 no-scrollbar">
+                        ${!js.length ? '<p class="text-aurea-white/30 italic bg-aurea-black p-4 rounded-xl">Nenhum jogo no histórico.</p>' :
+                        js.reverse().map(j => {
+                            let cor = 'border-aurea-white/10 text-aurea-white/50';
+                            if (j.status_partida !== 'agendado') {
+                                const meu = j.id_time_casa == id ? j.placar_casa : j.placar_fora, deles = j.id_time_casa == id ? j.placar_fora : j.placar_casa;
+                                if (meu > deles) cor = 'border-green-500/40 text-green-400 bg-green-500/5'; else if (meu < deles) cor = 'border-red-500/40 text-red-400 bg-red-500/5';
+                            }
+                            return `<div class="bg-aurea-black p-4 md:p-5 rounded-xl border ${cor} flex justify-between items-center text-xs md:text-sm font-bold transition hover:bg-aurea-white/5 gap-1"><span class="w-[35%] text-right truncate ${j.id_time_casa == id ? 'text-aurea-white' : 'text-aurea-white/50'}">${j.timeCasa.nome_time}</span><span class="px-3 md:px-4 py-1 md:py-2 bg-aurea-dark rounded-md mx-1 border border-aurea-white/5 whitespace-nowrap">${j.placar_casa}x${j.placar_fora}</span><span class="w-[35%] text-left truncate ${j.id_time_fora == id ? 'text-aurea-white' : 'text-aurea-white/50'}">${j.timeFora.nome_time}</span></div>`
+                        }).join('')}
+                    </div>
+                </div>
+            </div>`;
+            } catch (e) { }
+        }
+
+        async function abrirDetalhesJogador(id) {
+            const m = document.getElementById('modal-jogador'), c = document.getElementById('modal-jogador-content');
+            m.classList.remove('hidden'); c.innerHTML = '<p class="text-center text-aurea-gold mt-10 italic text-lg">Buscando perfil do craque... ⏳</p>';
+            try {
+                const [rJ, rJs, rT] = await Promise.all([fetch(`${API_URL}/jogadores`), fetch(`${API_URL}/jogos`), fetch(`${API_URL}/times`)]);
+                const jog = (await rJ.json()).find(j => j.id_jogador == id), jogos = await rJs.json(), times = await rT.json();
+
+                let tG = 0; const vit = {};
+                jogos.forEach(j => {
+                    if (j.status_partida === 'finalizada' && j.gols) j.gols.forEach(g => {
+                        if (g.id_jogador == id) {
+                            tG++; const vitId = g.id_time == j.id_time_casa ? j.id_time_fora : j.id_time_casa;
+                            vit[vitId] = (vit[vitId] || 0) + 1;
+                        }
+                    });
+                });
+
+                const rVit = Object.entries(vit).map(([iT, q]) => { const t = times.find(x => x.id_time == iT); return { n: t ? t.nome_time : '?', l: t ? API_URL + t.logo : '', g: q } }).sort((a, b) => b.g - a.g);
+                const tA = jog.time || jog.Time;
+
+                c.innerHTML = `
+            <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6 mb-6 md:mb-8 border-b border-aurea-white/10 pb-6 text-center md:text-left">
+                <div class="h-24 w-24 md:h-32 md:w-32 bg-aurea-gold/5 rounded-full flex items-center justify-center border-2 border-aurea-gold shadow-gold relative flex-shrink-0">
+                    <span class="text-4xl md:text-5xl">🏃</span>
+                    <div class="absolute -bottom-2 -right-2 h-12 w-12 md:h-14 md:w-14 drop-shadow-lg overflow-hidden"><img src="${tA?.logo ? API_URL + tA.logo : ''}" class="h-full w-full object-contain ${!tA ? 'hidden' : ''}"></div>
+                </div>
+                <div>
+                    <h2 class="text-3xl md:text-5xl font-black uppercase tracking-tight text-aurea-white leading-tight truncate w-full max-w-[200px] md:max-w-none">${jog.nome}</h2>
+                    <p class="text-aurea-gold font-bold uppercase tracking-widest text-[10px] md:text-xs mt-2">Equipe: <span class="text-aurea-white">${tA ? tA.nome_time : 'Agente Livre'}</span></p>
+                </div>
+            </div>
+            
+            <div class="bg-gradient-to-r from-aurea-black via-aurea-gold/10 to-aurea-black p-6 md:p-10 rounded-3xl border border-aurea-gold/20 text-center shadow-inner mb-6 md:mb-8">
+                <span class="text-[10px] md:text-xs text-aurea-white/70 uppercase tracking-widest font-bold mb-2 block">Gols na Carreira</span>
+                <span class="text-6xl md:text-8xl font-black text-aurea-gold shadow-gold drop-shadow-xl">${tG}</span>
+            </div>
+
+            <div class="w-full">
+                <h3 class="font-black text-aurea-gold uppercase tracking-widest mb-4 md:mb-6 text-xs md:text-sm text-center md:text-left">Maiores Vítimas na Copa</h3>
+                <div class="bg-aurea-black p-4 sm:p-8 rounded-3xl border border-aurea-white/5 shadow-inner max-h-[250px] md:max-h-[350px] overflow-y-auto no-scrollbar">
+                    ${!rVit.length ? '<p class="text-center text-aurea-white/30 italic text-sm py-4">Ainda não marcou gols na competição.</p>' :
+                        rVit.map((v, i) => `<div class="flex justify-between items-center border-b border-aurea-white/5 py-4 last:border-0 hover:bg-aurea-white/5 transition px-2 md:px-4 rounded-xl gap-2"><span class="font-bold text-aurea-white flex items-center gap-2 md:gap-4 text-xs md:text-base truncate"><span class="text-aurea-gold text-[10px] md:text-xs w-4 inline-block">#${i + 1}</span><img src="${v.l}" class="w-8 h-8 md:w-10 md:h-10 object-contain drop-shadow-md flex-shrink-0"><span class="uppercase tracking-tight truncate">${v.n}</span></span><span class="text-aurea-gold font-black bg-aurea-white/5 px-3 md:px-4 py-1 md:py-2 rounded-lg text-base md:text-lg shadow-inner whitespace-nowrap">${v.g} ⚽</span></div>`).join('')}
+                </div>
+            </div>`;
             } catch (e) { }
         }
 
@@ -1109,7 +1273,7 @@
                 let nSeqD = 'Nenhum', lSeqD = '';
                 if (timeSeqD) { let t = times.find(x => x.id_time == timeSeqD); if (t) { nSeqD = t.nome_time; lSeqD = t.logo; } }
 
-                const box = (num, label) => `<div class="bg-aurea-black border border-aurea-white/5 py-8 md:py-10 rounded-2xl flex flex-col items-center justify-center hover:border-aurea-gold/30 transition shadow-lg"><span class="text-4xl md:text-6xl font-black text-aurea-gold shadow-gold mb-2 whitespace-nowrap">${num}</span><span class="text-[10px] md:text-xs text-aurea-white/50 uppercase tracking-widest font-bold text-center px-2">${label}</span></div>`;
+                const box = (num, label, cls = '') => `<div class="bg-aurea-black border border-aurea-white/5 py-8 md:py-10 rounded-2xl flex flex-col items-center justify-center hover:border-aurea-gold/30 transition shadow-lg ${cls}"><span class="text-4xl md:text-6xl font-black text-aurea-gold shadow-gold mb-2 whitespace-nowrap">${num}</span><span class="text-[10px] md:text-xs text-aurea-white/50 uppercase tracking-widest font-bold text-center px-2">${label}</span></div>`;
                 const cardP = (t, i, d, s, l) => `<div class="bg-aurea-panel p-4 md:p-6 rounded-2xl border border-aurea-white/5 shadow-md flex items-center gap-3 md:gap-5 hover:border-aurea-gold/30 hover:shadow-lg transition gap-3"><div class="h-12 w-12 md:h-14 md:w-14 rounded-full bg-aurea-black flex-shrink-0 flex items-center justify-center border border-aurea-gold/20 overflow-hidden">${l ? `<img src="${l}" class="h-full w-full object-contain p-1.5">` : `<span class="text-2xl md:text-3xl">${i}</span>`}</div><div class="flex flex-col truncate flex-1"><span class="text-[9px] md:text-xs text-aurea-gold uppercase tracking-widest font-bold mb-1">${t}</span><span class="text-sm md:text-lg font-black text-aurea-white uppercase truncate">${d}</span><span class="text-xs md:text-sm text-aurea-white/50 font-bold truncate mt-0.5">${s}</span></div></div>`;
 
                 const fmtJ = (j) => j ? `<span class="truncate">${j.timeCasa?.nome_time || 'A'} ${j.placar_casa}x${j.placar_fora} ${j.timeFora?.nome_time || 'B'}</span>` : 'Sem jogos';
@@ -1118,10 +1282,10 @@
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6 bg-aurea-panel border border-aurea-white/10 rounded-3xl p-4 md:p-6 shadow-2xl">
                     ${box(edicoes.length, 'Edições')}
                     ${box(tJogos, 'Jogos Realizados')}
-                    ${box(tGols, 'Gols Marcados')}
+                    ${box(tGols, 'Gols Marcados', 'col-span-2 md:col-span-1')}
                     ${box(mediaGols, 'Média Gols/Jogo')}
                     ${box(times.length, 'Equipes Oficiais')}
-                    ${box(jogadores.length, 'Atletas Inscritos')}
+                    ${box(jogadores.length, 'Atletas Inscritos', 'col-span-2 md:col-span-1')}
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 mt-8">
