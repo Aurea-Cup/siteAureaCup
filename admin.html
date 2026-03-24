@@ -100,11 +100,19 @@
                         </h3>
                         <form id="form-jogo" class="flex flex-col gap-4">
 
-                            <div class="grid grid-cols-2 gap-4">
-                                <select id="select-edicao-jogo" required
+                            <div class="grid grid-cols-3 gap-4"> <select id="select-edicao-jogo" required
                                     class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 outline-none text-sm">
                                     <option value="">Edição...</option>
                                 </select>
+
+                                <select id="select-fase-jogo" required
+                                    class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 outline-none text-sm">
+                                    <option value="Fase Classificatória">Fase Classificatória</option>
+                                    <option value="Quartas de Final">Quartas de Final</option>
+                                    <option value="Semifinal">Semifinal</option>
+                                    <option value="Grande Final">Grande Final</option>
+                                </select>
+
                                 <input id="input-data-jogo" type="date" required
                                     class="w-full bg-aurea-black border border-aurea-white/20 rounded-lg px-4 py-2 outline-none text-sm">
                             </div>
@@ -118,6 +126,8 @@
                                     <option value="finalizada" selected>✅ Finalizada (Atualiza Tabela)</option>
                                 </select>
                             </div>
+
+
 
                             <div class="flex items-center gap-2">
                                 <select id="select-casa" onchange="atualizarListaGoleadores()"
@@ -304,7 +314,7 @@
     </main>
 
     <script>
-        const API_URL = 'http://localhost:3000';
+        const API_URL = '';
         let listaJogadoresCache = []; // Guarda os jogadores para não precisar carregar toda hora
         let jogadoresTelaCache = []; // Guarda os jogadores para o filtro em tempo real funcionar
 
@@ -700,6 +710,7 @@
             const elGolsFora = document.getElementById('input-gols-fora');
             const elData = document.getElementById('input-data-jogo');
             const elStatus = document.getElementById('select-status-partida');
+            const elFase = document.getElementById('select-fase-jogo');
 
             // Validação básica de segurança
             if (!elEdicao || !elCasa || !elFora || !elStatus) {
@@ -729,6 +740,7 @@
                 id_time_fora: elFora.value,
                 placar_casa: elGolsCasa.value,
                 placar_fora: elGolsFora.value,
+                fase: elFase.value,
                 horario: elData.value || new Date().toISOString(),
                 status_partida: elStatus.value,
                 gols: golsColetados

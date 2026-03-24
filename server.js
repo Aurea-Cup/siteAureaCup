@@ -56,12 +56,12 @@ app.get('/jogadores', async (req, res) => {
 
 app.post('/jogos', async (req, res) => {
     try {
-        const { id_edicao, id_time_casa, id_time_fora, placar_casa, placar_fora, horario, status_partida, gols } = req.body;
+        const { id_edicao, fase, id_time_casa, id_time_fora, placar_casa, placar_fora, horario, status_partida, gols } = req.body;
 
         const resultado = await db.sequelize.transaction(async (t) => {
             // 1. Cria o Jogo
             const novoJogo = await db.Jogo.create({
-                id_edicao, id_time_casa, id_time_fora, placar_casa, placar_fora, horario, status_partida
+                id_edicao, fase, id_time_casa, id_time_fora, placar_casa, placar_fora, horario, status_partida
             }, { transaction: t });
 
             // 2. Registra os Gols (Se houver)
@@ -202,8 +202,31 @@ app.post('/jogadores', async (req, res) => {
     }
 });
 
-
-const PORTA = process.env.PORTA || 3000;
-db.sequelize.sync({ force: false }).then(() => {
-    app.listen(PORTA, () => console.log(`🚀 Servidor rodando na porta ${PORTA}`));
+// Diz pro Node entregar o seu arquivo index.html quando acessarem o link principal
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
+
+// Para garantir que o seu admin.html também abra (ex: seusite.com/admin.html)
+app.get('/admin.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'admin.html'));
+});
+
+// Libera a leitura de arquivos estáticos (pro seu CSS e JS do front-end funcionarem)
+app.use(express.static(__dirname));
+
+const PORT = process.env.PORT || 3000;
+
+// 1. Liga o site PRIMEIRO (Isso acaba com a cara triste imediatamente)
+app.listen(PORT, () => {
+    console.log(`🚀 Servidor rodando na porta ${PORT}`);
+});
+
+// 2. Tenta conectar no banco DEPOIS e avisa qual foi o erro real
+db.sequelize.sync({ force: false })
+    .then(() => {
+        console.log("✅ Banco de dados sincronizado com sucesso!");
+    })
+    .catch((erro) => {
+        console.error("❌ ERRO FATAL NO BANCO DE DADOS:", erro);
+    });

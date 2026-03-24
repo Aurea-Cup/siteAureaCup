@@ -3,13 +3,19 @@ require('dotenv').config(); // Puxa as variáveis seguras do .env
 
 // Configura a conexão lendo os dados do .env
 const sequelize = new Sequelize(
-  process.env.DB_NAME, 
-  process.env.DB_USER, 
-  process.env.DB_PASS, 
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASS,
   {
     host: process.env.DB_HOST,
     dialect: 'mysql',
-    logging: false,
+    // ESTE BLOCO É OBRIGATÓRIO NA AZURE:
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    }
   }
 );
 
@@ -22,7 +28,7 @@ const Usuario = require('./Usuario')(sequelize, DataTypes);
 const Edicao = require('./Edicao')(sequelize, DataTypes);
 const Time = require('./Time')(sequelize, DataTypes);
 const Jogador = require('./Jogador')(sequelize, DataTypes);
-const EstatisticasTime = require('./EstatisticasTIme')(sequelize, DataTypes);
+const EstatisticasTime = require('./EstatisticasTime')(sequelize, DataTypes);
 const EstatisticasJogadores = require('./EstatisticasJogadores')(sequelize, DataTypes);
 const Jogo = require('./Jogo')(sequelize, DataTypes);
 const GolJogo = require('./GolJogo')(sequelize, DataTypes);
@@ -71,15 +77,17 @@ GolJogo.belongsTo(Jogo, { foreignKey: 'id_jogo' });
 
 Edicao.belongsTo(Time, { as: 'campeao', foreignKey: 'id_time_campeao' });
 
+
+
 // Exportando tudo para usar na aplicação
 module.exports = {
-    sequelize,
-    Usuario,
-    Edicao,
-    Time,
-    Jogador,
-    EstatisticasTime,
-    EstatisticasJogadores,
-    Jogo,
-    GolJogo
+  sequelize,
+  Usuario,
+  Edicao,
+  Time,
+  Jogador,
+  EstatisticasTime,
+  EstatisticasJogadores,
+  Jogo,
+  GolJogo
 };
