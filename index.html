@@ -73,8 +73,7 @@
             <div class="flex flex-col md:flex-row justify-between items-center py-4 gap-4 md:gap-0">
                 <div class="flex items-center gap-3 cursor-pointer" onclick="mudarTela('tela-home')">
                     <div class="h-10 w-10 bg-aurea-gold rounded-full flex items-center justify-center overflow-hidden">
-                        <img style="width: 100%; height: 100%; object-fit: cover;" src="logoAurea.jpg"
-                            alt="Logo Áurea Cup">
+                        <img style="width: 100%; height: 100%; object-fit: cover;" src="logoAurea.jpg" alt="Logo Áurea Cup">
                     </div>
                     <h1 class="text-2xl font-black uppercase tracking-widest text-glow text-aurea-white">Áurea <span
                             class="text-aurea-gold">Cup</span></h1>
@@ -122,25 +121,20 @@
             <div class="text-center mb-12">
                 <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Clubes <span
                         class="text-aurea-gold text-glow">Participantes</span></h2>
-                <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">As franquias que disputam
-                    a glória máxima.</p>
+                <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">As franquias que disputam a glória máxima.</p>
             </div>
             <div id="grid-times" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
         </div>
 
         <div id="tela-craques" class="secao-tela hidden">
-            <div
-                class="flex flex-col md:flex-row justify-between items-center mb-12 gap-6 bg-aurea-panel p-6 rounded-2xl border border-aurea-white/10 shadow-xl">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-6 bg-aurea-panel p-6 rounded-2xl border border-aurea-white/10 shadow-xl">
                 <div class="text-center md:text-left">
-                    <h2 class="text-3xl font-black uppercase tracking-tight text-aurea-gold text-glow mb-2">Base de
-                        Dados</h2>
-                    <p class="text-aurea-white/50 uppercase tracking-widest text-xs">Encontre as estrelas da competição
-                    </p>
+                    <h2 class="text-3xl font-black uppercase tracking-tight text-aurea-gold text-glow mb-2">Base de Dados</h2>
+                    <p class="text-aurea-white/50 uppercase tracking-widest text-xs">Encontre as estrelas da competição</p>
                 </div>
 
                 <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-                    <input type="text" id="pesquisa-jogador" placeholder="Buscar pelo nome..."
-                        oninput="filtrarJogadores()"
+                    <input type="text" id="pesquisa-jogador" placeholder="Buscar pelo nome..." oninput="filtrarJogadores()"
                         class="bg-aurea-black border border-aurea-white/20 rounded-xl px-5 py-3 outline-none focus:border-aurea-gold transition text-base w-full sm:w-64 placeholder:text-aurea-white/30 shadow-inner">
                     <select id="filtro-time-jogador" onchange="filtrarJogadores()"
                         class="bg-aurea-black border border-aurea-white/20 rounded-xl px-5 py-3 outline-none focus:border-aurea-gold transition text-base w-full sm:w-56 cursor-pointer shadow-inner">
@@ -157,8 +151,7 @@
                 <span class="text-5xl mb-4 block shadow-gold">🏆</span>
                 <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Hall da <span
                         class="text-aurea-gold text-glow">Fama</span></h2>
-                <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">A classificação histórica
-                    e absoluta da Áurea Cup.</p>
+                <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">A classificação histórica e absoluta da Áurea Cup.</p>
             </div>
             <div id="grid-stats-times" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </div>
@@ -166,46 +159,33 @@
         <div id="tela-artilheiros" class="secao-tela hidden">
             <div class="text-center mb-12">
                 <span class="text-5xl mb-4 block shadow-gold">⚽</span>
-                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Chuteira de
-                    <span class="text-aurea-gold text-glow">Ouro</span></h2>
-                <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">Os maiores goleadores da
-                    história da competição.</p>
+                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Chuteira de <span class="text-aurea-gold text-glow">Ouro</span></h2>
+                <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">Os maiores goleadores da história da competição.</p>
             </div>
-            <div
-                class="max-w-4xl mx-auto bg-aurea-panel border border-aurea-white/10 rounded-3xl p-6 sm:p-12 shadow-2xl">
+            <div class="max-w-4xl mx-auto bg-aurea-panel border border-aurea-white/10 rounded-3xl p-6 sm:p-12 shadow-2xl">
                 <div id="lista-artilharia-geral" class="flex flex-col gap-3"></div>
             </div>
         </div>
 
         <div id="tela-raiox" class="secao-tela hidden">
             <div class="text-center mb-12">
-                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Frente a
-                    <span class="text-aurea-gold text-glow">Frente</span></h2>
-                <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">Analise o histórico de
-                    confrontos diretos entre dois clubes.</p>
+                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Frente a <span class="text-aurea-gold text-glow">Frente</span></h2>
+                <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">Analise o histórico de confrontos diretos entre dois clubes.</p>
             </div>
 
-            <div
-                class="bg-aurea-panel border-t-4 border-t-aurea-gold border-x border-x-aurea-white/5 border-b border-b-aurea-white/5 p-6 md:p-8 rounded-3xl shadow-2xl mb-12">
+            <div class="bg-aurea-panel border-t-4 border-t-aurea-gold border-x border-x-aurea-white/5 border-b border-b-aurea-white/5 p-6 md:p-8 rounded-3xl shadow-2xl mb-12">
                 <div class="flex flex-col md:flex-row items-center justify-center gap-6">
-                    <select id="rx-time-a"
-                        class="w-full md:w-1/3 bg-aurea-black border border-aurea-white/10 rounded-xl px-5 py-4 outline-none font-black text-center uppercase tracking-wider shadow-inner text-sm md:text-base hover:border-aurea-gold/50 transition cursor-pointer"></select>
+                    <select id="rx-time-a" class="w-full md:w-1/3 bg-aurea-black border border-aurea-white/10 rounded-xl px-5 py-4 outline-none font-black text-center uppercase tracking-wider shadow-inner text-sm md:text-base hover:border-aurea-gold/50 transition cursor-pointer"></select>
                     <span class="font-black text-4xl text-aurea-gold text-glow px-4">X</span>
-                    <select id="rx-time-b"
-                        class="w-full md:w-1/3 bg-aurea-black border border-aurea-white/10 rounded-xl px-5 py-4 outline-none font-black text-center uppercase tracking-wider shadow-inner text-sm md:text-base hover:border-aurea-gold/50 transition cursor-pointer"></select>
-                    <button onclick="compararTimes()"
-                        class="bg-aurea-gold text-aurea-black font-black uppercase tracking-widest px-10 py-4 rounded-xl hover:bg-yellow-500 transition w-full md:w-auto shadow-gold transform hover:scale-105 duration-200">Comparar</button>
+                    <select id="rx-time-b" class="w-full md:w-1/3 bg-aurea-black border border-aurea-white/10 rounded-xl px-5 py-4 outline-none font-black text-center uppercase tracking-wider shadow-inner text-sm md:text-base hover:border-aurea-gold/50 transition cursor-pointer"></select>
+                    <button onclick="compararTimes()" class="bg-aurea-gold text-aurea-black font-black uppercase tracking-widest px-10 py-4 rounded-xl hover:bg-yellow-500 transition w-full md:w-auto shadow-gold transform hover:scale-105 duration-200">Comparar</button>
                 </div>
             </div>
 
             <div id="rx-resultados" class="hidden">
-                <div id="rx-placar-geral"
-                    class="grid grid-cols-3 gap-2 md:gap-4 mb-12 text-center bg-aurea-panel p-6 md:p-8 rounded-3xl border border-aurea-white/5 shadow-xl">
-                </div>
-                <h3
-                    class="text-xl font-black text-aurea-gold mb-6 uppercase tracking-widest flex flex-col md:flex-row items-center gap-3 justify-center text-center">
-                    <span class="hidden md:block w-8 h-1 bg-aurea-gold rounded-full"></span> Arquivo de Partidas <span
-                        class="hidden md:block w-8 h-1 bg-aurea-gold rounded-full"></span>
+                <div id="rx-placar-geral" class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4 mb-12 text-center bg-aurea-panel p-6 md:p-8 rounded-3xl border border-aurea-white/5 shadow-xl"></div>
+                <h3 class="text-xl font-black text-aurea-gold mb-6 uppercase tracking-widest flex flex-col md:flex-row items-center gap-3 justify-center text-center">
+                    <span class="hidden md:block w-8 h-1 bg-aurea-gold rounded-full"></span> Arquivo de Partidas <span class="hidden md:block w-8 h-1 bg-aurea-gold rounded-full"></span>
                 </h3>
                 <div id="rx-lista-jogos" class="flex flex-col gap-4 max-w-4xl mx-auto"></div>
             </div>
@@ -213,55 +193,40 @@
 
         <div id="tela-campeoes" class="secao-tela hidden">
             <div class="text-center mb-12">
-                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Galeria de
-                    <span class="text-aurea-gold text-glow">Campeões</span></h2>
-                <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">Os esquadrões que
-                    eternizaram seus nomes na taça.</p>
+                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Galeria de <span class="text-aurea-gold text-glow">Campeões</span></h2>
+                <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">Os esquadrões que eternizaram seus nomes na taça.</p>
             </div>
-            <div id="grid-historico-campeoes"
-                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"></div>
+            <div id="grid-historico-campeoes" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"></div>
         </div>
 
         <div id="tela-dados" class="secao-tela hidden">
             <div class="text-center mb-12">
-                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Números <span
-                        class="text-aurea-gold text-glow">Absolutos</span></h2>
-                <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">Absolutamente todos os
-                    dados e recordes gerados na história da Áurea Cup.</p>
+                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-aurea-white mb-4">Números <span class="text-aurea-gold text-glow">Absolutos</span></h2>
+                <p class="text-aurea-white/50 uppercase tracking-widest text-sm md:text-base">Absolutamente todos os dados e recordes gerados na história da Áurea Cup.</p>
             </div>
             <div id="grid-dados-gerais" class="flex flex-col gap-8 max-w-6xl mx-auto"></div>
         </div>
     </main>
 
-    <div id="modal-time"
-        class="hidden fixed inset-0 bg-black/95 z-[60] flex items-center justify-center p-3 sm:p-6 backdrop-blur-md">
-        <div
-            class="bg-aurea-panel border border-aurea-gold/30 rounded-2xl md:rounded-3xl w-full max-w-5xl max-h-[90vh] md:max-h-[85vh] relative shadow-[0_0_80px_rgba(216,188,0,0.15)] flex flex-col">
-            <button onclick="fecharModalTime()"
-                class="absolute top-3 right-3 md:top-6 md:right-6 text-aurea-white/50 hover:text-aurea-white transition bg-aurea-black h-10 w-10 md:h-12 md:w-12 rounded-full flex items-center justify-center z-[100] border border-aurea-white/10 shadow-lg cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor" stroke-width="2">
+    <div id="modal-time" class="hidden fixed inset-0 bg-black/95 z-[60] flex items-center justify-center p-3 sm:p-6 backdrop-blur-md">
+        <div class="bg-aurea-panel border border-aurea-gold/30 rounded-2xl md:rounded-3xl w-full max-w-5xl max-h-[90vh] md:max-h-[85vh] relative shadow-[0_0_80px_rgba(216,188,0,0.15)] flex flex-col">
+            <button onclick="fecharModalTime()" class="absolute top-3 right-3 md:top-6 md:right-6 text-aurea-white/50 hover:text-aurea-white transition bg-aurea-black h-10 w-10 md:h-12 md:w-12 rounded-full flex items-center justify-center z-[100] border border-aurea-white/10 shadow-lg cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
-            <div id="modal-time-content"
-                class="p-5 md:p-10 overflow-y-auto w-full h-full no-scrollbar rounded-2xl md:rounded-3xl"></div>
+            <div id="modal-time-content" class="p-5 md:p-10 overflow-y-auto w-full h-full no-scrollbar rounded-2xl md:rounded-3xl"></div>
         </div>
     </div>
 
-    <div id="modal-jogador"
-        class="hidden fixed inset-0 bg-black/95 z-[60] flex items-center justify-center p-3 sm:p-6 backdrop-blur-md">
-        <div
-            class="bg-aurea-panel border border-aurea-gold/30 rounded-2xl md:rounded-3xl w-full max-w-3xl max-h-[90vh] md:max-h-[85vh] relative shadow-[0_0_80px_rgba(216,188,0,0.15)] flex flex-col">
-            <button onclick="fecharModalJogador()"
-                class="absolute top-3 right-3 md:top-6 md:right-6 text-aurea-white/50 hover:text-aurea-white transition bg-aurea-black h-10 w-10 md:h-12 md:w-12 rounded-full flex items-center justify-center z-[100] border border-aurea-white/10 shadow-lg cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor" stroke-width="2">
+    <div id="modal-jogador" class="hidden fixed inset-0 bg-black/95 z-[60] flex items-center justify-center p-3 sm:p-6 backdrop-blur-md">
+        <div class="bg-aurea-panel border border-aurea-gold/30 rounded-2xl md:rounded-3xl w-full max-w-3xl max-h-[90vh] md:max-h-[85vh] relative shadow-[0_0_80px_rgba(216,188,0,0.15)] flex flex-col">
+            <button onclick="fecharModalJogador()" class="absolute top-3 right-3 md:top-6 md:right-6 text-aurea-white/50 hover:text-aurea-white transition bg-aurea-black h-10 w-10 md:h-12 md:w-12 rounded-full flex items-center justify-center z-[100] border border-aurea-white/10 shadow-lg cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
-            <div id="modal-jogador-content"
-                class="p-5 md:p-10 overflow-y-auto w-full h-full no-scrollbar rounded-2xl md:rounded-3xl"></div>
+            <div id="modal-jogador-content" class="p-5 md:p-10 overflow-y-auto w-full h-full no-scrollbar rounded-2xl md:rounded-3xl"></div>
         </div>
     </div>
 
@@ -659,31 +624,75 @@
                 const [rT, rJ, rE] = await Promise.all([fetch(`${API_URL}/times`), fetch(`${API_URL}/jogos`), fetch(`${API_URL}/edicoes`)]);
                 const time = (await rT.json()).find(t => t.id_time == id), jogos = await rJ.json(), ed = await rE.json();
                 const tits = ed.filter(e => e.id_time_campeao == id).length;
-                const arts = {}, js = [];
+                
+                // 1. Filtrar jogos do time e calcular estatísticas detalhadas (V/E/D/Gols)
+                const js = [];
+                const meuTimeStats = { J: 0, V: 0, E: 0, D: 0, GF: 0, GS: 0, P: 0 };
+                const arts = {};
+
                 jogos.forEach(j => {
-                    if (j.id_time_casa == id || j.id_time_fora == id) js.push(j);
-                    if (j.status_partida === 'finalizada' && j.gols) j.gols.forEach(g => { if (g.id_time == id) { const n = g.marcador ? g.marcador.nome : 'Sem Info'; arts[n] = (arts[n] || 0) + 1; } });
+                    if (j.id_time_casa == id || j.id_time_fora == id) {
+                        js.push(j);
+                        if (j.status_partida === 'finalizada') {
+                            meuTimeStats.J++;
+                            const gc = parseInt(j.placar_casa) || 0;
+                            const gf = parseInt(j.placar_fora) || 0;
+                            
+                            if (j.id_time_casa == id) { // Time é casa
+                                meuTimeStats.GF += gc; meuTimeStats.GS += gf;
+                                if (gc > gf) { meuTimeStats.V++; meuTimeStats.P += 3; }
+                                else if (gf > gc) meuTimeStats.D++;
+                                else { meuTimeStats.E++; meuTimeStats.P++; }
+                            } else { // Time é fora
+                                meuTimeStats.GF += gf; meuTimeStats.GS += gc;
+                                if (gf > gc) { meuTimeStats.V++; meuTimeStats.P += 3; }
+                                else if (gc > gf) meuTimeStats.D++;
+                                else { meuTimeStats.E++; meuTimeStats.P++; }
+                            }
+
+                            // Calcular Artilheiros do time
+                            if (j.gols) j.gols.forEach(g => { if (g.id_time == id) { const n = g.marcador ? g.marcador.nome : 'Sem Info'; arts[n] = (arts[n] || 0) + 1; } });
+                        }
+                    }
                 });
+
+                const saldo = meuTimeStats.GF - meuTimeStats.GS;
 
                 c.innerHTML = `
             <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6 mb-6 md:mb-10 pb-6 md:pb-8 border-b border-aurea-white/10 text-center md:text-left">
                 <img src="${time.logo ? API_URL + time.logo : ''}" class="h-24 w-24 md:h-32 md:w-32 object-contain drop-shadow-[0_0_20px_rgba(216,188,0,0.5)] flex-shrink-0">
                 <div>
-                    <h2 class="text-2xl md:text-5xl font-black uppercase text-aurea-white tracking-tight">${time.nome_time}</h2>
+                    <h2 class="text-2xl md:text-5xl font-black uppercase text-aurea-white tracking-tight leading-tight">${time.nome_time}</h2>
                     <p class="text-aurea-gold font-bold uppercase tracking-widest text-[10px] md:text-xs mt-2">Dossiê do Clube</p>
                 </div>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-10 text-sm md:text-base">
                 <div class="flex flex-col gap-6 md:gap-8">
-                    <div class="bg-gradient-to-r from-aurea-gold/20 to-aurea-black p-6 md:p-8 rounded-2xl border border-aurea-gold/30 flex items-center justify-between shadow-inner">
+                    <div class="bg-gradient-to-r from-aurea-gold/20 to-aurea-black p-6 md:p-8 rounded-2xl border border-aurea-gold/30 flex items-center justify-between shadow-inner mb-4 md:mb-6">
                         <span class="font-black text-aurea-white uppercase tracking-widest text-sm md:text-base">Títulos Oficiais</span>
                         <span class="text-3xl md:text-5xl font-black text-aurea-gold shadow-gold drop-shadow-md">${tits} 🏆</span>
                     </div>
-                    <div>
+
+                    <div class="w-full flex flex-col gap-3 bg-aurea-black rounded-xl p-4 border border-aurea-white/5 mb-6 md:mb-8 shadow-inner">
+                        <div class="flex justify-between w-full">
+                            <div class="text-center w-1/4"><span class="block font-black text-green-400 text-lg md:text-xl">${meuTimeStats.V}</span><span class="text-[9px] md:text-[10px] uppercase text-aurea-white/40">V</span></div>
+                            <div class="text-center w-1/4 border-l border-aurea-white/5"><span class="block font-black text-aurea-white/50 text-lg md:text-xl">${meuTimeStats.E}</span><span class="text-[9px] md:text-[10px] uppercase text-aurea-white/40">E</span></div>
+                            <div class="text-center w-1/4 border-l border-aurea-white/5"><span class="block font-black text-red-400 text-lg md:text-xl">${meuTimeStats.D}</span><span class="text-[9px] md:text-[10px] uppercase text-aurea-white/40">D</span></div>
+                            <div class="text-center w-1/4 border-l border-aurea-white/5"><span class="block font-black text-aurea-gold text-lg md:text-xl">${meuTimeStats.P}</span><span class="text-[9px] md:text-[10px] uppercase text-aurea-gold/50 font-bold">PTS</span></div>
+                        </div>
+                        <div class="w-full h-px bg-aurea-white/5 my-2"></div>
+                        <div class="flex justify-between w-full">
+                            <div class="text-center w-1/3"><span class="block font-black text-aurea-white text-base md:text-lg">${meuTimeStats.GF}</span><span class="text-[9px] md:text-[10px] uppercase text-aurea-white/40">Gols Feitos</span></div>
+                            <div class="text-center w-1/3 border-l border-aurea-white/5"><span class="block font-black text-aurea-white text-base md:text-lg">${meuTimeStats.GS}</span><span class="text-[9px] md:text-[10px] uppercase text-aurea-white/40">Sofridos</span></div>
+                            <div class="text-center w-1/3 border-l border-aurea-white/5"><span class="block font-black text-base md:text-lg ${saldo > 0 ? 'text-green-400' : (saldo < 0 ? 'text-red-400' : 'text-aurea-white')}">${saldo > 0 ? '+' + saldo : saldo}</span><span class="text-[9px] md:text-[10px] uppercase text-aurea-white/40">Saldo</span></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4 md:mb-6">
                         <h3 class="font-black text-aurea-gold mb-4 uppercase tracking-widest text-xs md:text-sm">Hall de Artilheiros</h3>
                         <div class="bg-aurea-black p-4 sm:p-6 rounded-2xl border border-aurea-white/5 shadow-inner">
                             ${Object.keys(arts).length === 0 ? '<p class="text-aurea-white/30 italic">Nenhum gol registrado.</p>' :
-                        Object.entries(arts).sort((a, b) => b[1] - a[1]).map((a, i) => `<div class="flex justify-between py-3 border-b border-aurea-white/5 last:border-0 items-center gap-2"><span class="font-bold text-aurea-white uppercase text-xs md:text-sm truncate"><span class="text-aurea-gold text-xs mr-2 w-4 inline-block">#${i + 1}</span>${a[0]}</span><span class="text-aurea-gold font-black bg-aurea-white/5 px-3 py-1 rounded-lg text-xs md:text-sm whitespace-nowrap">${a[1]} ⚽</span></div>`).join('')}
+                    Object.entries(arts).sort((a, b) => b[1] - a[1]).map((a, i) => `<div class="flex justify-between py-3 border-b border-aurea-white/5 last:border-0 items-center gap-2"><span class="font-bold text-aurea-white uppercase text-xs md:text-sm truncate"><span class="text-aurea-gold text-xs mr-2 w-4 inline-block">#${i + 1}</span>${a[0]}</span><span class="text-aurea-gold font-black bg-aurea-white/5 px-3 py-1 rounded-lg text-xs md:text-sm whitespace-nowrap">${a[1]} ⚽</span></div>`).join('')}
                         </div>
                     </div>
                 </div>
@@ -691,14 +700,14 @@
                     <h3 class="font-black text-aurea-gold mb-4 uppercase tracking-widest text-xs md:text-sm">Últimas Batalhas</h3>
                     <div class="flex flex-col gap-3 max-h-[300px] md:max-h-[500px] overflow-y-auto pr-2 no-scrollbar">
                         ${!js.length ? '<p class="text-aurea-white/30 italic bg-aurea-black p-4 rounded-xl">Nenhum jogo no histórico.</p>' :
-                        js.reverse().map(j => {
-                            let cor = 'border-aurea-white/10 text-aurea-white/50';
-                            if (j.status_partida !== 'agendado') {
-                                const meu = j.id_time_casa == id ? j.placar_casa : j.placar_fora, deles = j.id_time_casa == id ? j.placar_fora : j.placar_casa;
-                                if (meu > deles) cor = 'border-green-500/40 text-green-400 bg-green-500/5'; else if (meu < deles) cor = 'border-red-500/40 text-red-400 bg-red-500/5';
-                            }
-                            return `<div class="bg-aurea-black p-4 md:p-5 rounded-xl border ${cor} flex justify-between items-center text-xs md:text-sm font-bold transition hover:bg-aurea-white/5 gap-1"><span class="w-[35%] text-right truncate ${j.id_time_casa == id ? 'text-aurea-white' : 'text-aurea-white/50'}">${j.timeCasa.nome_time}</span><span class="px-3 md:px-4 py-1 md:py-2 bg-aurea-dark rounded-md mx-1 border border-aurea-white/5 whitespace-nowrap">${j.placar_casa}x${j.placar_fora}</span><span class="w-[35%] text-left truncate ${j.id_time_fora == id ? 'text-aurea-white' : 'text-aurea-white/50'}">${j.timeFora.nome_time}</span></div>`
-                        }).join('')}
+                    js.reverse().map(j => {
+                        let cor = 'border-aurea-white/10 text-aurea-white/50';
+                        if (j.status_partida !== 'agendado') {
+                            const meu = j.id_time_casa == id ? j.placar_casa : j.placar_fora, deles = j.id_time_casa == id ? j.placar_fora : j.placar_casa;
+                            if (meu > deles) cor = 'border-green-500/40 text-green-400 bg-green-500/5'; else if (meu < deles) cor = 'border-red-500/40 text-red-400 bg-red-500/5';
+                        }
+                        return `<div class="bg-aurea-black p-4 md:p-5 rounded-xl border ${cor} flex justify-between items-center text-xs md:text-sm font-bold transition hover:bg-aurea-white/5 gap-1"><span class="w-[35%] text-right truncate ${j.id_time_casa == id ? 'text-aurea-white' : 'text-aurea-white/50'}">${j.timeCasa.nome_time}</span><span class="px-3 md:px-4 py-1 md:py-2 bg-aurea-dark rounded-md mx-1 border border-aurea-white/5 whitespace-nowrap">${j.placar_casa}x${j.placar_fora}</span><span class="w-[35%] text-left truncate ${j.id_time_fora == id ? 'text-aurea-white' : 'text-aurea-white/50'}">${j.timeFora.nome_time}</span></div>`
+                    }).join('')}
                     </div>
                 </div>
             </div>`;
